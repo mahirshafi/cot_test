@@ -5,13 +5,12 @@ import io
 import csv
 from datetime import datetime
 
-# CFTC Financial Futures COT report URLs (try both formats)
+# CFTC Traders in Financial Futures (TFF) - correct URLs from CFTC historical compressed page
 CFTC_URLS = [
-    "https://www.cftc.gov/files/dea/history/fut_fin_xls_{year}.zip",
-    "https://www.cftc.gov/files/dea/history/fin_fut_xls_{year}.zip",
+    "https://www.cftc.gov/files/dea/history/fut_fin_txt_{year}.zip",  # Text format (primary)
+    "https://www.cftc.gov/files/dea/history/fut_fin_xls_{year}.zip",  # Excel format (fallback)
 ]
 
-# CFTC market codes for currency futures
 CURRENCY_CODES = {
     "EUR": "099741",
     "GBP": "096742",
@@ -22,17 +21,25 @@ CURRENCY_CODES = {
     "NZD": "112741",
 }
 
+NAME_MAP = {
+    "EUR": "EURO FX",
+    "GBP": "BRITISH POUND",
+    "JPY": "JAPANESE YEN",
+    "CHF": "SWISS FRANC",
+    "CAD": "CANADIAN DOLLAR",
+    "AUD": "AUSTRALIAN DOLLAR",
+    "NZD": "NEW ZEALAND DOLLAR",
+}
+
 def fetch_zip(year):
     for url_template in CFTC_URLS:
         url = url_template.format(year=year)
         print(f"Trying {url}...")
         try:
-            resp = requests.get(url, timeout=60)
-            if resp.status_code == 200:
-                print(f"Got data from {url}")
+            resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+            print(f"  HTTP {resp.status_code}, size: {len(resp.content)} bytes")
+            if resp.status_code == 200 and len(resp.content) > 1000:
                 return resp.content
-            else:
-                print(f"  HTTP {resp.status_code}")
         except Exception as e:
             print(f"  Error: {e}")
     return None
@@ -41,20 +48,39 @@ def parse_zip(content):
     rows = []
     try:
         with zipfile.ZipFile(io.BytesIO(content)) as z:
-            print(f"Files in zip: {z.namelist()}")
+            print(f"  Files in zip: {z.namelist()}")
             for filename in z.namelist():
                 if filename.endswith('.txt') or filename.endswith('.csv'):
-                    print(f"Reading {filename}...")
+                    print(f"  Reading {filename}...")
                     with z.open(filename) as f:
                         text = io.TextIOWrapper(f, encoding='utf-8', errors='replace')
                         reader = csv.DictReader(text)
                         for row in reader:
-                            rows.append(row)
-                    print(f"  -> {len(rows)} rows loaded")
+                            rows.append(dict(row))
+                    print(f"  -> {len(rows)} rows")
                     break
     except Exception as e:
-        print(f"Error parsing zip: {e}")
+        print(f"  Parse error: {e}")
     return rows
+
+def parse_date(row):
+    for key in ['Report_Date_as_YYYY-MM-DD', 'As_of_Date_In_Form_YYMMDD']:
+        val = row.get(key, '').strip()
+        if val:
+            try:
+                if '-' in val:
+                    return datetime.strptime(val[:10], '%Y-%m-%d')
+                elif len(val) == 6:
+                    return datetime.strptime(val, '%y%m%d')
+            except:
+                pass
+    return datetime(2000, 1, 1)
+
+def safe_int(row, key):
+    try:
+        return int(float(row.get(key, 0) or 0))
+    except:
+        return 0
 
 def fetch_cot_data():
     current_year = datetime.now().year
@@ -65,104 +91,65 @@ def fetch_cot_data():
         if content:
             rows = parse_zip(content)
             all_rows.extend(rows)
-            print(f"Total rows so far: {len(all_rows)}")
+            print(f"Total rows: {len(all_rows)}")
 
     if not all_rows:
-        print("ERROR: No data fetched at all!")
-        fallback = {
-            "updated_at": datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC'),
-            "error": "Could not fetch CFTC data",
-            "data": {}
-        }
+        print("ERROR: No data fetched")
         with open("cot_data.json", "w") as f:
-            json.dump(fallback, f, indent=2)
+            json.dump({"updated_at": datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC'),
+                       "error": "Could not fetch CFTC data", "data": {}}, f, indent=2)
         return
 
-    if all_rows:
-        print(f"\nColumn names: {list(all_rows[0].keys())[:10]}...")
+    # Show sample columns for debugging
+    print(f"Columns: {list(all_rows[0].keys())[:15]}")
 
     results = {}
 
     for currency, code in CURRENCY_CODES.items():
-        currency_rows = [r for r in all_rows
-                        if r.get('CFTC_Contract_MarketCode', '').strip() == code]
+        # Match by CFTC code first
+        rows = [r for r in all_rows if r.get('CFTC_Contract_MarketCode', '').strip() == code]
 
-        if not currency_rows:
-            name_map = {
-                "EUR": "EURO FX",
-                "GBP": "BRITISH POUND",
-                "JPY": "JAPANESE YEN",
-                "CHF": "SWISS FRANC",
-                "CAD": "CANADIAN DOLLAR",
-                "AUD": "AUSTRALIAN DOLLAR",
-                "NZD": "NEW ZEALAND DOLLAR",
-            }
-            search = name_map.get(currency, currency)
-            currency_rows = [r for r in all_rows
-                            if search in r.get('Market_and_Exchange_Names', '').upper()]
+        # Fallback: match by name
+        if not rows:
+            search = NAME_MAP[currency]
+            rows = [r for r in all_rows if search in r.get('Market_and_Exchange_Names', '').upper()]
 
-        print(f"{currency}: {len(currency_rows)} rows found")
-
-        if not currency_rows:
+        print(f"{currency}: {len(rows)} rows")
+        if not rows:
             continue
 
-        def parse_date(row):
-            for key in ['Report_Date_as_YYYY-MM-DD', 'As_of_Date_In_Form_YYMMDD']:
-                val = row.get(key, '').strip()
-                if val:
-                    try:
-                        if len(val) == 6:
-                            return datetime.strptime(val, '%y%m%d')
-                        else:
-                            return datetime.strptime(val[:10], '%Y-%m-%d')
-                    except:
-                        pass
-            return datetime(2000, 1, 1)
-
-        currency_rows.sort(key=parse_date, reverse=True)
+        rows.sort(key=parse_date, reverse=True)
 
         weekly_data = []
-        for row in currency_rows[:52]:
+        for row in rows[:52]:
             try:
-                date_obj = parse_date(row)
-                date_str = date_obj.strftime('%Y-%m-%d')
-
-                def safe_int(key):
-                    try:
-                        return int(float(row.get(key, 0) or 0))
-                    except:
-                        return 0
-
-                noncomm_long  = safe_int('NonComm_Positions_Long_All')
-                noncomm_short = safe_int('NonComm_Positions_Short_All')
-                comm_long     = safe_int('Comm_Positions_Long_All')
-                comm_short    = safe_int('Comm_Positions_Short_All')
-                nonrept_long  = safe_int('NonRept_Positions_Long_All')
-                nonrept_short = safe_int('NonRept_Positions_Short_All')
-
-                net_noncomm = noncomm_long - noncomm_short
-                net_comm    = comm_long - comm_short
+                date_str = parse_date(row).strftime('%Y-%m-%d')
+                noncomm_long  = safe_int(row, 'NonComm_Positions_Long_All')
+                noncomm_short = safe_int(row, 'NonComm_Positions_Short_All')
+                comm_long     = safe_int(row, 'Comm_Positions_Long_All')
+                comm_short    = safe_int(row, 'Comm_Positions_Short_All')
+                nonrept_long  = safe_int(row, 'NonRept_Positions_Long_All')
+                nonrept_short = safe_int(row, 'NonRept_Positions_Short_All')
 
                 weekly_data.append({
-                    "date":          date_str,
-                    "noncomm_long":  noncomm_long,
+                    "date": date_str,
+                    "noncomm_long": noncomm_long,
                     "noncomm_short": noncomm_short,
-                    "comm_long":     comm_long,
-                    "comm_short":    comm_short,
-                    "nonrept_long":  nonrept_long,
+                    "comm_long": comm_long,
+                    "comm_short": comm_short,
+                    "nonrept_long": nonrept_long,
                     "nonrept_short": nonrept_short,
-                    "net_noncomm":   net_noncomm,
-                    "net_comm":      net_comm,
+                    "net_noncomm": noncomm_long - noncomm_short,
+                    "net_comm": comm_long - comm_short,
                 })
             except Exception as e:
-                print(f"  Row parse error for {currency}: {e}")
+                print(f"  Row error: {e}")
 
         if not weekly_data:
             continue
 
         nets = [w["net_noncomm"] for w in weekly_data]
-        max_net = max(nets)
-        min_net = min(nets)
+        max_net, min_net = max(nets), min(nets)
         rng = max_net - min_net if max_net != min_net else 1
 
         for i, w in enumerate(weekly_data):
@@ -170,13 +157,13 @@ def fetch_cot_data():
             w["wow_change"] = w["net_noncomm"] - weekly_data[i+1]["net_noncomm"] if i < len(weekly_data)-1 else 0
 
         results[currency] = {
-            "weeks":     weekly_data,
-            "latest":    weekly_data[0],
-            "52w_high":  max_net,
-            "52w_low":   min_net,
+            "weeks": weekly_data,
+            "latest": weekly_data[0],
+            "52w_high": max_net,
+            "52w_low": min_net,
             "cot_index": weekly_data[0]["cot_index"],
         }
-        print(f"  {currency}: {len(weekly_data)} weeks, COT Index = {results[currency]['cot_index']}")
+        print(f"  -> COT Index: {results[currency]['cot_index']}, {len(weekly_data)} weeks")
 
     output = {
         "updated_at": datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC'),
