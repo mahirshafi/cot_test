@@ -292,17 +292,17 @@ function buildCurrencies(jsonData) {
       code: code,
       contract: meta.contract,
 
-      assetMgr:  { long: latest.comm_long  || 0, short: latest.comm_short  || 0, spread: 0 },
-      levFunds:  { long: latest.noncomm_long|| 0, short: latest.noncomm_short|| 0, spread: 0 },
-      dealer:    { long: 0, short: 0 },
+      assetMgr:  { long: latest.asset_long  || 0, short: latest.asset_short  || 0, spread: 0 },
+      levFunds:  { long: latest.lev_long    || 0, short: latest.lev_short    || 0, spread: 0 },
+      dealer:    { long: latest.dealer_long || 0, short: latest.dealer_short || 0 },
 
       changes: {
-        assetMgrNet:  (latest.net_comm    || 0) - (prev.net_comm    || 0),
-        levFundsNet:  (latest.net_noncomm || 0) - (prev.net_noncomm || 0),
+        assetMgrNet: (latest.net_asset || 0) - (prev.net_asset || 0),
+        levFundsNet: (latest.net_lev   || 0) - (prev.net_lev   || 0),
         totalOI: 0
       },
 
-      // 52-week history of non-commercial net (large speculators)
+      // 52-week history — combined Lev Funds + Asset Mgr net (total large spec)
       history: weeks.slice().reverse().map(w => w.net_noncomm || 0),
     };
   });
