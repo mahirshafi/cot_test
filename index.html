@@ -656,7 +656,7 @@ function renderMatrix(CURR) {
 }
 
 // ==========================================
-// SIGNAL ENGINE v2 — Contrarian + Zone Logic
+// UPDATED SIGNAL ENGINE v2 — Zone‑based, Contrarian, Conflict Detection
 // ==========================================
 
 function getZone(idx) {
@@ -665,11 +665,10 @@ function getZone(idx) {
   return 'NEUTRAL';
 }
 
-function isMomentumUnwinding(c, extremeType) {
-  // At extreme long: unwinding = 4w MA has turned below 13w MA OR recent weekChange negative
-  // At extreme short: unwinding = 4w MA has turned above 13w MA OR recent weekChange positive
-  if (extremeType === 'EXTREME_LONG')  return !c.trendUp || c.weekChange < 0;
-  if (extremeType === 'EXTREME_SHORT') return c.trendUp  || c.weekChange > 0;
+// Helper: true if positioning at an extreme has started to unwind
+function isMomentumUnwinding(currency, zone) {
+  if (zone === 'EXTREME_LONG')  return !currency.trendUp || currency.weekChange < 0;
+  if (zone === 'EXTREME_SHORT') return currency.trendUp  || currency.weekChange > 0;
   return false;
 }
 
@@ -680,120 +679,129 @@ function computeSignal(base, quote) {
   const qZone = getZone(qIdx);
   const spread = bIdx - qIdx;
 
-  let direction = null;   // 'BUY' or 'SELL' (for base/quote pair)
-  let conviction = 0;
-  let reasons = [];
-  let warnings = [];
-  let signalType = '';    // 'CONTRARIAN', 'TREND', 'CONFLICT', 'WEAK'
-
-  // ---- STEP 1: Detect conflicts ----
-  // Conflict = base extreme long AND quote extreme long (both same extreme direction)
-  // OR base extreme short AND quote extreme short
+  // ---- Step 1: Conflict detection (both currencies at same extreme) ----
   const bothExtremeLong  = bZone === 'EXTREME_LONG'  && qZone === 'EXTREME_LONG';
   const bothExtremeShort = bZone === 'EXTREME_SHORT' && qZone === 'EXTREME_SHORT';
+  const conflict = bothExtremeLong || bothExtremeShort;
 
-  if (bothExtremeLong || bothExtremeShort) {
+  // ---- Step 2: Determine signal direction from zones ----
+  let direction = null;
+  let signalType = '';   // 'CONTRARIAN', 'TREND', 'CONFLICT'
+  let reasons = [];
+  let warnings = [];
+  let baseSignal = null, quoteSignal = null;  // what each currency individually says
+
+  if (bZone === 'EXTREME_LONG')  baseSignal = 'SELL';
+  if (bZone === 'EXTREME_SHORT') baseSignal = 'BUY';
+  if (qZone === 'EXTREME_LONG')  quoteSignal = 'BUY';   // quote overbought → quote to fall → pair up
+  if (qZone === 'EXTREME_SHORT') quoteSignal = 'SELL';  // quote oversold → quote to rise → pair down
+
+  if (conflict) {
+    // conflict overrides everything
+    direction = spread >= 0 ? 'BUY' : 'SELL';   // weak lean based on spread
     signalType = 'CONFLICT';
-    direction = spread > 0 ? 'BUY' : 'SELL'; // weak lean only
-    conviction = 2;
-    reasons.push('Both currencies at same extreme — conflicting signals');
-    warnings.push('Low confidence: avoid or wait for one extreme to unwind');
-    return { direction, conviction, reasons, warnings, signalType, spread };
+    reasons.push(`⚠️ Both currencies at same extreme — no clear directional edge.`);
+    warnings.push('Conflicting positioning: avoid trading or wait for one to unwind.');
   }
-
-  // ---- STEP 2: Determine signal direction from zones ----
-  // Rule: extremes are contrarian — overcrowded longs reverse DOWN, overcrowded shorts reverse UP
-  // For a pair BASE/QUOTE:
-  //   Base EXTREME_LONG  → fade the longs → SELL BASE → direction = SELL
-  //   Base EXTREME_SHORT → fade the shorts → BUY BASE → direction = BUY
-  //   Quote EXTREME_LONG  → fade quote longs → quote will fall → BUY BASE (pair goes UP)
-  //   Quote EXTREME_SHORT → fade quote shorts → quote will rise → SELL BASE (pair goes DOWN)
-
-  let baseSignal  = null; // what base zone says: 'BUY'/'SELL'/null
-  let quoteSignal = null; // what quote zone says: 'BUY'/'SELL'/null
-
-  if (bZone === 'EXTREME_LONG')  { baseSignal = 'SELL'; }
-  if (bZone === 'EXTREME_SHORT') { baseSignal = 'BUY';  }
-  if (qZone === 'EXTREME_LONG')  { quoteSignal = 'BUY'; }  // quote overbought = pair rises
-  if (qZone === 'EXTREME_SHORT') { quoteSignal = 'SELL'; } // quote oversold = pair falls
-
-  // Both extremes pointing same direction = strongest contrarian signal
-  if (baseSignal && quoteSignal && baseSignal === quoteSignal) {
+  else if (baseSignal && quoteSignal && baseSignal === quoteSignal) {
+    // both currencies give same contrarian signal → strongest
     direction = baseSignal;
     signalType = 'CONTRARIAN';
-    conviction += 5;
-    reasons.push(`${base.code} extreme ${bZone === 'EXTREME_LONG' ? 'long' : 'short'} + ${quote.code} extreme ${qZone === 'EXTREME_LONG' ? 'long' : 'short'} — both confirm ${direction}`);
+    reasons.push(`${base.code} extreme ${bZone === 'EXTREME_LONG' ? 'long' : 'short'} & ${quote.code} extreme ${qZone === 'EXTREME_LONG' ? 'long' : 'short'} — both favour ${direction}`);
   }
-  // Only one extreme firing
   else if (baseSignal && !quoteSignal) {
+    // only base extreme fires
     direction = baseSignal;
     signalType = 'CONTRARIAN';
-    conviction += 3;
-    reasons.push(`${base.code} at COT extreme (${bIdx}) — overcrowded ${bZone === 'EXTREME_LONG' ? 'longs' : 'shorts'}, fade signal`);
+    reasons.push(`${base.code} at extreme ${bIdx} → overcrowded ${bZone === 'EXTREME_LONG' ? 'longs' : 'shorts'} → fade signal.`);
   }
   else if (!baseSignal && quoteSignal) {
+    // only quote extreme fires
     direction = quoteSignal;
     signalType = 'CONTRARIAN';
-    conviction += 3;
-    reasons.push(`${quote.code} at COT extreme (${qIdx}) — overcrowded ${qZone === 'EXTREME_LONG' ? 'longs' : 'shorts'}, fade signal`);
+    reasons.push(`${quote.code} at extreme ${qIdx} → overcrowded ${qZone === 'EXTREME_LONG' ? 'longs' : 'shorts'} → fade signal.`);
   }
-  // Both neutral — use spread (trend following)
   else {
+    // both neutral → use spread direction (trend following)
     direction = spread >= 0 ? 'BUY' : 'SELL';
     signalType = 'TREND';
-    const absDiff = Math.abs(spread);
-    if (absDiff >= 40)      { conviction += 2; reasons.push('Strong positioning divergence'); }
-    else if (absDiff >= 20) { conviction += 1; reasons.push('Moderate positioning divergence'); }
-    else                    { reasons.push('Mild positioning divergence'); }
+    const absSpread = Math.abs(spread);
+    if (absSpread >= 40)      reasons.push(`Strong positioning divergence (spread = ${spread})`);
+    else if (absSpread >= 20) reasons.push(`Moderate positioning divergence (spread = ${spread})`);
+    else                      reasons.push(`Mild divergence (spread = ${spread})`);
   }
 
-  // ---- STEP 3: Momentum confirmation ----
-  // Does the momentum support the signal direction?
-  const baseMovingWithSignal  = direction === 'BUY'  ? base.trendUp  : !base.trendUp;
-  const quoteMovingWithSignal = direction === 'BUY'  ? !quote.trendUp : quote.trendUp;
+  // ---- Step 3: Conviction calculation ----
+  let conviction = 0;
 
-  if (baseMovingWithSignal && quoteMovingWithSignal) {
+  // 3a. Base contribution from signal type
+  if (conflict) {
+    conviction = 1;   // very low
+  } else if (baseSignal && quoteSignal && baseSignal === quoteSignal) {
+    conviction += 5;  // both extremes confirm
+  } else if (baseSignal || quoteSignal) {
+    conviction += 3;  // single extreme
+  } else {
+    // neutral zone: add points based on spread magnitude
+    const absSpread = Math.abs(spread);
+    if (absSpread >= 40) conviction += 2;
+    else if (absSpread >= 20) conviction += 1;
+  }
+
+  // 3b. Momentum alignment with direction (MA trend)
+  const baseTrendAligns  = direction === 'BUY' ? base.trendUp  : !base.trendUp;
+  const quoteTrendAligns = direction === 'BUY' ? !quote.trendUp : quote.trendUp;
+
+  if (baseTrendAligns && quoteTrendAligns) {
     conviction += 2;
-    reasons.push('Trend aligned: both MAs confirm direction');
-  } else if (baseMovingWithSignal) {
+    reasons.push('Momentum (4w/13w MA) aligned on both currencies');
+  } else if (baseTrendAligns) {
     conviction += 1;
-    reasons.push(`${base.code} MA trend confirms`);
-  } else if (quoteMovingWithSignal) {
+    reasons.push(`${base.code} MA trend aligns with trade`);
+  } else if (quoteTrendAligns) {
     conviction += 1;
-    reasons.push(`${quote.code} MA trend confirms`);
-  } else if (signalType === 'CONTRARIAN') {
-    warnings.push('Trend not yet turned — momentum still against signal, wait for confirmation');
+    reasons.push(`${quote.code} MA trend aligns with trade`);
   }
 
-  // ---- STEP 4: Momentum unwinding at extremes (highest quality contrarian setup) ----
+  // 3c. Unwinding at extremes (extra points)
   if (bZone !== 'NEUTRAL' && isMomentumUnwinding(base, bZone)) {
-    conviction += 1;
+    conviction += 2;
     reasons.push(`${base.code} positioning unwinding from extreme`);
   }
   if (qZone !== 'NEUTRAL' && isMomentumUnwinding(quote, qZone)) {
-    conviction += 1;
+    conviction += 2;
     reasons.push(`${quote.code} positioning unwinding from extreme`);
   }
 
-  // ---- STEP 5: Crowding risk warnings ----
-  // Warn when trading WITH an extreme (e.g. buying EUR when EUR=99)
-  if (direction === 'BUY'  && bZone === 'EXTREME_LONG')  warnings.push(`⚠ Crowding risk: ${base.code} longs already extreme — position size carefully`);
-  if (direction === 'SELL' && bZone === 'EXTREME_SHORT') warnings.push(`⚠ Crowding risk: ${base.code} shorts already extreme — position size carefully`);
-  if (direction === 'BUY'  && qZone === 'EXTREME_SHORT') warnings.push(`⚠ Crowding risk: ${quote.code} shorts already extreme`);
-  if (direction === 'SELL' && qZone === 'EXTREME_LONG')  warnings.push(`⚠ Crowding risk: ${quote.code} longs already extreme`);
-
-  // ---- STEP 6: Week change direction confirms signal ----
-  const baseWkConfirms  = direction === 'BUY'  ? base.weekChange  > 0 : base.weekChange  < 0;
-  const quoteWkConfirms = direction === 'BUY'  ? quote.weekChange < 0 : quote.weekChange > 0;
-  if (baseWkConfirms && quoteWkConfirms) {
+  // 3d. Weekly change alignment with direction
+  const baseWkAligns  = direction === 'BUY' ? base.weekChange  > 0 : base.weekChange  < 0;
+  const quoteWkAligns = direction === 'BUY' ? quote.weekChange < 0 : quote.weekChange > 0;
+  if (baseWkAligns && quoteWkAligns) {
     conviction += 1;
-    reasons.push('Recent weekly momentum confirms direction');
+    reasons.push('Both currencies had weekly change in favour of trade');
+  } else if (baseWkAligns || quoteWkAligns) {
+    conviction += 0.5; // half point
   }
 
-  // Cap conviction at 9
-  conviction = Math.min(conviction, 9);
+  // ---- Step 4: Crowding risk warnings ----
+  if (direction === 'BUY'  && bZone === 'EXTREME_LONG')  warnings.push(`⚠️ Crowded: ${base.code} longs already extreme – size carefully.`);
+  if (direction === 'SELL' && bZone === 'EXTREME_SHORT') warnings.push(`⚠️ Crowded: ${base.code} shorts already extreme – size carefully.`);
+  if (direction === 'BUY'  && qZone === 'EXTREME_SHORT') warnings.push(`⚠️ Crowded: ${quote.code} shorts already extreme – quick reversal possible.`);
+  if (direction === 'SELL' && qZone === 'EXTREME_LONG')  warnings.push(`⚠️ Crowded: ${quote.code} longs already extreme – quick reversal possible.`);
 
-  return { direction, conviction, reasons, warnings, signalType, spread };
+  // Cap and round conviction
+  conviction = Math.min(9, Math.max(1, Math.round(conviction)));
+
+  return {
+    direction,
+    conviction,
+    signalType,
+    spread,
+    reasons,
+    warnings,
+    bZone,
+    qZone
+  };
 }
 
 // ---- Signals Tab ----
@@ -844,8 +852,8 @@ function renderSignals(CURR) {
     const sigClass   = p.direction === 'BUY' ? 'buy' : 'sell';
     const convLabel  = isConflict ? 'CONFLICT' : p.conviction >= 7 ? 'HIGH' : p.conviction >= 4 ? 'MEDIUM' : 'LOW';
     const convColor  = isConflict ? 'var(--muted)' : p.conviction >= 7 ? 'var(--green)' : p.conviction >= 4 ? 'var(--amber)' : 'var(--muted)';
-    const typeTag    = { CONTRARIAN: '⟳ CONTRARIAN', TREND: '→ TREND', CONFLICT: '⚡ CONFLICT', WEAK: '~ WEAK' }[p.signalType] || '';
-    const typeColor  = { CONTRARIAN: 'var(--amber)', TREND: 'var(--blue, #60a5fa)', CONFLICT: 'var(--muted)', WEAK: 'var(--muted)' }[p.signalType];
+    const typeTag    = { CONTRARIAN: '⟳ CONTRARIAN', TREND: '→ TREND', CONFLICT: '⚡ CONFLICT' }[p.signalType] || '';
+    const typeColor  = { CONTRARIAN: 'var(--amber)', TREND: 'var(--blue, #60a5fa)', CONFLICT: 'var(--muted)' }[p.signalType];
 
     const warningHtml = p.warnings.length
       ? `<div style="margin-top:6px;font-size:11px;color:var(--amber);line-height:1.5">${p.warnings.map(w => `${w}`).join('<br>')}</div>`
