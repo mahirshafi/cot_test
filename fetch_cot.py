@@ -232,17 +232,21 @@ def fetch_cot_data():
         results["USD"] = build_result(weekly)
         print(f"  -> USD found in TFF! {len(weekly)} weeks | COT Index: {weekly[0]['cot_index']}")
     else:
-        # Fetch Legacy file for USD
+        # Fetch Legacy file for USD — fetch BOTH years for full 52-week history
         print("  USD not in TFF, fetching Legacy file...")
         legacy_rows = []
         for year in [current_year, current_year - 1]:
+            fetched = False
             for url_template in LEGACY_URLS:
                 content = fetch_zip(url_template.format(year=year))
                 if content:
                     rows = parse_zip(content)
                     if rows:
                         legacy_rows.extend(rows)
+                        fetched = True
                         break
+            if not fetched:
+                print(f"  Warning: could not fetch legacy data for {year}")
 
         print(f"\nTotal Legacy rows: {len(legacy_rows)}")
         if legacy_rows:
