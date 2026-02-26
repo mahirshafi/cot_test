@@ -18,6 +18,7 @@ CURRENCY_CODES = {
     "CAD": "090741",
     "AUD": "232741",
     "NZD": "112741",
+    "USD": "098662",  # US Dollar Index futures
 }
 
 NAME_MAP = {
@@ -28,6 +29,7 @@ NAME_MAP = {
     "CAD": "CANADIAN DOLLAR",
     "AUD": "AUSTRALIAN DOLLAR",
     "NZD": "NEW ZEALAND DOLLAR",
+    "USD": "U.S. DOLLAR INDEX",
 }
 
 def fetch_zip(year):
