@@ -317,12 +317,14 @@ function computeAnalytics(CURRENCIES) {
     c.totalSpecNet = c.assetMgrNet + c.levFundsNet;
   
   const h = c.history;
+  if (!h || h.length === 0) return; // skip if no history
+
   c.w52High = Math.max(...h);
   c.w52Low = Math.min(...h);
   c.current = h[h.length - 1];
   c.cotIndex = c.w52High === c.w52Low ? 50 : Math.round(((c.current - c.w52Low) / (c.w52High - c.w52Low)) * 100);
   
-  // 4-week and 13-week moving averages
+  // 4-week and 13-week moving averages (use available data if less than needed)
   const last4 = h.slice(-4);
   const last13 = h.slice(-13);
   c.ma4 = Math.round(last4.reduce((a,b) => a+b, 0) / last4.length);
@@ -330,8 +332,8 @@ function computeAnalytics(CURRENCIES) {
   c.trendUp = c.ma4 > c.ma13;
   
   // Momentum: compare last 2 weeks direction + acceleration
-  const prev = h[h.length - 2];
-  const prev2 = h[h.length - 3];
+  const prev = h.length >= 2 ? h[h.length - 2] : c.current;
+  const prev2 = h.length >= 3 ? h[h.length - 3] : prev;
   c.weekChange = c.current - prev;
   c.prevWeekChange = prev - prev2;
   
