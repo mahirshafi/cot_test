@@ -5,10 +5,9 @@ import io
 import csv
 from datetime import datetime
 
-# CFTC Traders in Financial Futures (TFF) - correct URLs from CFTC historical compressed page
 CFTC_URLS = [
-    "https://www.cftc.gov/files/dea/history/fut_fin_txt_{year}.zip",  # Text format (primary)
-    "https://www.cftc.gov/files/dea/history/fut_fin_xls_{year}.zip",  # Excel format (fallback)
+    "https://www.cftc.gov/files/dea/history/fut_fin_txt_{year}.zip",
+    "https://www.cftc.gov/files/dea/history/fut_fin_xls_{year}.zip",
 ]
 
 CURRENCY_CODES = {
@@ -58,6 +57,9 @@ def parse_zip(content):
                         for row in reader:
                             rows.append(dict(row))
                     print(f"  -> {len(rows)} rows")
+                    # Print columns from first row for debugging
+                    if rows:
+                        print(f"  Columns: {list(rows[0].keys())}")
                     break
     except Exception as e:
         print(f"  Parse error: {e}")
@@ -100,47 +102,83 @@ def fetch_cot_data():
                        "error": "Could not fetch CFTC data", "data": {}}, f, indent=2)
         return
 
-    # Show sample columns for debugging
-    print(f"Columns: {list(all_rows[0].keys())[:15]}")
-
     results = {}
 
     for currency, code in CURRENCY_CODES.items():
-        # Match by CFTC code first
         rows = [r for r in all_rows if r.get('CFTC_Contract_MarketCode', '').strip() == code]
 
-        # Fallback: match by name
         if not rows:
             search = NAME_MAP[currency]
             rows = [r for r in all_rows if search in r.get('Market_and_Exchange_Names', '').upper()]
 
-        print(f"{currency}: {len(rows)} rows")
+        print(f"{currency}: {len(rows)} rows found")
         if not rows:
             continue
 
         rows.sort(key=parse_date, reverse=True)
 
+        # Remove duplicate dates (keep first = most recent entry per date)
+        seen_dates = set()
+        unique_rows = []
+        for r in rows:
+            d = parse_date(r).strftime('%Y-%m-%d')
+            if d not in seen_dates:
+                seen_dates.add(d)
+                unique_rows.append(r)
+        rows = unique_rows
+
         weekly_data = []
         for row in rows[:52]:
             try:
                 date_str = parse_date(row).strftime('%Y-%m-%d')
-                noncomm_long  = safe_int(row, 'NonComm_Positions_Long_All')
-                noncomm_short = safe_int(row, 'NonComm_Positions_Short_All')
-                comm_long     = safe_int(row, 'Comm_Positions_Long_All')
-                comm_short    = safe_int(row, 'Comm_Positions_Short_All')
+
+                # TFF report column names:
+                # Leveraged Funds (hedge funds, CTAs) = speculative money
+                lev_long  = safe_int(row, 'Lev_Money_Positions_Long_All')
+                lev_short = safe_int(row, 'Lev_Money_Positions_Short_All')
+
+                # Asset Managers (institutional)
+                asset_long  = safe_int(row, 'Asset_Mgr_Positions_Long_All')
+                asset_short = safe_int(row, 'Asset_Mgr_Positions_Short_All')
+
+                # Dealer/Intermediary
+                dealer_long  = safe_int(row, 'Dealer_Positions_Long_All')
+                dealer_short = safe_int(row, 'Dealer_Positions_Short_All')
+
+                # Non-reportable (small specs)
                 nonrept_long  = safe_int(row, 'NonRept_Positions_Long_All')
                 nonrept_short = safe_int(row, 'NonRept_Positions_Short_All')
 
+                # Net positions
+                net_lev   = lev_long - lev_short
+                net_asset = asset_long - asset_short
+                # Combined speculative net (Lev Funds + Asset Mgr) = total large spec
+                net_spec  = net_lev + net_asset
+
                 weekly_data.append({
-                    "date": date_str,
-                    "noncomm_long": noncomm_long,
-                    "noncomm_short": noncomm_short,
-                    "comm_long": comm_long,
-                    "comm_short": comm_short,
-                    "nonrept_long": nonrept_long,
+                    "date":         date_str,
+                    # Leveraged Funds (primary COT signal)
+                    "lev_long":     lev_long,
+                    "lev_short":    lev_short,
+                    "net_lev":      net_lev,
+                    # Asset Managers
+                    "asset_long":   asset_long,
+                    "asset_short":  asset_short,
+                    "net_asset":    net_asset,
+                    # Dealer
+                    "dealer_long":  dealer_long,
+                    "dealer_short": dealer_short,
+                    # Non-reportable
+                    "nonrept_long":  nonrept_long,
                     "nonrept_short": nonrept_short,
-                    "net_noncomm": noncomm_long - noncomm_short,
-                    "net_comm": comm_long - comm_short,
+                    # Combined spec net (used for COT Index)
+                    "net_noncomm":  net_spec,
+                    # Legacy field aliases for dashboard compatibility
+                    "noncomm_long":  lev_long,
+                    "noncomm_short": lev_short,
+                    "comm_long":     asset_long,
+                    "comm_short":    asset_short,
+                    "net_comm":      net_asset,
                 })
             except Exception as e:
                 print(f"  Row error: {e}")
@@ -157,13 +195,13 @@ def fetch_cot_data():
             w["wow_change"] = w["net_noncomm"] - weekly_data[i+1]["net_noncomm"] if i < len(weekly_data)-1 else 0
 
         results[currency] = {
-            "weeks": weekly_data,
-            "latest": weekly_data[0],
-            "52w_high": max_net,
-            "52w_low": min_net,
+            "weeks":     weekly_data,
+            "latest":    weekly_data[0],
+            "52w_high":  max_net,
+            "52w_low":   min_net,
             "cot_index": weekly_data[0]["cot_index"],
         }
-        print(f"  -> COT Index: {results[currency]['cot_index']}, {len(weekly_data)} weeks")
+        print(f"  -> {currency}: {len(weekly_data)} weeks | Lev net: {weekly_data[0]['net_lev']:+,} | Asset net: {weekly_data[0]['net_asset']:+,} | COT Index: {results[currency]['cot_index']}")
 
     output = {
         "updated_at": datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC'),
