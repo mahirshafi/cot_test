@@ -244,7 +244,7 @@ canvas{width:100%!important;max-height:300px}
   <div class="tab-content" id="signals">
     <div class="section-title">Trade Signals (COT-Based)</div>
     <p style="font-size:12px;color:var(--muted);margin-bottom:16px">
-      Signals derived from COT Index extremes (>75 or <25), trend alignment (4w vs 13w MA), and recent momentum. Higher conviction when all three align.<br><span style="color:var(--amber)">⚠️ USD is synthetic — derived by inverting the average of all 7 currency COT indexes. Not a direct CFTC contract.</span>
+      Signals derived from COT Index extremes (>75 or <25), trend alignment (4w vs 13w MA), and recent momentum. Higher conviction when all three align.
     </p>
     <div class="pair-cards" id="signal-cards"></div>
   </div>
@@ -264,13 +264,14 @@ canvas{width:100%!important;max-height:300px}
 // ==========================================
 
 const CURRENCY_META = {
-  EUR: { name: "Euro",             flag: "🇪🇺", contract: 125000 },
-  GBP: { name: "British Pound",    flag: "🇬🇧", contract: 62500  },
-  JPY: { name: "Japanese Yen",     flag: "🇯🇵", contract: 12500000 },
-  CAD: { name: "Canadian Dollar",  flag: "🇨🇦", contract: 100000 },
-  AUD: { name: "Australian Dollar",flag: "🇦🇺", contract: 100000 },
-  CHF: { name: "Swiss Franc",      flag: "🇨🇭", contract: 125000 },
-  NZD: { name: "New Zealand Dollar",flag:"🇳🇿", contract: 100000 },
+  EUR: { name: "Euro",              flag: "🇪🇺", contract: 125000   },
+  GBP: { name: "British Pound",     flag: "🇬🇧", contract: 62500    },
+  JPY: { name: "Japanese Yen",      flag: "🇯🇵", contract: 12500000 },
+  CAD: { name: "Canadian Dollar",   flag: "🇨🇦", contract: 100000   },
+  AUD: { name: "Australian Dollar", flag: "🇦🇺", contract: 100000   },
+  CHF: { name: "Swiss Franc",       flag: "🇨🇭", contract: 125000   },
+  NZD: { name: "New Zealand Dollar",flag: "🇳🇿", contract: 100000   },
+  USD: { name: "US Dollar Index",   flag: "🇺🇸", contract: 1000     },
 };
 
 let CURRENCIES = {};
@@ -345,73 +346,6 @@ function computeAnalytics(CURRENCIES) {
     c.distToHigh = c.w52High - c.current;
     c.distToLow  = c.current - c.w52Low;
   });
-}
-
-// ==========================================
-// SYNTHETIC USD — derived by inverting all 7 currency COT indexes
-// Logic: when funds are long EUR/GBP/JPY etc, they are implicitly short USD
-// USD COT Index = 100 - average(all 7 currency indexes)
-// ==========================================
-
-function computeSyntheticUSD(CURRENCIES) {
-  const keys = Object.keys(CURRENCIES);
-  if (keys.length === 0) return null;
-
-  const avgIndex = Math.round(
-    keys.reduce((sum, k) => sum + CURRENCIES[k].cotIndex, 0) / keys.length
-  );
-  const usdIndex = 100 - avgIndex;
-
-  // Build synthetic history: invert average of all currency histories
-  const histLen = Math.min(...keys.map(k => CURRENCIES[k].history.length));
-  const usdHistory = [];
-  for (let i = 0; i < histLen; i++) {
-    const avgNet = keys.reduce((sum, k) => {
-      const h = CURRENCIES[k].history;
-      const norm = CURRENCIES[k].w52High === CURRENCIES[k].w52Low ? 50
-        : ((h[i] - CURRENCIES[k].w52Low) / (CURRENCIES[k].w52High - CURRENCIES[k].w52Low)) * 100;
-      return sum + norm;
-    }, 0) / keys.length;
-    usdHistory.push(Math.round(100 - avgNet));
-  }
-
-  const usdH = usdHistory;
-  const usdCurrent = usdH[usdH.length - 1];
-  const usdPrev    = usdH[usdH.length - 2] || usdCurrent;
-  const usdPrev2   = usdH[usdH.length - 3] || usdPrev;
-  const last4      = usdH.slice(-4);
-  const last13     = usdH.slice(-13);
-  const usdMa4     = Math.round(last4.reduce((a,b)=>a+b,0) / last4.length);
-  const usdMa13    = Math.round(last13.reduce((a,b)=>a+b,0) / last13.length);
-  const wc  = usdCurrent - usdPrev;
-  const pwc = usdPrev - usdPrev2;
-
-  let momentum;
-  if (wc > 0 && pwc > 0 && wc > pwc)       momentum = "accelerating_up";
-  else if (wc > 0 && pwc <= 0)              momentum = "turning_up";
-  else if (wc < 0 && pwc < 0 && wc < pwc)  momentum = "accelerating_down";
-  else if (wc < 0 && pwc >= 0)             momentum = "turning_down";
-  else if (wc > 0)                          momentum = "up";
-  else if (wc < 0)                          momentum = "down";
-  else                                      momentum = "flat";
-
-  return {
-    name: "US Dollar", flag: "🇺🇸", code: "USD",
-    cotIndex:    usdIndex,
-    history:     usdHistory,
-    current:     usdCurrent,
-    w52High:     Math.max(...usdHistory),
-    w52Low:      Math.min(...usdHistory),
-    ma4:         usdMa4,
-    ma13:        usdMa13,
-    trendUp:     usdMa4 > usdMa13,
-    weekChange:  wc,
-    momentum:    momentum,
-    totalSpecNet: 0,
-    assetMgrNet:  0,
-    levFundsNet:  0,
-    isSynthetic:  true, // flag so UI can show note
-  };
 }
 
 // ==========================================
@@ -843,6 +777,7 @@ async function init() {
       AUD: { name:"Australian Dollar", flag:"🇦🇺", code:"AUD", contract:100000, assetMgr:{long:65100,short:63339,spread:7586}, levFunds:{long:103196,short:32936,spread:4674}, dealer:{long:17675,short:125763}, changes:{assetMgrNet:15676,levFundsNet:6322,totalOI:9019}, history:[-80000,-75000,-68000,-62000,-58000,-52000,-45000,-38000,-32000,-28000,-22000,-18000,-12000,-8000,-5000,0,5000,10000,15000,22000,18000,12000,8000,5000,0,-5000,-10000,-15000,-20000,-25000,-30000,-35000,-28000,-22000,-15000,-10000,-5000,0,5000,10000,15000,20000,25000,30000,35000,40000,45000,50000,55000,60000,65000,72021] },
       CHF: { name:"Swiss Franc", flag:"🇨🇭", code:"CHF", contract:125000, assetMgr:{long:4803,short:58674,spread:1761}, levFunds:{long:7841,short:5386,spread:50}, dealer:{long:56518,short:8658}, changes:{assetMgrNet:-1301,levFundsNet:3255,totalOI:-56}, history:[-58000,-55000,-52000,-48000,-45000,-42000,-40000,-38000,-35000,-32000,-30000,-28000,-25000,-22000,-20000,-18000,-15000,-12000,-10000,-8000,-12000,-15000,-18000,-22000,-25000,-28000,-30000,-32000,-35000,-38000,-40000,-42000,-44000,-46000,-48000,-50000,-48000,-45000,-42000,-40000,-42000,-44000,-46000,-48000,-50000,-52000,-50000,-48000,-50000,-52000,-50000,-51416] },
       NZD: { name:"New Zealand Dollar", flag:"🇳🇿", code:"NZD", contract:100000, assetMgr:{long:14819,short:40971,spread:646}, levFunds:{long:9443,short:21908,spread:1140}, dealer:{long:39909,short:4284}, changes:{assetMgrNet:3070,levFundsNet:-1680,totalOI:1156}, history:[-42000,-40000,-38000,-35000,-32000,-30000,-28000,-25000,-22000,-20000,-18000,-15000,-12000,-10000,-8000,-5000,-3000,0,2000,5000,2000,-2000,-5000,-8000,-12000,-15000,-18000,-20000,-22000,-25000,-28000,-30000,-28000,-25000,-22000,-20000,-18000,-22000,-25000,-28000,-30000,-32000,-34000,-36000,-35000,-33000,-35000,-36000,-38000,-37000,-38000,-38617] },
+      USD: { name:"US Dollar Index", flag:"🇺🇸", code:"USD", contract:1000, assetMgr:{long:0,short:0,spread:0}, levFunds:{long:0,short:0,spread:0}, dealer:{long:0,short:0}, changes:{assetMgrNet:0,levFundsNet:0,totalOI:0}, history:[5000,5200,4800,4500,4200,3900,3600,3800,4000,4300,4600,4900,5100,5400,5600,5800,6000,5700,5400,5100,4800,4500,4200,3900,3600,3300,3000,3200,3500,3800,4100,4400,4700,5000,5300,5600,5900,6200,6500,6800,7000,7200,7500,7800,8000,8200,8500,8800,9000,9200,9500,9800] },
     };
     computeAnalytics(CURRENCIES);
   }
@@ -850,10 +785,8 @@ async function init() {
   renderOverview();
   renderChanges();
   renderHistory();
-  const USD = computeSyntheticUSD(CURRENCIES);
-  const ALL = USD ? { ...CURRENCIES, USD } : CURRENCIES;
-  renderMatrix(ALL);
-  renderSignals(ALL);
+  renderMatrix(CURRENCIES);
+  renderSignals(CURRENCIES);
 }
 
 init();
