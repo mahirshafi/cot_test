@@ -244,7 +244,7 @@ canvas{width:100%!important;max-height:300px}
   <div class="tab-content" id="signals">
     <div class="section-title">Trade Signals (COT-Based)</div>
     <p style="font-size:12px;color:var(--muted);margin-bottom:16px">
-      Signals derived from COT Index extremes (>75 or <25), trend alignment (4w vs 13w MA), and recent momentum. Higher conviction when all three align.
+      Signals derived from COT Index extremes (>75 or <25), trend alignment (4w vs 13w MA), and recent momentum. Higher conviction when all three align.<br><span style="color:var(--amber)">⚠️ USD is synthetic — derived by inverting the average of all 7 currency COT indexes. Not a direct CFTC contract.</span>
     </p>
     <div class="pair-cards" id="signal-cards"></div>
   </div>
@@ -345,6 +345,73 @@ function computeAnalytics(CURRENCIES) {
     c.distToHigh = c.w52High - c.current;
     c.distToLow  = c.current - c.w52Low;
   });
+}
+
+// ==========================================
+// SYNTHETIC USD — derived by inverting all 7 currency COT indexes
+// Logic: when funds are long EUR/GBP/JPY etc, they are implicitly short USD
+// USD COT Index = 100 - average(all 7 currency indexes)
+// ==========================================
+
+function computeSyntheticUSD(CURRENCIES) {
+  const keys = Object.keys(CURRENCIES);
+  if (keys.length === 0) return null;
+
+  const avgIndex = Math.round(
+    keys.reduce((sum, k) => sum + CURRENCIES[k].cotIndex, 0) / keys.length
+  );
+  const usdIndex = 100 - avgIndex;
+
+  // Build synthetic history: invert average of all currency histories
+  const histLen = Math.min(...keys.map(k => CURRENCIES[k].history.length));
+  const usdHistory = [];
+  for (let i = 0; i < histLen; i++) {
+    const avgNet = keys.reduce((sum, k) => {
+      const h = CURRENCIES[k].history;
+      const norm = CURRENCIES[k].w52High === CURRENCIES[k].w52Low ? 50
+        : ((h[i] - CURRENCIES[k].w52Low) / (CURRENCIES[k].w52High - CURRENCIES[k].w52Low)) * 100;
+      return sum + norm;
+    }, 0) / keys.length;
+    usdHistory.push(Math.round(100 - avgNet));
+  }
+
+  const usdH = usdHistory;
+  const usdCurrent = usdH[usdH.length - 1];
+  const usdPrev    = usdH[usdH.length - 2] || usdCurrent;
+  const usdPrev2   = usdH[usdH.length - 3] || usdPrev;
+  const last4      = usdH.slice(-4);
+  const last13     = usdH.slice(-13);
+  const usdMa4     = Math.round(last4.reduce((a,b)=>a+b,0) / last4.length);
+  const usdMa13    = Math.round(last13.reduce((a,b)=>a+b,0) / last13.length);
+  const wc  = usdCurrent - usdPrev;
+  const pwc = usdPrev - usdPrev2;
+
+  let momentum;
+  if (wc > 0 && pwc > 0 && wc > pwc)       momentum = "accelerating_up";
+  else if (wc > 0 && pwc <= 0)              momentum = "turning_up";
+  else if (wc < 0 && pwc < 0 && wc < pwc)  momentum = "accelerating_down";
+  else if (wc < 0 && pwc >= 0)             momentum = "turning_down";
+  else if (wc > 0)                          momentum = "up";
+  else if (wc < 0)                          momentum = "down";
+  else                                      momentum = "flat";
+
+  return {
+    name: "US Dollar", flag: "🇺🇸", code: "USD",
+    cotIndex:    usdIndex,
+    history:     usdHistory,
+    current:     usdCurrent,
+    w52High:     Math.max(...usdHistory),
+    w52Low:      Math.min(...usdHistory),
+    ma4:         usdMa4,
+    ma13:        usdMa13,
+    trendUp:     usdMa4 > usdMa13,
+    weekChange:  wc,
+    momentum:    momentum,
+    totalSpecNet: 0,
+    assetMgrNet:  0,
+    levFundsNet:  0,
+    isSynthetic:  true, // flag so UI can show note
+  };
 }
 
 // ==========================================
@@ -613,9 +680,10 @@ function updateHistoryChart(curKey) {
 }
 
 // ---- Pair Matrix ----
-function renderMatrix() {
+function renderMatrix(CURR) {
+  CURR = CURR || CURRENCIES;
   const table = document.getElementById('matrix-table');
-  const keys = Object.keys(CURRENCIES);
+  const keys = Object.keys(CURR);
   
   let html = '<thead><tr><th></th>';
   keys.forEach(k => { html += `<th>${k}</th>`; });
@@ -627,8 +695,8 @@ function renderMatrix() {
       if (base === quote) {
         html += `<td class="self">—</td>`;
       } else {
-        const bIdx = CURRENCIES[base].cotIndex;
-        const qIdx = CURRENCIES[quote].cotIndex;
+        const bIdx = CURR[base].cotIndex;
+        const qIdx = CURR[quote].cotIndex;
         const diff = bIdx - qIdx; // positive = favor base
         const intensity = Math.min(Math.abs(diff) / 80, 1);
         let bgColor;
@@ -648,17 +716,18 @@ function renderMatrix() {
 }
 
 // ---- Signals Tab ----
-function renderSignals() {
+function renderSignals(CURR) {
+  CURR = CURR || CURRENCIES;
   const container = document.getElementById('signal-cards');
   container.innerHTML = '';
   
-  const keys = Object.keys(CURRENCIES);
+  const keys = Object.keys(CURR);
   const pairs = [];
   
   for (let i = 0; i < keys.length; i++) {
     for (let j = i+1; j < keys.length; j++) {
-      const base = CURRENCIES[keys[i]];
-      const quote = CURRENCIES[keys[j]];
+      const base  = CURR[keys[i]];
+      const quote = CURR[keys[j]];
       const diff = base.cotIndex - quote.cotIndex;
       const absDiff = Math.abs(diff);
       
@@ -781,8 +850,10 @@ async function init() {
   renderOverview();
   renderChanges();
   renderHistory();
-  renderMatrix();
-  renderSignals();
+  const USD = computeSyntheticUSD(CURRENCIES);
+  const ALL = USD ? { ...CURRENCIES, USD } : CURRENCIES;
+  renderMatrix(ALL);
+  renderSignals(ALL);
 }
 
 init();
