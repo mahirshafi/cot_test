@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COT Signal Scenarios</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --border: #1e2330;
+    --bull: #00e5a0;
+    --bull-dim: rgba(0,229,160,0.08);
+    --bull-mid: rgba(0,229,160,0.18);
+    --bear: #ff4d6d;
+    --bear-dim: rgba(255,77,109,0.08);
+    --bear-mid: rgba(255,77,109,0.18);
+    --neutral: #7b8caa;
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+    --accent: #f0c040;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    padding: 40px 24px 80px;
+  }
+
+  /* noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .wrapper { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+
+  header {
+    margin-bottom: 56px;
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+  }
+
+  header .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  header h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: #fff;
+  }
+
+  header p {
+    margin-top: 12px;
+    color: var(--neutral);
+    font-size: 15px;
+    max-width: 560px;
+    line-height: 1.6;
+  }
+
+  /* tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    width: fit-content;
+  }
+
+  .tab {
+    padding: 10px 28px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+  }
+
+  .tab.bull.active { background: var(--bull-mid); color: var(--bull); }
+  .tab.bear.active { background: var(--bear-mid); color: var(--bear); }
+  .tab:not(.active):hover { background: var(--border); color: var(--text); }
+
+  /* scenario panels */
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeUp 0.35s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* scenario section heading */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    margin-top: 40px;
+  }
+
+  .section-title:first-child { margin-top: 0; }
+
+  .section-title .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  .bull .badge { background: var(--bull-mid); color: var(--bull); border: 1px solid rgba(0,229,160,0.25); }
+  .bear .badge { background: var(--bear-mid); color: var(--bear); border: 1px solid rgba(255,77,109,0.25); }
+
+  .section-title h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .strength-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* scenario card */
+  .scenario-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .scenario-card:hover { border-color: #2d3550; }
+  .scenario-card.bull-card { border-left: 3px solid var(--bull); }
+  .scenario-card.bear-card { border-left: 3px solid var(--bear); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .scenario-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    width: 28px;
+  }
+
+  .scenario-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .strength-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+
+  .strength-max  { background: rgba(0,229,160,0.15);  color: var(--bull);   border: 1px solid rgba(0,229,160,0.3);  }
+  .strength-high { background: rgba(100,200,130,0.12); color: #6dcf8e;       border: 1px solid rgba(100,200,130,0.25);}
+  .strength-med  { background: rgba(240,192,64,0.12);  color: var(--accent); border: 1px solid rgba(240,192,64,0.25); }
+  .strength-low  { background: rgba(123,140,170,0.12); color: var(--neutral);border: 1px solid rgba(123,140,170,0.25);}
+
+  .bear-max  { background: rgba(255,77,109,0.15);  color: var(--bear);  border: 1px solid rgba(255,77,109,0.3);  }
+  .bear-high { background: rgba(220,100,120,0.12); color: #e07080;      border: 1px solid rgba(220,100,120,0.25);}
+
+  .chevron {
+    color: var(--text-dim);
+    font-size: 16px;
+    transition: transform 0.25s;
+  }
+
+  .card-header.open .chevron { transform: rotate(180deg); }
+
+  /* signal table */
+  .card-body {
+    display: none;
+    padding: 0 20px 20px;
+  }
+
+  .card-body.open { display: block; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  th:first-child { width: 36%; }
+
+  td {
+    padding: 11px 12px;
+    border-bottom: 1px solid rgba(30,35,48,0.6);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  .signal-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .signal-icon { font-size: 15px; }
+
+  .signal-value {
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .bull-val { color: var(--bull); }
+  .bear-val { color: var(--bear); }
+  .warn-val { color: var(--accent); }
+  .dim-val  { color: var(--neutral); }
+
+  .signal-meaning {
+    color: var(--neutral);
+    font-size: 13px;
+  }
+
+  /* summary box */
+  .summary-box {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .bull-summary { background: var(--bull-dim); border: 1px solid rgba(0,229,160,0.15); color: #a0f0d4; }
+  .bear-summary { background: var(--bear-dim); border: 1px solid rgba(255,77,109,0.15); color: #ffa8b8; }
+
+  .summary-box strong { font-weight: 700; }
+
+  /* legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 36px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="label">COT Strategy Reference</div>
+    <h1>Signal Scenario Matrix</h1>
+    <p>All bullish and bearish combinations of COT Index, Open Interest, Commercial positioning, and price action — ranked by conviction strength.</p>
+  </header>
+
+  <div class="legend">
+    <div class="legend-item"><span class="strength-pill strength-max">Max</span> All 4 signals aligned</div>
+    <div class="legend-item"><span class="strength-pill strength-high">High</span> 3 signals aligned</div>
+    <div class="legend-item"><span class="strength-pill strength-med">Medium</span> 2 signals + mixed</div>
+    <div class="legend-item"><span class="strength-pill strength-low">Low / Wait</span> Conflicting signals</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab bull active" onclick="showPanel('bull', this)">▲ Bullish Scenarios</button>
+    <button class="tab bear" onclick="showPanel('bear', this)">▼ Bearish Scenarios</button>
+  </div>
+
+  <!-- ════════════ BULLISH PANEL ════════════ -->
+  <div class="panel active" id="bull-panel">
+
+    <!-- PERFECT BULL -->
+    <div class="section-title bull">
+      <span class="badge">Tier 1</span>
+      <h2>Maximum Conviction — All Signals Aligned</h2>
+    </div>
+
+    <div class="scenario-card bull-card">
+      <div class="card-header open" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">B-1</span>
+          <span class="scenario-name">The Perfect Bull</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill strength-max">Max Strength</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body open">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bull-val">≥ 80–100%</span></td>
+              <td class="signal-meaning">Specs are at or near their most net-long position in 52 weeks — extreme bullish crowding</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📈</span>Open Interest</div></td>
+              <td><span class="signal-value bull-val">Rising</span></td>
+              <td class="signal-meaning">New money is entering the market — the move has real fuel behind it</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bull-val">Net Long</span></td>
+              <td class="signal-meaning">Smart money is on the bullish side — hedgers are backing the move with real exposure</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">💹</span>Price Action</div></td>
+              <td><span class="signal-value bull-val">Breaking Resistance</span></td>
+              <td class="signal-meaning">Price confirms the COT signal — breakout above a key weekly/monthly level</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bull-summary">
+          <strong>Action:</strong> Enter long on breakout confirmation. Target next weekly/monthly resistance. Stop below the breakout level or recent swing low. Highest probability setup — hold until COT starts reversing or OI drops sharply.
+        </div>
+      </div>
+    </div>
+
+    <!-- BULL without OI confirmation -->
+    <div class="scenario-card bull-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">B-2</span>
+          <span class="scenario-name">Strong Bull — OI Not Yet Confirming</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill strength-high">High Strength</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bull-val">≥ 80%</span></td>
+              <td class="signal-meaning">Specs heavily crowded long</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📉</span>Open Interest</div></td>
+              <td><span class="signal-value warn-val">Falling / Flat</span></td>
+              <td class="signal-meaning">Old positions being closed, not new money entering — move may lack fresh momentum</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bull-val">Net Long</span></td>
+              <td class="signal-meaning">Smart money still bullish</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">💹</span>Price Action</div></td>
+              <td><span class="signal-value bull-val">Breaking Resistance</span></td>
+              <td class="signal-meaning">Breakout confirmed by price</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bull-summary">
+          <strong>Action:</strong> Valid long setup but watch OI closely. If OI starts rising after entry, add to the position. If OI keeps falling, the breakout may be a fakeout — keep stops tight and take partial profits early.
+        </div>
+      </div>
+    </div>
+
+    <!-- BULL setup forming, no price confirmation yet -->
+    <div class="scenario-card bull-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">B-3</span>
+          <span class="scenario-name">Bull Setup Forming — Waiting for Price</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill strength-high">High Strength</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bull-val">≥ 80%</span></td>
+              <td class="signal-meaning">Extreme long positioning by specs</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📈</span>Open Interest</div></td>
+              <td><span class="signal-value bull-val">Rising</span></td>
+              <td class="signal-meaning">New money building — conviction is there</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bull-val">Net Long</span></td>
+              <td class="signal-meaning">Smart money aligned bullish</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">⏳</span>Price Action</div></td>
+              <td><span class="signal-value warn-val">Approaching Resistance</span></td>
+              <td class="signal-meaning">Price not yet broken out — still below the key level</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bull-summary">
+          <strong>Action:</strong> Do NOT enter yet. Mark your resistance level, set a price alert, and wait for the breakout candle (preferably on strong volume). This is a high-quality setup in the making — patience gives you a better entry with a tighter stop.
+        </div>
+      </div>
+    </div>
+
+    <!-- Commercials flipping bull, specs not yet extreme -->
+    <div class="scenario-card bull-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">B-4</span>
+          <span class="scenario-name">Early Bull Signal — Commercials Flipping Long</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill strength-med">Medium</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value warn-val">40–60%</span></td>
+              <td class="signal-meaning">Specs are neutral — not yet at a bullish extreme</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📈</span>Open Interest</div></td>
+              <td><span class="signal-value bull-val">Rising</span></td>
+              <td class="signal-meaning">Positioning is building — early smart money moving in</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bull-val">Flipping Net Long</span></td>
+              <td class="signal-meaning">Commercials recently crossed from net-short to net-long — early warning signal</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">💹</span>Price Action</div></td>
+              <td><span class="signal-value bull-val">Breaking Resistance</span></td>
+              <td class="signal-meaning">Price confirming the early smart-money accumulation</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bull-summary">
+          <strong>Action:</strong> Early entry opportunity — the trend may be just starting. Lower conviction than B-1 but potentially better R:R as you're entering earlier. Use smaller position size. Watch for COT Index to climb above 80% as confirmation the move is developing.
+        </div>
+      </div>
+    </div>
+
+    <!-- COT extreme but price rejecting -->
+    <div class="scenario-card bull-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">B-5</span>
+          <span class="scenario-name">COT Bullish But Price Rejecting — Wait</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill strength-low">Low / Wait</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bull-val">≥ 80%</span></td>
+              <td class="signal-meaning">Specs very bullish</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📉</span>Open Interest</div></td>
+              <td><span class="signal-value warn-val">Falling</span></td>
+              <td class="signal-meaning">Longs being liquidated</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bull-val">Net Long</span></td>
+              <td class="signal-meaning">Smart money still holds bullish position</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🚫</span>Price Action</div></td>
+              <td><span class="signal-value bear-val">Rejecting Resistance</span></td>
+              <td class="signal-meaning">Price failed to break above — sellers defending the level hard</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bull-summary">
+          <strong>Action:</strong> Stand aside. COT is bullish but price is saying no for now. The setup is not ready. Wait for price to consolidate, OI to stabilize, and then attempt the breakout again. A second rejection could flip this to a bearish setup entirely.
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ TIER 2 BULLISH ════ -->
+    <div class="section-title bull" style="margin-top:48px;">
+      <span class="badge">Tier 2</span>
+      <h2>Reversal Setups — Bottoming Signals</h2>
+    </div>
+
+    <div class="scenario-card bull-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">B-6</span>
+          <span class="scenario-name">Bearish Spec Extreme = Bullish Reversal Setup</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill strength-high">High Strength</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bear-val">≤ 20% (near 0%)</span></td>
+              <td class="signal-meaning">Specs are at their most net-short in 52 weeks — overcrowded on the short side, ripe for a squeeze</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📈</span>Open Interest</div></td>
+              <td><span class="signal-value bull-val">Rising</span></td>
+              <td class="signal-meaning">New short positions being added — the extreme is being built, not unwound yet</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bull-val">Net Long (at extreme)</span></td>
+              <td class="signal-meaning">Commercials aggressively buying the other side of spec shorts — strong divergence signal</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">💹</span>Price Action</div></td>
+              <td><span class="signal-value bull-val">Bouncing off Support / Bullish Reversal Candle</span></td>
+              <td class="signal-meaning">Price is holding a major support zone and showing reversal pattern</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bull-summary">
+          <strong>Action:</strong> This is a contrarian long — fading the over-crowded spec shorts. Enter on the support bounce with a stop below the support level. As shorts get squeezed and cover, the move can be fast and violent. High R:R setup.
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card bull-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">B-7</span>
+          <span class="scenario-name">OI Collapsing at Support — Short Squeeze Loading</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill strength-high">High Strength</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bear-val">≤ 20%</span></td>
+              <td class="signal-meaning">Specs heavily short</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📉</span>Open Interest</div></td>
+              <td><span class="signal-value bull-val">Falling Sharply</span></td>
+              <td class="signal-meaning">Shorts are covering and closing — the capitulation is already in progress</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bull-val">Net Long</span></td>
+              <td class="signal-meaning">Smart money absorbing the sell-off</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">💹</span>Price Action</div></td>
+              <td><span class="signal-value bull-val">Support Holding</span></td>
+              <td class="signal-meaning">Price is stable at a key level while shorts unwind</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bull-summary">
+          <strong>Action:</strong> The short squeeze may already be starting. Enter as price holds support with a tight stop. The drop in OI confirms shorts are closing — not new sellers entering. Move can accelerate quickly as remaining shorts pile into their exits.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end bull panel -->
+
+
+  <!-- ════════════ BEARISH PANEL ════════════ -->
+  <div class="panel" id="bear-panel">
+
+    <div class="section-title bear">
+      <span class="badge">Tier 1</span>
+      <h2>Maximum Conviction — All Signals Aligned</h2>
+    </div>
+
+    <div class="scenario-card bear-card">
+      <div class="card-header open" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">S-1</span>
+          <span class="scenario-name">The Perfect Bear</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill bear-max">Max Strength</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body open">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bear-val">≤ 20% (near 0%)</span></td>
+              <td class="signal-meaning">Specs are at or near their most net-short position in 52 weeks — extreme bearish conviction from trend chasers</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📈</span>Open Interest</div></td>
+              <td><span class="signal-value bear-val">Rising</span></td>
+              <td class="signal-meaning">New money entering on the short side — fresh bearish positions being added, not just old longs closing</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bear-val">Net Short</span></td>
+              <td class="signal-meaning">Smart money hedging against a downside move — they're selling into strength</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">💹</span>Price Action</div></td>
+              <td><span class="signal-value bear-val">Rejecting Resistance / Breaking Support</span></td>
+              <td class="signal-meaning">Price confirms the COT bias — either failed at a major level or already breaking down through support</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bear-summary">
+          <strong>Action:</strong> Enter short on rejection or support breakdown confirmation. Target next weekly/monthly support. Stop above the rejection high or recent swing high. Highest probability bearish setup — hold until COT starts reversing (specs start covering) or OI drops sharply.
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card bear-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">S-2</span>
+          <span class="scenario-name">Strong Bear — OI Not Yet Confirming</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill bear-high">High Strength</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bear-val">≤ 20%</span></td>
+              <td class="signal-meaning">Specs heavily crowded short</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📉</span>Open Interest</div></td>
+              <td><span class="signal-value warn-val">Falling / Flat</span></td>
+              <td class="signal-meaning">Old positions being unwound, not fresh shorts piling in — move may lose momentum</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bear-val">Net Short</span></td>
+              <td class="signal-meaning">Smart money bearish</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">💹</span>Price Action</div></td>
+              <td><span class="signal-value bear-val">Rejecting Resistance</span></td>
+              <td class="signal-meaning">Price confirmed the rejection at a key level</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bear-summary">
+          <strong>Action:</strong> Valid short but watch OI. If OI picks up as price falls, add to position. If OI keeps declining, the breakdown may stall or reverse. Use tighter stops and take partial profits at the first support zone.
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card bear-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">S-3</span>
+          <span class="scenario-name">Bear Setup Forming — Waiting for Price</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill bear-high">High Strength</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bear-val">≤ 20%</span></td>
+              <td class="signal-meaning">Specs at extreme short positioning</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📈</span>Open Interest</div></td>
+              <td><span class="signal-value bear-val">Rising</span></td>
+              <td class="signal-meaning">New short money building — conviction behind the bearish thesis</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bear-val">Net Short</span></td>
+              <td class="signal-meaning">Smart money positioned for downside</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">⏳</span>Price Action</div></td>
+              <td><span class="signal-value warn-val">Approaching Resistance / Support</span></td>
+              <td class="signal-meaning">Price not yet at the key level for entry — approaching but not confirmed</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bear-summary">
+          <strong>Action:</strong> Do NOT enter yet. Set alerts for your resistance level. Wait for the rejection candle or support break confirmation. You have the COT edge — don't waste it by entering early with a poor entry price and a wide stop.
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card bear-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">S-4</span>
+          <span class="scenario-name">Early Bear — Commercials Flipping Short</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill strength-med">Medium</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value warn-val">40–60%</span></td>
+              <td class="signal-meaning">Specs neutral — bearish extreme not reached yet</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📈</span>Open Interest</div></td>
+              <td><span class="signal-value bear-val">Rising</span></td>
+              <td class="signal-meaning">New positions building</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bear-val">Flipping Net Short</span></td>
+              <td class="signal-meaning">Commercials just crossed into net-short — early warning that smart money is hedging against upside</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">💹</span>Price Action</div></td>
+              <td><span class="signal-value bear-val">Rejecting Resistance</span></td>
+              <td class="signal-meaning">Price already showing rejection at a key level</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bear-summary">
+          <strong>Action:</strong> Early entry on a developing bearish trend. Good R:R if you're getting in before the crowd. Use smaller size until COT Index drops below 20%. This is where the big moves often start — before the full extreme is reached.
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card bear-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">S-5</span>
+          <span class="scenario-name">COT Bearish But Price Breaking Up — Avoid</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill strength-low">Low / Avoid</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bear-val">≤ 20%</span></td>
+              <td class="signal-meaning">Specs very bearish</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📉</span>Open Interest</div></td>
+              <td><span class="signal-value warn-val">Falling</span></td>
+              <td class="signal-meaning">Shorts being covered</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bear-val">Net Short</span></td>
+              <td class="signal-meaning">Smart money still hedging short</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🚫</span>Price Action</div></td>
+              <td><span class="signal-value bull-val">Breaking Above Resistance</span></td>
+              <td class="signal-meaning">Price is moving against the COT signal — possible short squeeze or fundamental shift</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bear-summary">
+          <strong>Action:</strong> Do NOT short here. Price is disagreeing with the COT signal — this is dangerous territory. The breakout may be driven by a fundamental catalyst that overrides positioning. Stand aside and reassess next week's COT report before re-evaluating.
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier 2 Bear -->
+    <div class="section-title bear" style="margin-top:48px;">
+      <span class="badge">Tier 2</span>
+      <h2>Reversal Setups — Topping Signals</h2>
+    </div>
+
+    <div class="scenario-card bear-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">S-6</span>
+          <span class="scenario-name">Bullish Spec Extreme = Bearish Reversal Setup</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill bear-high">High Strength</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bull-val">≥ 80–100%</span></td>
+              <td class="signal-meaning">Specs at their most net-long in 52 weeks — overcrowded longs, highly vulnerable to liquidation</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📈</span>Open Interest</div></td>
+              <td><span class="signal-value bear-val">Rising</span></td>
+              <td class="signal-meaning">Longs still being added — the crowding is getting worse before it gets better</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bear-val">Net Short (at extreme)</span></td>
+              <td class="signal-meaning">Smart money aggressively selling into the spec buying — classic divergence</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">💹</span>Price Action</div></td>
+              <td><span class="signal-value bear-val">Rejecting at Resistance / Bearish Reversal Candle</span></td>
+              <td class="signal-meaning">Price failing at a major level — the catalyst for the long squeeze</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bear-summary">
+          <strong>Action:</strong> Contrarian short — fading the over-crowded spec longs. Enter on resistance rejection with a stop above the high. When the squeeze starts, longs rush for the exit simultaneously. Can produce fast, sharp drops. High R:R when timed right.
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-card bear-card">
+      <div class="card-header" onclick="toggle(this)">
+        <div class="card-header-left">
+          <span class="scenario-num">S-7</span>
+          <span class="scenario-name">OI Collapsing at Resistance — Long Squeeze Loading</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="strength-pill bear-high">High Strength</span>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📊</span>COT Index (Large Specs)</div></td>
+              <td><span class="signal-value bull-val">≥ 80%</span></td>
+              <td class="signal-meaning">Specs heavily long</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">📉</span>Open Interest</div></td>
+              <td><span class="signal-value bear-val">Falling Sharply</span></td>
+              <td class="signal-meaning">Longs liquidating fast — the capitulation is already underway</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">🏦</span>Commercials</div></td>
+              <td><span class="signal-value bear-val">Net Short</span></td>
+              <td class="signal-meaning">Smart money taking profits or adding to shorts</td>
+            </tr>
+            <tr>
+              <td><div class="signal-name"><span class="signal-icon">💹</span>Price Action</div></td>
+              <td><span class="signal-value bear-val">Resistance Holding / Starting to Drop</span></td>
+              <td class="signal-meaning">Price stalling or turning while longs exit</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="summary-box bear-summary">
+          <strong>Action:</strong> The long squeeze may already be in motion. Short on confirmation of the turn with stop above resistance. The drop in OI means longs are already closing — not new buyers entering. Remaining longs will panic-exit as price falls, accelerating the move.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end bear panel -->
+
+</div>
+
+<script>
+  function showPanel(type, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(type + '-panel').classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    header.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+  }
+</script>
+</body>
+</html>
