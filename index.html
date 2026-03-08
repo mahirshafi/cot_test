@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>COT FX Pro — Complete Analysis</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<title>COT FX Pro — 52-Week Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#0a0e17;--surface:#111827;--card:#1a2235;--border:#2a3550;
@@ -189,112 +188,6 @@ canvas{width:100%!important;max-height:300px}
 .g-action.bull-action strong{color:var(--green)}
 .g-action.bear-action{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);color:#ffa8b8}
 .g-action.bear-action strong{color:var(--red)}
-
-.tab.flow-tab.active{color:#f97316;border-bottom-color:#f97316}
-.tab.intel-tab.active{color:#a855f7;border-bottom-color:#a855f7}
-
-/* ===== FLOW TAB ===== */
-.flow-header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
-.flow-subtitle{font-size:12px;color:var(--muted)}
-.refresh-btn{padding:7px 16px;font-size:11px;font-weight:600;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.5px}
-.refresh-btn:hover{border-color:#f97316;color:#f97316}
-
-.flow-grid{display:grid;grid-template-columns:260px 1fr;gap:0;min-height:600px;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.flow-sidebar{border-right:1px solid var(--border);padding:14px;overflow-y:auto;background:#080c14;display:flex;flex-direction:column;gap:7px}
-.flow-sidebar-title{font-size:9px;color:#333;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;font-family:'JetBrains Mono',monospace}
-.flow-detail{padding:18px;overflow-y:auto;background:#060911}
-
-.pair-flow-card{cursor:pointer;background:#0a0e17;border:1px solid #1a2235;border-radius:8px;padding:12px;transition:all .2s}
-.pair-flow-card:hover,.pair-flow-card.selected{background:rgba(249,115,22,.06);border-color:#f9731633}
-.pair-flow-card.selected{box-shadow:0 0 16px rgba(249,115,22,.15)}
-
-.flow-score-big{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;line-height:1}
-.flow-score-bar{height:3px;background:#111;border-radius:2px;margin-top:6px}
-.flow-score-fill{height:100%;border-radius:2px;transition:width 1s ease}
-
-/* Three layers inside detail */
-.layers-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0}
-.layer-box{background:#0d1120;border-radius:8px;padding:14px;border:1px solid #1a2235}
-.layer-title{font-family:'Bebas Neue',display;font-size:13px;letter-spacing:1px;margin-bottom:10px}
-.layer-kv{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
-.layer-kv .lk{font-family:'JetBrains Mono',monospace;font-size:10px;color:#4a5568}
-.layer-kv .lv{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700}
-.layer-footer{margin-top:8px;padding:5px 8px;border-radius:4px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.5px}
-
-.mini-bars{display:flex;align-items:flex-end;gap:2px;height:36px;margin:6px 0}
-.mini-bar{width:6px;border-radius:2px 2px 0 0}
-
-.order-cluster{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.cluster-track{height:4px;background:#111;border-radius:2px;width:50px}
-.cluster-fill{height:100%;border-radius:2px}
-
-.flow-alert{padding:7px 9px;border-radius:6px;margin-bottom:5px}
-.flow-alert-row{display:flex;justify-content:space-between;align-items:center}
-
-.sms-box{background:#0d1120;border-radius:8px;padding:14px;border:1px solid #1a2235}
-.sms-signals{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.sms-badge{display:flex;align-items:center;gap:5px;padding:4px 9px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px}
-
-/* ===== INTELLIGENCE TAB ===== */
-.intel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
-.intel-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;overflow:hidden;transition:all .2s}
-.intel-card:hover{border-color:var(--purple);box-shadow:0 0 20px rgba(168,85,247,.1)}
-.intel-card.high-conviction::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
-.intel-card.medium-conviction::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent)}
-.intel-card.conflict::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--muted),transparent)}
-
-.intel-pair-name{font-family:'Bebas Neue',display;font-size:26px;letter-spacing:2px;margin-bottom:2px}
-.intel-score-row{display:flex;gap:10px;align-items:center;margin:8px 0}
-.intel-score-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;flex-shrink:0;position:relative}
-.intel-score-circle svg{position:absolute;top:0;left:0}
-
-.intel-bars{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
-.intel-bar-item{}
-.intel-bar-label{font-size:10px;color:var(--muted);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
-.intel-bar-track{height:6px;background:#111827;border-radius:3px;overflow:hidden}
-.intel-bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
-
-.intel-signal-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;margin:3px 2px}
-
-.verdict-box{margin-top:12px;padding:10px 12px;border-radius:8px;font-size:12px;font-weight:600;line-height:1.5}
-.verdict-box.buy{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);color:var(--green)}
-.verdict-box.sell{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--red)}
-.verdict-box.neutral{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--amber)}
-.verdict-box.conflict{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--muted)}
-
-.intel-reasons{margin-top:8px;font-size:10px;color:var(--muted);line-height:1.6}
-.intel-reasons li{list-style:none;padding:2px 0}
-.intel-reasons li::before{content:'• ';color:var(--accent)}
-
-.intel-legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
-.legend-dot{width:8px;height:8px;border-radius:50%}
-
-.intel-filter{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-.filter-btn{padding:5px 12px;font-size:11px;font-weight:600;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace}
-.filter-btn.active{border-color:var(--purple);color:var(--purple);background:rgba(168,85,247,.1)}
-
-.disclaimer{font-size:10px;color:var(--muted);text-align:center;padding:24px 16px;border-top:1px solid var(--border);margin-top:24px;line-height:1.6}
-
-/* Market ticker bar */
-.ticker-bar{background:#080c14;border-bottom:1px solid #111;padding:6px 24px;display:flex;gap:20px;overflow-x:auto;scrollbar-width:none}
-.ticker-bar::-webkit-scrollbar{display:none}
-.ticker-item{display:flex;align-items:center;gap:7px;white-space:nowrap;cursor:pointer;padding:2px 0;border-bottom:2px solid transparent;transition:all .2s}
-.ticker-item.active-flow{border-bottom-color:#f97316}
-.ticker-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:#3a4560}
-.ticker-score{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700}
-.ticker-dir{font-family:'JetBrains Mono',monospace;font-size:9px}
-
-@media(max-width:900px){
-  .layers-grid{grid-template-columns:1fr}
-  .flow-grid{grid-template-columns:1fr}
-  .flow-sidebar{border-right:none;border-bottom:1px solid var(--border);flex-direction:row;flex-wrap:wrap}
-  .intel-grid{grid-template-columns:1fr}
-  .cards{grid-template-columns:1fr}
-}
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 </style>
 </head>
 <body>
@@ -312,7 +205,6 @@ canvas{width:100%!important;max-height:300px}
     </div>
   </div>
 </header>
-<div class="ticker-bar" id="tickerBar"></div>
 <div class="container">
   <div class="tabs">
     <div class="tab active" data-tab="overview">Overview</div>
@@ -321,8 +213,6 @@ canvas{width:100%!important;max-height:300px}
     <div class="tab" data-tab="pairs">Pair Matrix</div>
     <div class="tab" data-tab="signals">Signals</div>
     <div class="tab" data-tab="guidance">📖 Scenario Guide</div>
-    <div class="tab flow-tab" data-tab="flow">⚡ Inst. Flow<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:800;margin-left:5px;background:#f97316;color:#fff">3L</span></div>
-    <div class="tab intel-tab" data-tab="intel">🧠 Intelligence<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:800;margin-left:5px;background:#a855f7;color:#fff">NEW</span></div>
   </div>
 
   <div class="tab-content active" id="overview">
@@ -649,61 +539,11 @@ canvas{width:100%!important;max-height:300px}
 
   </div><!-- end guidance tab -->
 
-
-  <!-- INSTITUTIONAL FLOW TAB -->
-  <div class="tab-content" id="flow">
-    <div class="flow-header-bar">
-      <div>
-        <div class="section-title" style="margin-bottom:4px">Institutional Flow Monitor</div>
-        <div class="flow-subtitle">CME Volume/OI Z-Scores · OANDA Order Book · Unusual Flow Alerts</div>
-      </div>
-      <button class="refresh-btn" id="refreshBtn">⟳ Refresh Flow Data</button>
-    </div>
-    <div class="flow-grid">
-      <div class="flow-sidebar">
-        <div class="flow-sidebar-title">Ranked by Signal Strength</div>
-        <div id="flowSidebar"></div>
-        <div style="margin-top:12px;padding:10px;background:#0a0e17;border-radius:8px;border:1px solid #111">
-          <div style="font-size:9px;color:#333;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;font-family:'JetBrains Mono',monospace">Score Guide</div>
-          <div id="scoreGuide"></div>
-        </div>
-      </div>
-      <div class="flow-detail" id="flowDetail"></div>
-    </div>
-  </div>
-
-
-  <!-- INTELLIGENCE TAB -->
-  <div class="tab-content" id="intel">
-    <div class="section-title" style="color:#a855f7">🧠 Combined Intelligence — COT × Institutional Flow</div>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:14px">
-      COT direction bias merged with CME volume spikes, OANDA order book contrarian signals, and unusual flow alerts. 
-      Final score = weighted composite (COT 40% · CME 20% · OANDA 20% · Flow 20%).
-    </p>
-
-    <div class="intel-legend">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>COT Signal (40%)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#06b6d4"></div>CME Vol/OI (20%)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>OANDA Book (20%)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ffd700"></div>Unusual Flow (20%)</div>
-    </div>
-
-    <div class="intel-filter">
-      <button class="filter-btn active" data-filter="all">All Pairs</button>
-      <button class="filter-btn" data-filter="buy">BUY Only</button>
-      <button class="filter-btn" data-filter="sell">SELL Only</button>
-      <button class="filter-btn" data-filter="high">High Conviction</button>
-    </div>
-
-    <div class="intel-grid" id="intelGrid"></div>
-  </div>
-
   <div class="disclaimer">⚠️ For informational purposes only. COT data is a sentiment/positioning indicator, not a timing tool. Always combine with price action and risk management. Data from CFTC Traders in Financial Futures report.</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-
 const CURRENCY_META={EUR:{name:"Euro",flag:"🇪🇺",contract:125000},GBP:{name:"British Pound",flag:"🇬🇧",contract:62500},JPY:{name:"Japanese Yen",flag:"🇯🇵",contract:12500000},CAD:{name:"Canadian Dollar",flag:"🇨🇦",contract:100000},AUD:{name:"Australian Dollar",flag:"🇦🇺",contract:100000},CHF:{name:"Swiss Franc",flag:"🇨🇭",contract:125000},NZD:{name:"New Zealand Dollar",flag:"🇳🇿",contract:100000},USD:{name:"US Dollar Index",flag:"🇺🇸",contract:1000}};
 let CURRENCIES={};
 
@@ -1019,6 +859,37 @@ function renderMatrix(){
   });h+='</tr>';});h+='</tbody>';table.innerHTML=h;
 }
 
+document.querySelectorAll('.tab').forEach(tab=>{tab.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  tab.classList.add('active');document.getElementById(tab.dataset.tab).classList.add('active');
+  if(tab.dataset.tab==='history'&&!historyChart)renderHistory();
+});});
+
+async function init(){
+  const md=document.getElementById('meta-date');
+  try{
+    const r=await fetch('cot_data.json');if(!r.ok)throw new Error();
+    const j=await r.json();if(j.error)throw new Error();
+    CURRENCIES=buildCurrencies(j);computeAnalytics(CURRENCIES);
+    if(md)md.textContent=`Data updated: ${j.updated_at||'Unknown'}`;
+  }catch(e){
+    console.warn('Using embedded fallback data.');
+    if(md)md.textContent='Data: embedded fallback';
+    CURRENCIES={
+      EUR:{name:"Euro",flag:"🇪🇺",code:"EUR",contract:125000,assetMgr:{long:549252,short:135539},levFunds:{long:126502,short:82953},dealer:{long:54606,short:579530},changes:{assetMgrNet:3175,levFundsNet:-6655},history:[175000,168000,160000,152000,158000,170000,182000,195000,205000,215000,225000,240000,250000,260000,268000,275000,285000,295000,310000,325000,335000,340000,345000,350000,355000,360000,365000,370000,375000,380000,385000,388000,392000,396000,400000,405000,410000,415000,420000,425000,430000,435000,438000,440000,443000,445000,448000,452000,455000,457262,455000,457262]},
+      GBP:{name:"British Pound",flag:"🇬🇧",code:"GBP",contract:62500,assetMgr:{long:44919,short:138462},levFunds:{long:74888,short:32522},dealer:{long:63206,short:17673},changes:{assetMgrNet:-14942,levFundsNet:-1113},history:[-35000,-32000,-28000,-22000,-18000,-15000,-20000,-25000,-30000,-28000,-22000,-15000,-10000,-5000,0,5000,10000,15000,20000,25000,18000,12000,8000,2000,-5000,-10000,-15000,-20000,-25000,-30000,-35000,-40000,-45000,-48000,-50000,-52000,-54000,-56000,-58000,-60000,-62000,-64000,-65000,-68000,-70000,-72000,-75000,-78000,-80000,-82000,-85000,-51177]},
+      JPY:{name:"Japanese Yen",flag:"🇯🇵",code:"JPY",contract:12500000,assetMgr:{long:76665,short:36119},levFunds:{long:82783,short:112104},dealer:{long:29223,short:110160},changes:{assetMgrNet:15030,levFundsNet:24546},history:[-120000,-115000,-108000,-100000,-95000,-88000,-80000,-72000,-65000,-58000,-50000,-42000,-35000,-28000,-20000,-12000,-5000,2000,8000,15000,10000,5000,-2000,-8000,-15000,-20000,-25000,-18000,-10000,-5000,0,5000,10000,15000,20000,25000,18000,12000,5000,-2000,-8000,-15000,-10000,-5000,0,5000,10000,8000,5000,2000,8000,11225]},
+      CAD:{name:"Canadian Dollar",flag:"🇨🇦",code:"CAD",contract:100000,assetMgr:{long:107608,short:39044},levFunds:{long:22004,short:64038},dealer:{long:31674,short:79347},changes:{assetMgrNet:11669,levFundsNet:8974},history:[-65000,-60000,-55000,-48000,-42000,-38000,-35000,-30000,-25000,-20000,-15000,-10000,-5000,0,2000,5000,8000,12000,15000,18000,15000,10000,5000,0,-5000,-10000,-15000,-12000,-8000,-5000,0,3000,6000,10000,15000,18000,22000,25000,28000,30000,32000,35000,30000,25000,20000,18000,22000,25000,22000,20000,24000,26530]},
+      AUD:{name:"Australian Dollar",flag:"🇦🇺",code:"AUD",contract:100000,assetMgr:{long:65100,short:63339},levFunds:{long:103196,short:32936},dealer:{long:17675,short:125763},changes:{assetMgrNet:15676,levFundsNet:6322},history:[-80000,-75000,-68000,-62000,-58000,-52000,-45000,-38000,-32000,-28000,-22000,-18000,-12000,-8000,-5000,0,5000,10000,15000,22000,18000,12000,8000,5000,0,-5000,-10000,-15000,-20000,-25000,-30000,-35000,-28000,-22000,-15000,-10000,-5000,0,5000,10000,15000,20000,25000,30000,35000,40000,45000,50000,55000,60000,65000,72021]},
+      CHF:{name:"Swiss Franc",flag:"🇨🇭",code:"CHF",contract:125000,assetMgr:{long:4803,short:58674},levFunds:{long:7841,short:5386},dealer:{long:56518,short:8658},changes:{assetMgrNet:-1301,levFundsNet:3255},history:[-58000,-55000,-52000,-48000,-45000,-42000,-40000,-38000,-35000,-32000,-30000,-28000,-25000,-22000,-20000,-18000,-15000,-12000,-10000,-8000,-12000,-15000,-18000,-22000,-25000,-28000,-30000,-32000,-35000,-38000,-40000,-42000,-44000,-46000,-48000,-50000,-48000,-45000,-42000,-40000,-42000,-44000,-46000,-48000,-50000,-52000,-50000,-48000,-50000,-52000,-50000,-51416]},
+      NZD:{name:"New Zealand Dollar",flag:"🇳🇿",code:"NZD",contract:100000,assetMgr:{long:14819,short:40971},levFunds:{long:9443,short:21908},dealer:{long:39909,short:4284},changes:{assetMgrNet:3070,levFundsNet:-1680},history:[-42000,-40000,-38000,-35000,-32000,-30000,-28000,-25000,-22000,-20000,-18000,-15000,-12000,-10000,-8000,-5000,-3000,0,2000,5000,2000,-2000,-5000,-8000,-12000,-15000,-18000,-20000,-22000,-25000,-28000,-30000,-28000,-25000,-22000,-20000,-18000,-22000,-25000,-28000,-30000,-32000,-34000,-36000,-35000,-33000,-35000,-36000,-38000,-37000,-38000,-38617]},
+      USD:{name:"US Dollar Index",flag:"🇺🇸",code:"USD",contract:1000,assetMgr:{long:0,short:0},levFunds:{long:0,short:0},dealer:{long:0,short:0},changes:{assetMgrNet:0,levFundsNet:0},history:[5000,5200,4800,4500,4200,3900,3600,3800,4000,4300,4600,4900,5100,5400,5600,5800,6000,5700,5400,5100,4800,4500,4200,3900,3600,3300,3000,3200,3500,3800,4100,4400,4700,5000,5300,5600,5900,6200,6500,6800,7000,7200,7500,7800,8000,8200,8500,8800,9000,9200,9500,9800]},
+    };
+    computeAnalytics(CURRENCIES);
+  }
+  renderOverview();renderChanges();renderHistory();renderMatrix();renderSignals();
+}
 /* ─── Guidance Tab ─── */
 function showGPanel(id, btn) {
   document.querySelectorAll('.g-panel').forEach(p=>p.classList.remove('active'));
@@ -1033,507 +904,7 @@ function toggleG(head) {
   body.classList.toggle('open',!open);
 }
 
-// 3. INSTITUTIONAL FLOW DATA GENERATORS
-// ============================================================
-const FLOW_PAIRS=[
-  {id:"EUR",label:"EUR/USD",oandaPair:"EUR_USD",color:"#00d4ff",flag:"🇪🇺"},
-  {id:"GBP",label:"GBP/USD",oandaPair:"GBP_USD",color:"#ff6b35",flag:"🇬🇧"},
-  {id:"JPY",label:"USD/JPY",oandaPair:"USD_JPY",color:"#ffd700",flag:"🇯🇵"},
-  {id:"AUD",label:"AUD/USD",oandaPair:"AUD_USD",color:"#7fff7f",flag:"🇦🇺"},
-  {id:"CAD",label:"USD/CAD",oandaPair:"USD_CAD",color:"#ff9ff3",flag:"🇨🇦"},
-  {id:"CHF",label:"USD/CHF",oandaPair:"USD_CHF",color:"#ff4757",flag:"🇨🇭"},
-  {id:"NZD",label:"NZD/USD",oandaPair:"NZD_USD",color:"#a29bfe",flag:"🇳🇿"},
-];
-
-let flowTick=0;
-
-function genCME(pair){
-  const s=pair.id.charCodeAt(0)+Date.now()/86400000+flowTick*0.3;
-  const rng=n=>Math.abs(Math.sin(s*n)*10000)%1;
-  const bases={EUR:180000,GBP:95000,JPY:160000,AUD:72000,CAD:68000,CHF:45000,NZD:32000};
-  const base=bases[pair.id]||80000;
-  const days=20;
-  const history=Array.from({length:days},(_,i)=>({
-    volume:Math.round(base*(0.7+rng(i+1)*0.8)),
-    oi:Math.round(base*3.2*(0.85+rng(i+2)*0.3)),
-  }));
-  const vols=history.map(d=>d.volume);
-  const mean=vols.reduce((a,b)=>a+b,0)/vols.length;
-  const std=Math.sqrt(vols.reduce((a,b)=>a+Math.pow(b-mean,2),0)/vols.length);
-  const latest=history[history.length-1],prev=history[history.length-2];
-  const volZ=parseFloat(((latest.volume-mean)/std).toFixed(2));
-  const oiChg=parseFloat((((latest.oi-prev.oi)/prev.oi)*100).toFixed(2));
-  let spikeSignal="NEUTRAL",spikeStr=0;
-  if(Math.abs(volZ)>2.0){spikeSignal=volZ>0?"STRONG_BULL":"STRONG_BEAR";spikeStr=3;}
-  else if(Math.abs(volZ)>1.5){spikeSignal=volZ>0?"BULL":"BEAR";spikeStr=2;}
-  else if(Math.abs(volZ)>1.0){spikeSignal=volZ>0?"MILD_BULL":"MILD_BEAR";spikeStr=1;}
-  return{history,currentVolume:latest.volume,currentOI:latest.oi,volZ,oiChg,spikeSignal,spikeStr,mean:Math.round(mean)};
-}
-
-function genOANDA(pair){
-  const s=pair.id.charCodeAt(0)*7+Date.now()/3600000+flowTick*0.5;
-  const rng=n=>Math.abs(Math.sin(s*n+1.7)*10000)%1;
-  const longPct=parseFloat((30+rng(1)*40).toFixed(1));
-  const shortPct=parseFloat((100-longPct).toFixed(1));
-  const bias=longPct>60?"CROWDED_LONG":longPct<40?"CROWDED_SHORT":"BALANCED";
-  let contrarian="NEUTRAL",contStr=0;
-  if(longPct>65){contrarian="INST_SHORT";contStr=3;}
-  else if(longPct>60){contrarian="INST_SHORT";contStr=2;}
-  else if(longPct<35){contrarian="INST_LONG";contStr=3;}
-  else if(longPct<40){contrarian="INST_LONG";contStr=2;}
-  else contStr=1;
-  const clusters=Array.from({length:5},(_,i)=>({
-    level:(rng(i+10)*0.02-0.01).toFixed(4),
-    type:rng(i+20)>0.5?"BUY":"SELL",
-    size:Math.round(rng(i+30)*80+20),
-  })).sort((a,b)=>b.size-a.size);
-  return{longPct,shortPct,bias,contrarian,contStr,clusters,updated:new Date().toLocaleTimeString()};
-}
-
-function genFlow(pair){
-  const s=pair.id.charCodeAt(0)*13+Date.now()/1800000+flowTick*0.7;
-  const rng=n=>Math.abs(Math.sin(s*n+2.3)*10000)%1;
-  const alertTypes=["LARGE_BLOCK","SWEEP","OI_SURGE","GAMMA_FLIP","DARK_POOL"];
-  const alerts=[];
-  const count=Math.floor(rng(1)*3)+1;
-  for(let i=0;i<count;i++){
-    const premium=Math.round(rng(i+5)*8000+500);
-    alerts.push({
-      type:alertTypes[Math.floor(rng(i+6)*alertTypes.length)],
-      direction:rng(i+7)>0.5?"BULLISH":"BEARISH",
-      premium,urgency:premium>5000?"HIGH":premium>2000?"MED":"LOW",
-      time:new Date(Date.now()-Math.floor(rng(i+8)*7200000)).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),
-    });
-  }
-  const bullish=alerts.filter(a=>a.direction==="BULLISH").length;
-  const bearish=alerts.filter(a=>a.direction==="BEARISH").length;
-  const flowBias=bullish>bearish?"BULLISH":bearish>bullish?"BEARISH":"NEUTRAL";
-  return{alerts,flowBias,flowStr:Math.max(bullish,bearish)};
-}
-
-function computeSMS(cme,oanda,flow){
-  let score=5,signals=[];
-  if(cme.spikeStr>=3){score+=cme.spikeSignal.includes("BULL")?1.5:-1.5;signals.push({layer:"CME",msg:`Vol Z=${cme.volZ}σ — ${cme.spikeSignal.replace("_"," ")}`,bull:cme.spikeSignal.includes("BULL")});}
-  else if(cme.spikeStr>=2){score+=cme.spikeSignal.includes("BULL")?1.0:-1.0;signals.push({layer:"CME",msg:`Vol spike Z=${cme.volZ}σ`,bull:cme.spikeSignal.includes("BULL")});}
-  if(cme.oiChg>1.5){score+=0.5;signals.push({layer:"CME",msg:`OI +${cme.oiChg}%`,bull:true});}
-  else if(cme.oiChg<-1.5){score-=0.5;signals.push({layer:"CME",msg:`OI ${cme.oiChg}%`,bull:false});}
-  if(oanda.contStr>=3){score+=oanda.contrarian==="INST_LONG"?1.5:-1.5;signals.push({layer:"OANDA",msg:`${oanda.longPct}% retail long → ${oanda.contrarian}`,bull:oanda.contrarian==="INST_LONG"});}
-  else if(oanda.contStr>=2){score+=oanda.contrarian==="INST_LONG"?1.0:-1.0;signals.push({layer:"OANDA",msg:`Retail skew ${oanda.longPct}% long`,bull:oanda.contrarian==="INST_LONG"});}
-  if(flow.flowStr>=2){score+=flow.flowBias==="BULLISH"?1.5:-1.5;signals.push({layer:"FLOW",msg:`${flow.flowStr}× ${flow.flowBias} flow`,bull:flow.flowBias==="BULLISH"});}
-  else if(flow.flowStr>=1){score+=flow.flowBias==="BULLISH"?0.5:-0.5;signals.push({layer:"FLOW",msg:`Bias: ${flow.flowBias}`,bull:flow.flowBias==="BULLISH"});}
-  const finalScore=Math.max(0,Math.min(10,score));
-  const direction=finalScore>=6.5?"LONG":finalScore<=3.5?"SHORT":"NEUTRAL";
-  const conviction=finalScore>=8||finalScore<=2?"HIGH":finalScore>=6.5||finalScore<=3.5?"MED":"LOW";
-  return{score:parseFloat(finalScore.toFixed(1)),direction,conviction,signals};
-}
-
-// ============================================================
-
-// 4. COMBINED INTELLIGENCE ENGINE
-// ============================================================
-function computeIntelligence(cotSig, sms, pairId, baseCur, quoteCur){
-  // Map flow SMS to directional contribution
-  const flowDir = sms.direction; // LONG/SHORT/NEUTRAL
-  const cotDir  = cotSig.direction; // BUY/SELL
-  const cotConviction = cotSig.conviction; // 1-9
-
-  // Normalize COT conviction to 0-10 scale
-  const cotScore = Math.min(10, cotConviction * (10/9));
-
-  // Map SMS score to directional score (already 0-10)
-  const smsScore = sms.score;
-
-  // Agreement bonus
-  let dirAlignment = false;
-  if (cotDir === 'BUY' && flowDir === 'LONG') dirAlignment = true;
-  if (cotDir === 'SELL' && flowDir === 'SHORT') dirAlignment = true;
-  const conflict = cotSig.signalType === 'CONFLICT';
-
-  // Weighted composite (COT 40%, flow 60% split across 3 layers)
-  // SMS score already encodes flow direction. We remap to 0-10 where LONG=high, SHORT=low
-  let smsDirectional = smsScore; // already directional
-  if (cotDir === 'SELL') {
-    // Invert SMS to align with pair direction
-    // If COT says sell EUR/USD, flow score being high (bullish EUR/USD) is bad
-  }
-
-  // Final combined score
-  let combined;
-  const cotWeight = 0.40;
-  const flowWeight = 0.60;
-
-  if (conflict) {
-    combined = 5.0; // neutral on conflict
-  } else {
-    combined = (cotScore * cotWeight) + (smsScore * flowWeight);
-    // Normalize: cotScore needs to be directional
-    // COT conviction in BUY direction → push score up, SELL → push down
-    const cotDirectional = cotDir === 'BUY' ? (5 + cotScore/2) : (5 - cotScore/2);
-    combined = (cotDirectional * cotWeight) + (smsScore * flowWeight);
-  }
-
-  combined = Math.max(0, Math.min(10, combined));
-
-  const finalDir = combined >= 6.5 ? 'BUY' : combined <= 3.5 ? 'SELL' : 'NEUTRAL';
-  const finalConv = combined >= 8 || combined <= 2 ? 'HIGH' : combined >= 7 || combined <= 3 ? 'MED-HIGH' : combined >= 6 || combined <= 4 ? 'MED' : 'LOW';
-
-  // Layer breakdown percentages for bar display
-  const cotPct = conflict ? 50 : (cotDir === 'BUY' ? Math.min(100, 50 + cotConviction*5) : Math.max(0, 50 - cotConviction*5));
-
-  const cmePct = sms.score >= 5 ? Math.min(100, (sms.score/10)*100) : Math.max(0, (sms.score/10)*100);
-  const oandaContrib = sms.signals.find(s=>s.layer==='OANDA');
-  const oandaPct = oandaContrib ? (oandaContrib.bull ? 70 : 30) : 50;
-  const flowContrib = sms.signals.find(s=>s.layer==='FLOW');
-  const flowPct = flowContrib ? (flowContrib.bull ? 70 : 30) : 50;
-
-  return {
-    combined: parseFloat(combined.toFixed(1)),
-    finalDir, finalConv,
-    cotPct, cmePct, oandaPct, flowPct,
-    dirAlignment, conflict,
-    allSignals: [...cotSig.reasons, ...sms.signals.map(s=>`[${s.layer}] ${s.msg}`)],
-    warnings: cotSig.warnings,
-  };
-}
-
-// ============================================================
-
-// 6. FLOW TAB RENDERER
-// ============================================================
-let selectedFlowPair='EUR';
-
-function getAllFlowData(){
-  return FLOW_PAIRS.reduce((acc,pair)=>{
-    const cme=genCME(pair),oanda=genOANDA(pair),flow=genFlow(pair),sms=computeSMS(cme,oanda,flow);
-    acc[pair.id]={pair,cme,oanda,flow,sms};
-    return acc;
-  },{});
-}
-
-function renderFlowTab(){
-  const allData=getAllFlowData();
-  const sidebar=document.getElementById('flowSidebar');
-  sidebar.innerHTML='';
-
-  const sorted=[...FLOW_PAIRS].sort((a,b)=>Math.abs(allData[b.id].sms.score-5)-Math.abs(allData[a.id].sms.score-5));
-
-  sorted.forEach(pair=>{
-    const{sms}=allData[pair.id];
-    const dirCol=sms.direction==='LONG'?'#10b981':sms.direction==='SHORT'?'#ef4444':'#f59e0b';
-    const isSelected=selectedFlowPair===pair.id;
-    sidebar.innerHTML+=`
-      <div class="pair-flow-card ${isSelected?'selected':''}" onclick="selectFlowPair('${pair.id}')" data-pair="${pair.id}">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div>
-            <div style="font-size:10px;color:#333;font-family:'JetBrains Mono',monospace">${pair.flag}</div>
-            <div style="font-family:'Bebas Neue',display;font-size:18px;color:${isSelected?pair.color:'#6a7fa8'};letter-spacing:1px">${pair.label}</div>
-          </div>
-          <div style="text-align:right">
-            <div class="flow-score-big" style="color:${dirCol}">${sms.score.toFixed(1)}</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${dirCol}">${sms.direction} · ${sms.conviction}</div>
-          </div>
-        </div>
-        <div class="flow-score-bar"><div class="flow-score-fill" style="width:${sms.score*10}%;background:${dirCol}88"></div></div>
-      </div>`;
-  });
-
-  // Legend
-  document.getElementById('scoreGuide').innerHTML=[['8–10','HIGH LONG','#10b981'],['6.5–7.9','MED LONG','#34d399'],['4–6.4','NEUTRAL','#f59e0b'],['2.1–3.9','MED SHORT','#f87171'],['0–2','HIGH SHORT','#ef4444']].map(([r,l,c])=>`<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#444">${r}</span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${c}">${l}</span></div>`).join('');
-
-  renderFlowDetail(allData[selectedFlowPair]);
-  updateTicker(allData);
-}
-
-function selectFlowPair(id){
-  selectedFlowPair=id;
-  renderFlowTab();
-}
-window.selectFlowPair=selectFlowPair;
-
-function renderFlowDetail(d){
-  const{pair,cme,oanda,flow,sms}=d;
-  const dirCol=sms.direction==='LONG'?'#10b981':sms.direction==='SHORT'?'#ef4444':'#f59e0b';
-
-  // Mini bar chart data
-  const vols=cme.history.slice(-12).map(h=>h.volume);
-  const maxV=Math.max(...vols);
-  const miniBars=vols.map((v,i)=>{
-    const h=Math.max(4,(v/maxV)*36);
-    const isLast=i===vols.length-1;
-    return`<div class="mini-bar" style="height:${h}px;background:${isLast?'#00d4ff':'#00d4ff33'};${isLast?'box-shadow:0 0 5px #00d4ff':''};border-radius:2px 2px 0 0"></div>`;
-  }).join('');
-
-  const spikeCol=cme.spikeSignal.includes('BULL')?'#10b981':cme.spikeSignal.includes('BEAR')?'#ef4444':'#6a7fa8';
-  const contrCol=oanda.contrarian==='INST_LONG'?'#10b981':oanda.contrarian==='INST_SHORT'?'#ef4444':'#6a7fa8';
-  const flowCol=flow.flowBias==='BULLISH'?'#10b981':flow.flowBias==='BEARISH'?'#ef4444':'#f59e0b';
-
-  // OANDA cluster bars
-  const clusterHtml=oanda.clusters.slice(0,3).map(c=>`<div class="order-cluster"><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${c.type==='BUY'?'#10b98188':'#ef444488'}">${c.type==='BUY'?'▲':'▼'} ${c.level}</span><div class="cluster-track"><div class="cluster-fill" style="width:${c.size}%;background:${c.type==='BUY'?'#10b98166':'#ef444466'}"></div></div></div>`).join('');
-
-  // Flow alerts
-  const alertsHtml=flow.alerts.map(a=>`<div class="flow-alert" style="background:${a.direction==='BULLISH'?'rgba(16,185,129,.1)':'rgba(239,68,68,.1)'};border:1px solid ${a.direction==='BULLISH'?'rgba(16,185,129,.25)':'rgba(239,68,68,.25)'}"><div class="flow-alert-row"><div><span style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:${a.urgency==='HIGH'?'#f59e0b':a.urgency==='MED'?'#fb923c':'#6a7fa8'}">[${a.urgency}]</span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#8892a8;margin-left:4px">${a.type.replace('_',' ')}</span></div><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#4a5568">${a.time}</span></div><div style="display:flex;justify-content:space-between;margin-top:2px"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:${a.direction==='BULLISH'?'#10b981':'#ef4444'}">${a.direction==='BULLISH'?'▲':'▼'} ${a.direction}</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4a5568">$${(a.premium/1000).toFixed(1)}K</span></div></div>`).join('');
-
-  // Smart money signals
-  const signalsHtml=sms.signals.length===0
-    ?`<span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4a5568">No strong signals — market in equilibrium</span>`
-    :sms.signals.map(s=>`<div class="sms-badge" style="background:${s.bull?'rgba(16,185,129,.1)':'rgba(239,68,68,.1)'};border:1px solid ${s.bull?'rgba(16,185,129,.25)':'rgba(239,68,68,.25)'};color:${s.bull?'#10b981':'#ef4444'}"><span style="font-size:8px">${s.bull?'▲':'▼'}</span><span style="font-weight:700">${s.layer}</span><span style="color:#8892a8">${s.msg}</span></div>`).join('');
-
-  document.getElementById('flowDetail').innerHTML=`
-    <div style="border-bottom:1px solid ${pair.color}33;padding-bottom:12px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <div style="font-family:'Bebas Neue',display;font-size:28px;color:${pair.color};letter-spacing:2px">${pair.flag} ${pair.label}</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4a5568">CME: ${pair.id==='JPY'||pair.id==='CAD'||pair.id==='CHF'?'USD_'+pair.id:pair.id+'_USD'} · OANDA: ${pair.oandaPair}</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;color:${dirCol};text-shadow:0 0 16px ${dirCol}66">${sms.score.toFixed(1)}</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:${dirCol}">${sms.conviction} CONVICTION · ${sms.direction}</div>
-      </div>
-    </div>
-
-    <div class="layers-grid">
-      <div class="layer-box" style="border-color:#00d4ff22">
-        <div class="layer-title" style="color:#00d4ff">CME FUTURES</div>
-        <div class="mini-bars">${miniBars}</div>
-        <div class="layer-kv"><span class="lk">Volume</span><span class="lv" style="color:#00d4ff">${(cme.currentVolume/1000).toFixed(0)}K</span></div>
-        <div class="layer-kv"><span class="lk">Vol Z-Score</span><span class="lv" style="color:${Math.abs(cme.volZ)>1.5?'#f59e0b':'#6a7fa8'}">${cme.volZ>0?'+':''}${cme.volZ}σ</span></div>
-        <div class="layer-kv"><span class="lk">Open Interest</span><span class="lv" style="color:#8892a8">${(cme.currentOI/1000).toFixed(0)}K</span></div>
-        <div class="layer-kv"><span class="lk">OI Change</span><span class="lv" style="color:${cme.oiChg>0?'#10b981':'#ef4444'}">${cme.oiChg>0?'+':''}${cme.oiChg}%</span></div>
-        <div class="layer-footer" style="background:#00d4ff11;color:${spikeCol}">${cme.spikeSignal.replace('_',' ')}</div>
-      </div>
-
-      <div class="layer-box" style="border-color:#f97316 22">
-        <div class="layer-title" style="color:#f97316">OANDA ORDER BOOK</div>
-        <div style="margin-bottom:8px">
-          <div style="display:flex;justify-content:space-between;margin-bottom:3px">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#10b981">L ${oanda.longPct}%</span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#ef4444">S ${oanda.shortPct}%</span>
-          </div>
-          <div style="height:7px;background:#ef444466;border-radius:4px;overflow:hidden">
-            <div style="height:100%;width:${oanda.longPct}%;background:#10b981;border-radius:4px;transition:width 1s"></div>
-          </div>
-        </div>
-        <div class="layer-kv"><span class="lk">Retail Bias</span><span class="lv" style="color:${parseFloat(oanda.longPct)>55?'#f59e0b':'#6a7fa8'}">${oanda.bias}</span></div>
-        <div class="layer-kv"><span class="lk">Inst. Signal</span><span class="lv" style="color:${contrCol}">${oanda.contrarian}</span></div>
-        <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#333;margin-bottom:4px">ORDER CLUSTERS</div>
-        ${clusterHtml}
-        <div class="layer-footer" style="background:#f9731611;color:#f97316;margin-top:6px">Updated: ${oanda.updated}</div>
-      </div>
-
-      <div class="layer-box" style="border-color:#ffd70022">
-        <div class="layer-title" style="color:#ffd700">UNUSUAL FLOW</div>
-        ${alertsHtml}
-        <div class="layer-footer" style="background:#ffd70011;color:${flowCol};margin-top:6px">FLOW BIAS: ${flow.flowBias}</div>
-      </div>
-    </div>
-
-    <div class="sms-box">
-      <div style="font-family:'Bebas Neue',display;font-size:13px;color:${dirCol};letter-spacing:1px;margin-bottom:6px">⚡ SMART MONEY SIGNALS</div>
-      <div class="sms-signals">${signalsHtml}</div>
-    </div>
-  `;
-}
-
-function updateTicker(allData){
-  const ticker=document.getElementById('tickerBar'); ticker.innerHTML='';
-  FLOW_PAIRS.forEach(pair=>{
-    const{sms}=allData[pair.id];
-    const dirCol=sms.direction==='LONG'?'#10b981':sms.direction==='SHORT'?'#ef4444':'#f59e0b';
-    ticker.innerHTML+=`<div class="ticker-item ${selectedFlowPair===pair.id&&document.querySelector('.tab[data-tab="flow"]').classList.contains('active')?'active-flow':''}" onclick="selectFlowPair('${pair.id}');document.querySelector('.tab[data-tab=\\'flow\\']').click()"><span style="font-size:11px">${pair.flag}</span><span class="ticker-label">${pair.label}</span><span class="ticker-score" style="color:${dirCol}">${sms.score.toFixed(1)}</span><span class="ticker-dir" style="color:${dirCol}">${sms.direction}</span></div>`;
-  });
-}
-
-// ============================================================
-
-// 7. INTELLIGENCE TAB RENDERER
-// ============================================================
-let intelFilter='all';
-
-function renderIntelligence(){
-  const allFlowData=getAllFlowData();
-  const keys=Object.keys(CURRENCIES).filter(k=>k!=='USD');
-  const pairs=[];
-
-  for(let i=0;i<keys.length;i++){
-    for(let j=i+1;j<keys.length;j++){
-      const base=CURRENCIES[keys[i]],quote=CURRENCIES[keys[j]];
-      if(!base.cotIndex&&base.cotIndex!==0) continue;
-      if(!quote.cotIndex&&quote.cotIndex!==0) continue;
-      const absDiff=Math.abs(base.cotIndex-quote.cotIndex);
-
-      const cotSig=computeCOTSignal(base,quote);
-      // Get flow SMS for the base currency (primary currency)
-      const flowPair=FLOW_PAIRS.find(p=>p.id===keys[i]);
-      if(!flowPair) continue;
-      const{sms}=allFlowData[keys[i]];
-
-      if(absDiff<10&&cotSig.signalType!=='CONTRARIAN') continue;
-
-      const intel=computeIntelligence(cotSig,sms,`${keys[i]}/${keys[j]}`,keys[i],keys[j]);
-      pairs.push({
-        pair:`${keys[i]}/${keys[j]}`,base:keys[i],quote:keys[j],
-        baseFlag:base.flag,quoteFlag:quote.flag,
-        baseCotIdx:base.cotIndex,quoteCotIdx:quote.cotIndex,
-        cotSig,sms,intel,
-      });
-    }
-  }
-
-  pairs.sort((a,b)=>{
-    if(a.intel.conflict&&!b.intel.conflict) return 1;
-    if(!a.intel.conflict&&b.intel.conflict) return -1;
-    return Math.abs(b.intel.combined-5)-Math.abs(a.intel.combined-5);
-  });
-
-  let filtered=pairs;
-  if(intelFilter==='buy') filtered=pairs.filter(p=>p.intel.finalDir==='BUY');
-  else if(intelFilter==='sell') filtered=pairs.filter(p=>p.intel.finalDir==='SELL');
-  else if(intelFilter==='high') filtered=pairs.filter(p=>p.intel.finalConv==='HIGH'||p.intel.finalConv==='MED-HIGH');
-
-  const grid=document.getElementById('intelGrid'); grid.innerHTML='';
-
-  if(!filtered.length){grid.innerHTML='<div style="color:var(--muted);padding:20px;font-size:12px">No pairs match the current filter.</div>';return;}
-
-  filtered.slice(0,12).forEach(p=>{
-    const{intel,cotSig}=p;
-    const dirCol=intel.finalDir==='BUY'?'var(--green)':intel.finalDir==='SELL'?'var(--red)':'var(--amber)';
-    const convBgClass=intel.conflict?'conflict':intel.finalConv==='HIGH'||intel.finalConv==='MED-HIGH'?'high-conviction':'medium-conviction';
-    const verdictClass=intel.conflict?'conflict':intel.finalDir==='BUY'?'buy':intel.finalDir==='SELL'?'sell':'neutral';
-
-    const cotPillCls=cotSig.signalType==='CONTRARIAN'?'style="background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3)"':cotSig.signalType==='CONFLICT'?'style="background:rgba(255,255,255,.05);color:var(--muted);border:1px solid rgba(255,255,255,.1)"':'style="background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.3)"';
-
-    // Score circle SVG
-    const angle=-135+(intel.combined/10)*270;
-    const circumference=110;
-    const offset=circumference-(intel.combined/10)*circumference;
-    const circleColor=intel.finalDir==='BUY'?'#10b981':intel.finalDir==='SELL'?'#ef4444':'#f59e0b';
-
-    const allReasons=intel.allSignals.slice(0,4);
-
-    grid.innerHTML+=`
-      <div class="intel-card ${convBgClass}">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div>
-            <div style="font-size:10px;color:var(--muted);margin-bottom:1px">${p.baseFlag} ${p.base} / ${p.quoteFlag} ${p.quote}</div>
-            <div class="intel-pair-name" style="color:${dirCol}">${p.pair}</div>
-            <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px">
-              <span class="intel-signal-pill" ${cotPillCls}>${cotSig.signalType}</span>
-              <span class="intel-signal-pill" style="background:rgba(168,85,247,.12);color:var(--purple);border:1px solid rgba(168,85,247,.25)">FLOW ${p.sms.direction}</span>
-              ${intel.dirAlignment?`<span class="intel-signal-pill" style="background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3)">✓ ALIGNED</span>`:''}
-            </div>
-          </div>
-          <div style="position:relative;width:72px;height:72px;flex-shrink:0">
-            <svg width="72" height="72" viewBox="0 0 72 72">
-              <path d="M 8 58 A 28 28 0 1 1 64 58" fill="none" stroke="#ffffff0d" stroke-width="5" stroke-linecap="round"/>
-              <path d="M 8 58 A 28 28 0 1 1 64 58" fill="none" stroke="${circleColor}" stroke-width="5" stroke-linecap="round"
-                stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" style="transition:stroke-dashoffset 1s ease"/>
-            </svg>
-            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:${circleColor};line-height:1">${intel.combined.toFixed(1)}</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:${circleColor};opacity:.7">${intel.finalConv}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="intel-bars">
-          <div class="intel-bar-item">
-            <div class="intel-bar-label" style="color:var(--green)">COT Bias (40%)</div>
-            <div class="intel-bar-track"><div class="intel-bar-fill" style="width:${intel.cotPct}%;background:var(--green)"></div></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px">Index: ${p.baseCotIdx} vs ${p.quoteCotIdx}</div>
-          </div>
-          <div class="intel-bar-item">
-            <div class="intel-bar-label" style="color:#06b6d4">CME Vol/OI (20%)</div>
-            <div class="intel-bar-track"><div class="intel-bar-fill" style="width:${intel.cmePct}%;background:#06b6d4"></div></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px">Z-Score: ${p.sms.signals.find(s=>s.layer==='CME')?.msg||'neutral'}</div>
-          </div>
-          <div class="intel-bar-item">
-            <div class="intel-bar-label" style="color:#f97316">OANDA Book (20%)</div>
-            <div class="intel-bar-track"><div class="intel-bar-fill" style="width:${intel.oandaPct}%;background:#f97316"></div></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px">${p.sms.signals.find(s=>s.layer==='OANDA')?.msg||'balanced'}</div>
-          </div>
-          <div class="intel-bar-item">
-            <div class="intel-bar-label" style="color:#ffd700">Unusual Flow (20%)</div>
-            <div class="intel-bar-track"><div class="intel-bar-fill" style="width:${intel.flowPct}%;background:#ffd700"></div></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px">${p.sms.signals.find(s=>s.layer==='FLOW')?.msg||'neutral'}</div>
-          </div>
-        </div>
-
-        <div class="verdict-box ${verdictClass}">
-          ${intel.conflict?`⚡ AVOID ${p.pair} — Conflicting extremes on both currencies. Wait for positioning to normalize.`:`${intel.finalDir==='BUY'?'▲ BUY':'▼ SELL'} ${p.pair} — Combined Score ${intel.combined.toFixed(1)}/10 · ${intel.finalConv} Conviction`}
-        </div>
-
-        <ul class="intel-reasons">
-          ${allReasons.map(r=>`<li>${r}</li>`).join('')}
-          ${intel.warnings.map(w=>`<li style="color:var(--amber)">${w}</li>`).join('')}
-        </ul>
-      </div>`;
-  });
-}
-
-// ============================================================
-
-// 8. TAB NAVIGATION & INIT
-
-// ============================================================
-document.querySelectorAll('.tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.tab).classList.add('active');
-    if(tab.dataset.tab==='flow') renderFlowTab();
-    if(tab.dataset.tab==='intel') renderIntelligence();
-  });
-});
-
-document.querySelectorAll('.filter-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    intelFilter=btn.dataset.filter;
-    renderIntelligence();
-  });
-});
-
-document.getElementById('refreshBtn').addEventListener('click',()=>{
-  flowTick++;
-  const btn=document.getElementById('refreshBtn');
-  btn.textContent='⟳ Fetching...';
-  setTimeout(()=>{
-    renderFlowTab();
-    if(document.getElementById('intel').classList.contains('active')) renderIntelligence();
-    btn.textContent='⟳ Refresh Flow Data';
-  },900);
-});
-
-async function init(){
-  const metaDate=document.getElementById('dataDate');
-  try{
-    const resp=await fetch('cot_data.json');
-    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const json=await resp.json();
-    if(json.error) throw new Error(json.error);
-    CURRENCIES=buildCurrencies(json);
-    computeAnalytics(CURRENCIES);
-    metaDate.textContent=`Data: ${json.updated_at||'Latest'}`;
-  }catch(err){
-    console.warn('Fallback data used:',err);
-    metaDate.textContent='Data: embedded fallback';
-    CURRENCIES=FALLBACK;
-    computeAnalytics(CURRENCIES);
-  }
-  renderOverview();
-  renderChanges();
-  renderHistory();
-  renderMatrix();
-  renderCOTSignals();
-
-  // Precompute flow for ticker bar
-  const allFlowData=getAllFlowData();
-  updateTicker(allFlowData);
-}
-
 init();
-
 </script>
 </body>
 </html>
