@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>COT FX Pro — Institutional Flow Intelligence</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<title>COT FX Pro — 52-Week Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -15,49 +14,45 @@
   --cyan:#06b6d4;
 }
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-.grain{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;opacity:.025;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-
-header{padding:20px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
-  background:linear-gradient(180deg,rgba(59,130,246,.06) 0%,transparent 100%)}
+.grain{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+header{padding:24px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;background:linear-gradient(180deg,rgba(59,130,246,.06) 0%,transparent 100%)}
 .logo{display:flex;align-items:center;gap:12px}
 .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff}
-h1{font-size:20px;font-weight:800;letter-spacing:-.5px}
+h1{font-size:22px;font-weight:800;letter-spacing:-.5px}
 h1 span{color:var(--accent)}
-.meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap}
 .meta .live{color:var(--green);display:flex;align-items:center;gap:4px}
-.meta .live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-
-.container{max-width:1500px;margin:0 auto;padding:20px}
-
-.tabs{display:flex;gap:2px;margin-bottom:20px;border-bottom:1px solid var(--border);overflow-x:auto}
-.tab{padding:10px 18px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.meta .live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.container{max-width:1400px;margin:0 auto;padding:24px}
+.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--border);overflow-x:auto}
+.tab{padding:10px 20px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
 .tab:hover{color:var(--text)}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-.tab.flow-tab.active{color:#f97316;border-bottom-color:#f97316}
-.tab.intel-tab.active{color:#a855f7;border-bottom-color:#a855f7}
-.tab-badge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:800;margin-left:6px;background:var(--purple);color:#fff}
-
-.tab-content{display:none}.tab-content.active{display:block}
-
-/* ---- COT Cards ---- */
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px;margin-bottom:20px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;overflow:hidden;transition:border-color .2s}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color .2s}
 .card:hover{border-color:var(--accent)}
-.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
 .currency-label{font-size:18px;font-weight:800;letter-spacing:-.3px}
-.net-pos{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700}
-.net-pos.positive{color:var(--green)}.net-pos.negative{color:var(--red)}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
-.stat{background:rgba(255,255,255,.03);border-radius:8px;padding:8px;text-align:center}
-.stat-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px}
-.stat-value{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600}
-.cot-index-bar{height:8px;background:linear-gradient(90deg,var(--red) 0%,var(--amber) 25%,#666 50%,var(--amber) 75%,var(--green) 100%);border-radius:4px;margin-top:12px;position:relative}
+.net-pos{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700}
+.net-pos.positive{color:var(--green)}
+.net-pos.negative{color:var(--red)}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.stat{background:rgba(255,255,255,.03);border-radius:8px;padding:10px;text-align:center}
+.stat-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}
+.stat-value{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600}
+.cot-index-bar{height:8px;background:linear-gradient(90deg,var(--red) 0%,var(--amber) 25%,#666 50%,var(--amber) 75%,var(--green) 100%);border-radius:4px;margin-top:14px;position:relative}
 .cot-index-marker{position:absolute;top:-4px;width:16px;height:16px;background:#fff;border-radius:50%;transform:translateX(-50%);box-shadow:0 0 8px rgba(255,255,255,.5);transition:left .6s ease}
-.cot-index-label{display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace}
-.pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
-.pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace;letter-spacing:.3px}
+.cot-index-label{display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.wow-section{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.wow-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.wow-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 8px;background:rgba(255,255,255,.02);border-radius:6px}
+.wow-item .label{color:var(--muted);font-weight:500}
+.wow-item .val{font-family:'JetBrains Mono',monospace;font-weight:600}
+.wow-item .val.up{color:var(--green)}
+.wow-item .val.down{color:var(--red)}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace;letter-spacing:.3px}
 .pill.bullish{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3)}
 .pill.bearish{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
 .pill.neutral{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
@@ -65,48 +60,134 @@ h1 span{color:var(--accent)}
 .pill.extreme-bear{background:rgba(239,68,68,.35);color:#fff;border:2px solid var(--red);font-weight:900;animation:glow-red 1.5s infinite}
 @keyframes glow-green{0%,100%{box-shadow:0 0 4px rgba(16,185,129,.4)}50%{box-shadow:0 0 10px rgba(16,185,129,.8)}}
 @keyframes glow-red{0%,100%{box-shadow:0 0 4px rgba(239,68,68,.4)}50%{box-shadow:0 0 10px rgba(239,68,68,.8)}}
-.spark-container{margin-top:12px}
-.spark-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600;margin-bottom:5px}
-.spark{display:flex;align-items:flex-end;height:36px;gap:1px}
+.spark-container{margin-top:14px}
+.spark-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600;margin-bottom:6px}
+.spark{display:flex;align-items:flex-end;height:40px;gap:1px}
 .spark-bar{flex:1;border-radius:2px 2px 0 0;min-width:4px}
-.wow-section{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
-.wow-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-.wow-item{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:5px 7px;background:rgba(255,255,255,.02);border-radius:6px}
-.wow-item .label{color:var(--muted);font-weight:500}
-.wow-item .val{font-family:'JetBrains Mono',monospace;font-weight:600}
-.wow-item .val.up{color:var(--green)}.wow-item .val.down{color:var(--red)}
-.change-badge{display:inline-flex;align-items:center;gap:2px;padding:2px 7px;border-radius:4px;font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:600}
+.matrix-table{width:100%;border-collapse:separate;border-spacing:2px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.matrix-table th{padding:8px 6px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.matrix-table td{padding:8px 6px;text-align:center;border-radius:6px;font-weight:600;cursor:default;transition:transform .15s}
+.matrix-table td:hover{transform:scale(1.1);z-index:1}
+.matrix-table td.self{background:var(--surface);color:var(--muted)}
+.section-title{font-size:16px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:'';width:4px;height:20px;background:var(--accent);border-radius:2px}
+.chart-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:24px}
+.chart-controls{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.chart-btn{padding:6px 14px;font-size:12px;font-weight:600;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
+.chart-btn.active,.chart-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+canvas{width:100%!important;max-height:300px}
+.summary-table{width:100%;border-collapse:collapse;font-size:13px}
+.summary-table th{text-align:left;padding:12px 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:2px solid var(--border);white-space:nowrap}
+.summary-table td{padding:10px;border-bottom:1px solid rgba(255,255,255,.04);font-family:'JetBrains Mono',monospace;font-weight:500}
+.summary-table tr:hover{background:rgba(59,130,246,.05)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.change-badge{display:inline-flex;align-items:center;gap:2px;padding:2px 8px;border-radius:4px;font-size:12px;font-family:'JetBrains Mono',monospace;font-weight:600}
 .change-badge.up{background:rgba(16,185,129,.12);color:var(--green)}
 .change-badge.down{background:rgba(239,68,68,.12);color:var(--red)}
+@media(max-width:768px){.cards{grid-template-columns:1fr}header{padding:16px}.container{padding:16px}.matrix-table{font-size:10px}.matrix-table th,.matrix-table td{padding:5px 3px}}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-/* ---- Tables ---- */
-.summary-table{width:100%;border-collapse:collapse;font-size:12px}
-.summary-table th{text-align:left;padding:10px 8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:2px solid var(--border);white-space:nowrap}
-.summary-table td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.04);font-family:'JetBrains Mono',monospace;font-weight:500}
-.summary-table tr:hover{background:rgba(59,130,246,.05)}
-.matrix-section{margin-top:20px}
-.section-title{font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.section-title::before{content:'';width:4px;height:18px;background:var(--accent);border-radius:2px}
-.matrix-table{width:100%;border-collapse:separate;border-spacing:2px;font-family:'JetBrains Mono',monospace;font-size:11px}
-.matrix-table th{padding:7px 5px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-.matrix-table td{padding:7px 5px;text-align:center;border-radius:6px;font-weight:600;cursor:default;transition:transform .15s}
-.matrix-table td:hover{transform:scale(1.1)}
-.matrix-table td.self{background:var(--surface);color:var(--muted)}
+/* ═══════════ SIGNALS TAB ═══════════ */
+.sig-legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.sig-legend-item{display:flex;align-items:center;gap:6px}
+.sig-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sig-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.sig-filter-btn{padding:6px 16px;font-size:12px;font-weight:700;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:.04em;transition:all .2s}
+.sig-filter-btn:hover{border-color:var(--accent);color:var(--text)}
+.sig-filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sig-filter-btn.bull-btn.active{background:var(--green);border-color:var(--green)}
+.sig-filter-btn.bear-btn.active{background:var(--red);border-color:var(--red)}
+.sig-filter-btn.wait-btn.active{background:var(--amber);border-color:var(--amber);color:#000}
+.sig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.sig-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s,transform .15s}
+.sig-card:hover{border-color:#3d4f70;transform:translateY(-1px)}
+.sig-card.bull-card{border-left:3px solid var(--green)}
+.sig-card.bear-card{border-left:3px solid var(--red)}
+.sig-card.wait-card{border-left:3px solid var(--amber);opacity:.82}
+.sig-card-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 10px}
+.sig-pair{font-size:18px;font-weight:800;letter-spacing:-.3px}
+.sig-dir-badge{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:800;padding:4px 12px;border-radius:6px;letter-spacing:.06em}
+.sig-dir-badge.bull{background:rgba(16,185,129,.2);color:var(--green);border:1px solid rgba(16,185,129,.35)}
+.sig-dir-badge.bear{background:rgba(239,68,68,.2);color:var(--red);border:1px solid rgba(239,68,68,.35)}
+.sig-dir-badge.wait{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+.sig-scenario-id{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin:0 16px 8px}
+.sig-scenario-id.bull{background:rgba(16,185,129,.1);color:var(--green)}
+.sig-scenario-id.bear{background:rgba(239,68,68,.1);color:var(--red)}
+.sig-scenario-id.wait{background:rgba(245,158,11,.1);color:var(--amber)}
+.sig-scenario-name{font-size:13px;font-weight:700;color:var(--text);padding:0 16px 12px;line-height:1.35}
+.sig-checks{width:100%;border-top:1px solid var(--border);border-collapse:collapse}
+.sig-checks tr{border-bottom:1px solid rgba(255,255,255,.04)}
+.sig-checks tr:last-child{border-bottom:none}
+.sig-checks td{padding:8px 14px;font-size:12px;vertical-align:top;line-height:1.45}
+.sig-check-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);width:85px;white-space:nowrap}
+.sig-check-val{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:12px}
+.sig-check-val.green{color:var(--green)}
+.sig-check-val.red{color:var(--red)}
+.sig-check-val.amber{color:var(--amber)}
+.sig-check-val.muted{color:var(--muted)}
+.sig-check-note{color:var(--muted);font-size:11px;padding-left:8px}
+.sig-conviction{display:flex;align-items:center;gap:10px;padding:10px 16px;border-top:1px solid var(--border);background:rgba(255,255,255,.02)}
+.conv-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);white-space:nowrap}
+.conv-bar-wrap{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.conv-bar{height:100%;border-radius:3px;transition:width .6s ease}
+.conv-score{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;white-space:nowrap}
+.sig-action{padding:10px 16px 14px;font-size:12px;line-height:1.55;color:var(--muted)}
+.sig-action .action-headline{font-size:13px;font-weight:700;margin-bottom:4px}
+.sig-action .action-headline.bull{color:var(--green)}
+.sig-action .action-headline.bear{color:var(--red)}
+.sig-action .action-headline.wait{color:var(--amber)}
+.sig-section-header{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4a6080;background:rgba(59,130,246,.04);padding:5px 14px}
+.disclaimer{font-size:11px;color:var(--muted);text-align:center;padding:32px 16px;border-top:1px solid var(--border);margin-top:32px;line-height:1.6}
 
-/* ---- Pair Signal Cards (COT) ---- */
-.pair-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:14px}
-.pair-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px}
-.pair-name{font-size:15px;font-weight:800;margin-bottom:6px}
-.signal-box{margin-top:8px;padding:8px 10px;border-radius:7px;font-size:11px;font-weight:600}
-.signal-box.buy{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--green)}
-.signal-box.sell{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:var(--red)}
-
-/* ---- Chart ---- */
-.chart-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:20px}
-.chart-controls{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.chart-btn{padding:5px 12px;font-size:11px;font-weight:600;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
-.chart-btn.active,.chart-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-canvas{width:100%!important;max-height:280px}
+/* ═══════════ GUIDANCE TAB ═══════════ */
+.g-tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:4px;width:fit-content}
+.g-tab{padding:10px 24px;border-radius:7px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;font-weight:700;text-transform:uppercase;border:none;background:transparent;color:var(--muted);transition:all .2s}
+.g-tab:hover{background:var(--border);color:var(--text)}
+.g-tab.g-bull.active{background:rgba(16,185,129,.2);color:var(--green)}
+.g-tab.g-bear.active{background:rgba(239,68,68,.2);color:var(--red)}
+.g-panel{display:none}
+.g-panel.active{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.g-tier-label{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:6px;margin-bottom:14px}
+.g-tier-label.bull{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2)}
+.g-tier-label.bear{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.g-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;transition:border-color .2s}
+.g-card:hover{border-color:#3d4f70}
+.g-card.bull-card{border-left:3px solid var(--green)}
+.g-card.bear-card{border-left:3px solid var(--red)}
+.g-card-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;cursor:pointer;user-select:none}
+.g-card-left{display:flex;align-items:center;gap:12px}
+.g-id{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;padding:3px 10px;border-radius:5px;background:rgba(16,185,129,.12);color:var(--green);letter-spacing:.06em}
+.g-id.bear{background:rgba(239,68,68,.12);color:var(--red)}
+.g-name{font-size:14px;font-weight:700;color:var(--text)}
+.g-chev{color:var(--muted);font-size:16px;transition:transform .25s}
+.g-card-head.open .g-chev{transform:rotate(180deg)}
+.g-card-body{display:none;padding:0 18px 16px}
+.g-card-body.open{display:block}
+.g-strength{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:12px}
+.s-max{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.s-max-bear{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.s-high{background:rgba(100,210,140,.1);color:#6dcf8e;border:1px solid rgba(100,210,140,.25)}
+.s-high-bear{background:rgba(220,100,120,.1);color:#e07080;border:1px solid rgba(220,100,120,.25)}
+.s-med{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
+.s-low{background:rgba(123,140,170,.1);color:var(--muted);border:1px solid rgba(123,140,170,.2)}
+.g-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px}
+.g-table th{text-align:left;padding:7px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--border)}
+.g-table td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;line-height:1.45;color:var(--muted)}
+.g-table td:first-child{color:var(--text);font-weight:600;white-space:nowrap}
+.g-table tr:last-child td{border-bottom:none}
+.gv{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;white-space:nowrap}
+.gv.bull{color:var(--green)}
+.gv.bear{color:var(--red)}
+.gv.amber{color:var(--amber)}
+.g-action{margin-top:12px;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.6}
+.g-action.bull-action{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:#a0f0d0}
+.g-action.bull-action strong{color:var(--green)}
+.g-action.bear-action{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);color:#ffa8b8}
+.g-action.bear-action strong{color:var(--red)}
 
 /* ===== FLOW TAB ===== */
 .flow-header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
@@ -210,94 +291,362 @@ canvas{width:100%!important;max-height:280px}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-</style>
+
 </head>
 <body>
 <div class="grain"></div>
-
 <header>
   <div class="logo">
     <div class="logo-icon">C</div>
     <div>
-      <h1>COT <span>FX Pro</span> — Institutional Intelligence</h1>
+      <h1>COT <span>FX Pro</span> — 52-Week Analysis</h1>
       <div class="meta">
-        <span>CFTC TFF + CME Futures + OANDA Book</span>
-        <span>|</span>
-        <span id="dataDate">Loading data…</span>
-        <span>|</span>
-        <span class="live">Live Flow</span>
+        <span>CFTC TFF Report</span><span>|</span>
+        <span id="meta-date">Data as of: Feb 17, 2026</span><span>|</span>
+        <span class="live">Latest Report</span>
       </div>
     </div>
   </div>
 </header>
-
-<!-- Ticker bar for flow scores -->
 <div class="ticker-bar" id="tickerBar"></div>
-
 <div class="container">
   <div class="tabs">
     <div class="tab active" data-tab="overview">Overview</div>
     <div class="tab" data-tab="changes">Weekly Changes</div>
     <div class="tab" data-tab="history">52-Week History</div>
     <div class="tab" data-tab="pairs">Pair Matrix</div>
-    <div class="tab" data-tab="signals">COT Signals</div>
-    <div class="tab flow-tab" data-tab="flow">⚡ Inst. Flow<span class="tab-badge" style="background:#f97316">3L</span></div>
-    <div class="tab intel-tab" data-tab="intel">🧠 Intelligence<span class="tab-badge">NEW</span></div>
+    <div class="tab" data-tab="signals">Signals</div>
+    <div class="tab" data-tab="guidance">📖 Scenario Guide</div>
+    <div class="tab flow-tab" data-tab="flow">⚡ Inst. Flow<span class="tab-badge" style="background:#f97316;margin-left:6px;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:800;color:#fff">3L</span></div>
+    <div class="tab intel-tab" data-tab="intel">🧠 Intelligence<span class="tab-badge" style="margin-left:6px;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:800;background:#a855f7;color:#fff">NEW</span></div>
   </div>
 
-  <!-- OVERVIEW -->
   <div class="tab-content active" id="overview">
     <div class="section-title">Currency Positioning Dashboard</div>
     <div class="cards" id="currency-cards"></div>
   </div>
 
-  <!-- WEEKLY CHANGES -->
   <div class="tab-content" id="changes">
     <div class="section-title">Week-over-Week Position Changes</div>
     <div style="overflow-x:auto">
       <table class="summary-table" id="changes-table">
-        <thead><tr>
-          <th>Currency</th><th>Net Pos</th><th>Prev Net</th><th>Change</th>
-          <th>Asset Mgr Chg</th><th>Lev Funds Chg</th><th>Trend (4w)</th><th>Momentum</th><th>COT Index</th>
-        </tr></thead>
+        <thead><tr><th>Currency</th><th>Net Pos</th><th>Prev Net</th><th>Change</th><th>Asset Mgr Chg</th><th>Lev Funds Chg</th><th>Trend (4w)</th><th>Momentum</th><th>COT Index</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
   </div>
 
-  <!-- 52-WEEK HISTORY -->
   <div class="tab-content" id="history">
     <div class="section-title">52-Week Net Position History</div>
     <div class="chart-panel">
       <div class="chart-controls" id="history-currency-btns"></div>
-      <canvas id="historyChart" height="280"></canvas>
+      <canvas id="historyChart" height="300"></canvas>
     </div>
     <div style="overflow-x:auto">
       <table class="summary-table" id="history-stats-table">
-        <thead><tr>
-          <th>Currency</th><th>Current</th><th>52w High</th><th>52w Low</th><th>COT Index</th>
-          <th>4w Avg</th><th>13w Avg</th><th>4w vs 13w</th><th>Dist to High</th><th>Dist to Low</th>
-        </tr></thead>
+        <thead><tr><th>Currency</th><th>Current</th><th>52w High</th><th>52w Low</th><th>COT Index</th><th>4w Avg</th><th>13w Avg</th><th>4w vs 13w</th><th>Distance to High</th><th>Distance to Low</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
   </div>
 
-  <!-- PAIR MATRIX -->
   <div class="tab-content" id="pairs">
     <div class="section-title">Currency Pair COT Divergence Heatmap</div>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:14px">Green = COT favors base (buy). Red = favors quote (sell). Intensity = strength.</p>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Green = COT favors base currency (buy). Red = COT favors quote currency (sell). Intensity = strength of divergence.</p>
     <div style="overflow-x:auto"><table class="matrix-table" id="matrix-table"></table></div>
   </div>
 
-  <!-- COT SIGNALS -->
+  <!-- ══════════ SIGNALS TAB ══════════ -->
   <div class="tab-content" id="signals">
-    <div class="section-title">COT Trade Signals</div>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:14px">Signals from COT Index extremes, trend alignment (4w vs 13w MA), and momentum. See Intelligence tab for combined flow analysis.</p>
-    <div class="pair-cards" id="signal-cards"></div>
+    <div class="section-title">Trade Signals — COT Scenario Analysis</div>
+
+    <div class="sig-legend">
+      <div class="sig-legend-item"><div class="sig-legend-dot" style="background:var(--green)"></div>LONG — Bullish COT alignment</div>
+      <div class="sig-legend-item"><div class="sig-legend-dot" style="background:var(--red)"></div>SHORT — Bearish COT alignment</div>
+      <div class="sig-legend-item"><div class="sig-legend-dot" style="background:var(--amber)"></div>WAIT — Setup forming / conflicting</div>
+      <div class="sig-legend-item"><div class="sig-legend-dot" style="background:#555"></div>Conviction 1–9 based on COT extremes, OI, commercial bias, momentum</div>
+    </div>
+
+    <div class="sig-filters">
+      <button class="sig-filter-btn active" data-filter="all">All Signals</button>
+      <button class="sig-filter-btn bull-btn" data-filter="bull">▲ Long Only</button>
+      <button class="sig-filter-btn bear-btn" data-filter="bear">▼ Short Only</button>
+      <button class="sig-filter-btn wait-btn" data-filter="wait">⏳ Watch List</button>
+    </div>
+
+    <div class="sig-grid" id="signal-cards"></div>
   </div>
 
-  <!-- INSTITUTIONAL FLOW TAB -->
+  <!-- ══════════ GUIDANCE TAB ══════════ -->
+  <div class="tab-content" id="guidance">
+    <div class="section-title">COT Scenario Reference Guide</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:20px">All bullish and bearish signal combinations explained — use this to understand why the Signals tab generates each scenario label.</p>
+
+    <!-- Tab switcher inside guidance -->
+    <div class="g-tabs">
+      <button class="g-tab g-bull active" onclick="showGPanel('gbull',this)">▲ Bullish Scenarios (B-1 to B-7)</button>
+      <button class="g-tab g-bear" onclick="showGPanel('gbear',this)">▼ Bearish Scenarios (S-1 to S-7)</button>
+    </div>
+
+    <!-- BULLISH PANEL -->
+    <div class="g-panel active" id="gbull">
+
+      <div class="g-tier-label bull">Tier 1 — Maximum Conviction</div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-1</span><span class="g-name">The Perfect Bull — All 4 Pillars Aligned</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-max">Max Strength</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body open">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80–100%</td><td>Specs at or near most net-long in 52 weeks — extreme bullish crowding</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bull">Rising</td><td>New money entering the market — move has real fuel behind it</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long</td><td>Smart money on the bullish side — hedgers backing the move</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bull">Breaking Resistance</td><td>Price confirms the COT signal — breakout above key weekly/monthly level</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Enter long on breakout confirmation. Target next weekly/monthly resistance. Stop below breakout level or recent swing low. Hold until COT starts reversing or OI drops sharply.</div>
+        </div>
+      </div>
+
+      <div class="g-tier-label bull" style="margin-top:32px">Tier 2 — Strong Setups</div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-2</span><span class="g-name">Strong Bull — OI Not Yet Confirming</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80%</td><td>Specs heavily crowded long</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv amber">Falling / Flat</td><td>Old positions closing, not new money entering — may lack fresh momentum</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long</td><td>Smart money still bullish</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bull">Breaking Resistance</td><td>Breakout confirmed by price</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Valid long but watch OI closely. If OI starts rising after entry, add to position. If OI keeps falling, breakout may be a fakeout — keep stops tight.</div>
+        </div>
+      </div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-3</span><span class="g-name">Bull Setup Forming — Waiting for Price Confirmation</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80%</td><td>Extreme long positioning by specs</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bull">Rising</td><td>New money building — conviction is there</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long</td><td>Smart money aligned bullish</td></tr>
+            <tr><td>⏳ Price Action</td><td class="gv amber">Approaching Resistance</td><td>Price not yet broken out — still below the key level</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Do NOT enter yet. Mark your resistance level, set a price alert, and wait for the breakout candle. High-quality setup in the making — patience gives a better entry with a tighter stop.</div>
+        </div>
+      </div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-6</span><span class="g-name">Contrarian Long — Overcrowded Spec Shorts</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20% (near 0%)</td><td>Specs at most net-short in 52 weeks — overcrowded, ripe for squeeze</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bull">Rising</td><td>Positioning building — extreme is being built, not yet unwound</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long (at extreme)</td><td>Smart money aggressively buying the other side — strong divergence</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bull">Bouncing off Support</td><td>Price holding a major support zone, showing reversal pattern</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Contrarian long — fading overcrowded spec shorts. Enter on support bounce, stop below support. When squeeze starts, shorts rush for the exit simultaneously. Fast, sharp move. High R:R.</div>
+        </div>
+      </div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-7</span><span class="g-name">Short Squeeze Loading — OI Collapsing at Extremes</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20%</td><td>Specs heavily short</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv bull">Falling Sharply</td><td>Shorts already covering and closing — capitulation in progress</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long</td><td>Smart money absorbing the sell-off</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bull">Support Holding</td><td>Price stable at a key level while shorts unwind</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Squeeze may already be starting. Enter as price holds support, tight stop. Drop in OI confirms shorts are closing — not new sellers. Move can accelerate quickly as remaining shorts pile into exits.</div>
+        </div>
+      </div>
+
+      <div class="g-tier-label bull" style="margin-top:32px">Tier 3 — Early / Watch</div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-4</span><span class="g-name">Early Bull — Commercials Flipping Long</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-med">Medium</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv amber">40–60%</td><td>Specs neutral — not yet at a bullish extreme</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bull">Rising</td><td>Positioning building — early smart money moving in</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Flipping Net Long</td><td>Commercials recently crossed from net-short to net-long — early warning</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bull">Breaking Resistance</td><td>Price confirming the early smart-money accumulation</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Early entry — trend may be just starting. Lower conviction than B-1 but potentially better R:R. Use smaller position size. Watch for COT Index to climb above 80% as confirmation the move is developing.</div>
+        </div>
+      </div>
+
+      <div class="g-card bull-card" style="opacity:.75">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-5</span><span class="g-name">COT Bullish — Price Confirmation Still Needed</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-low">Wait</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80%</td><td>Specs very bullish</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv amber">Falling</td><td>Longs being liquidated</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long</td><td>Smart money still holds bullish position</td></tr>
+            <tr><td>🚫 Price Action</td><td class="gv bear">Rejecting Resistance</td><td>Price failed to break above — sellers defending the level hard</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Stand aside. COT is bullish but price is saying no. Wait for price to consolidate and attempt the breakout again. A second rejection could flip this to a bearish setup.</div>
+        </div>
+      </div>
+
+    </div><!-- end gbull -->
+
+    <!-- BEARISH PANEL -->
+    <div class="g-panel" id="gbear">
+
+      <div class="g-tier-label bear">Tier 1 — Maximum Conviction</div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-1</span><span class="g-name">The Perfect Bear — All 4 Pillars Aligned</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-max-bear">Max Strength</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body open">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20% (near 0%)</td><td>Specs at or near most net-short in 52 weeks — extreme bearish conviction</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bear">Rising</td><td>New money entering on the short side — fresh bearish positions being added</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short</td><td>Smart money hedging against a downside move — selling into strength</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bear">Rejecting Resistance / Breaking Support</td><td>Price confirms the COT bias — failed at major level or breaking down</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Enter short on rejection or support breakdown. Target next weekly/monthly support. Stop above rejection high or recent swing high. Hold until COT starts reversing or OI drops sharply.</div>
+        </div>
+      </div>
+
+      <div class="g-tier-label bear" style="margin-top:32px">Tier 2 — Strong Setups</div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-2</span><span class="g-name">Strong Bear — OI Not Yet Confirming</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high-bear">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20%</td><td>Specs heavily crowded short</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv amber">Falling / Flat</td><td>Old positions being unwound, not fresh shorts — may lose momentum</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short</td><td>Smart money bearish</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bear">Rejecting Resistance</td><td>Price confirmed the rejection at a key level</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Valid short but watch OI. If OI picks up as price falls, add to position. If OI keeps declining, breakdown may stall. Tighter stops, take partial profits at first support zone.</div>
+        </div>
+      </div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-3</span><span class="g-name">Bear Setup Forming — Waiting for Price Confirmation</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high-bear">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20%</td><td>Specs at extreme short positioning</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bear">Rising</td><td>New short money building — conviction behind the bearish thesis</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short</td><td>Smart money positioned for downside</td></tr>
+            <tr><td>⏳ Price Action</td><td class="gv amber">Approaching Resistance</td><td>Price not yet at the key level for entry</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Do NOT enter yet. Set alerts for your resistance level. Wait for rejection candle or support break confirmation. You have the COT edge — don't waste it with an early entry and wide stop.</div>
+        </div>
+      </div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-6</span><span class="g-name">Contrarian Short — Overcrowded Spec Longs</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high-bear">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80–100%</td><td>Specs at most net-long in 52 weeks — overcrowded longs, vulnerable to liquidation</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bear">Rising</td><td>Longs still being added — crowding getting worse before it gets better</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short (at extreme)</td><td>Smart money aggressively selling into spec buying — classic divergence</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bear">Rejecting at Resistance</td><td>Price failing at a major level — catalyst for the long squeeze</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Contrarian short — fading overcrowded spec longs. Enter on resistance rejection, stop above the high. When squeeze starts, longs rush for the exit simultaneously. Fast, sharp drops. High R:R when timed right.</div>
+        </div>
+      </div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-7</span><span class="g-name">Long Squeeze Loading — OI Collapsing at Extremes</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high-bear">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80%</td><td>Specs heavily long</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv bear">Falling Sharply</td><td>Longs liquidating fast — capitulation already underway</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short</td><td>Smart money taking profits or adding to shorts</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bear">Resistance Holding / Turning Down</td><td>Price stalling or turning while longs exit</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Long squeeze may already be in motion. Short on confirmation of the turn, stop above resistance. Drop in OI = longs covering already. Remaining longs will panic-exit as price falls.</div>
+        </div>
+      </div>
+
+      <div class="g-tier-label bear" style="margin-top:32px">Tier 3 — Early / Watch</div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-4</span><span class="g-name">Early Bear — Commercials Flipping Short</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-med">Medium</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv amber">40–60%</td><td>Specs neutral — bearish extreme not reached yet</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bear">Rising</td><td>New positions building</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Flipping Net Short</td><td>Commercials just crossed into net-short — early warning smart money hedging</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bear">Rejecting Resistance</td><td>Price already showing rejection at a key level</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Early entry on a developing bearish trend. Good R:R if getting in before the crowd. Use smaller size until COT Index drops below 20%. This is where big moves often start — before the full extreme is reached.</div>
+        </div>
+      </div>
+
+      <div class="g-card bear-card" style="opacity:.75">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-5</span><span class="g-name">COT Bearish — Price Breaking Up — Avoid</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-low">Avoid</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20%</td><td>Specs very bearish</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv amber">Falling</td><td>Shorts being covered</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short</td><td>Smart money still hedging short</td></tr>
+            <tr><td>🚫 Price Action</td><td class="gv bull">Breaking Above Resistance</td><td>Price moving against the COT signal — possible fundamental shift</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Do NOT short here. Price is disagreeing with the COT signal — dangerous territory. A fundamental catalyst may be overriding positioning. Stand aside and reassess next week's COT report.</div>
+        </div>
+      </div>
+
+    </div><!-- end gbear -->
+
+    <!-- The Thief Trader Rule -->
+    <div style="margin-top:32px;padding:20px 24px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:12px;border-left:4px solid var(--accent)">
+      <div style="font-size:13px;font-weight:800;color:var(--accent);margin-bottom:8px;letter-spacing:.04em">⚔️ THE THIEF TRADER RULE</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.7">
+        <strong style="color:var(--text)">Don't fight commercials. Follow their footprints.</strong><br>
+        Commercials don't speculate — they hedge real business exposure. An exporter locking in a USD price <em>knows</em> their order book. When they're aggressively positioned, it's because the underlying fundamentals support it. Their positioning reflects informational edge, not momentum chasing. When Large Specs are at one extreme and Commercials are at the opposite — that divergence is the signal.
+      </div>
+    </div>
+
+  </div><!-- end guidance tab -->
+
+
+  <!-- ══════════ FLOW TAB ══════════ -->
   <div class="tab-content" id="flow">
     <div class="flow-header-bar">
       <div>
@@ -319,36 +668,32 @@ canvas{width:100%!important;max-height:280px}
     </div>
   </div>
 
-  <!-- INTELLIGENCE TAB -->
+  <!-- ══════════ INTELLIGENCE TAB ══════════ -->
   <div class="tab-content" id="intel">
     <div class="section-title" style="color:#a855f7">🧠 Combined Intelligence — COT × Institutional Flow</div>
     <p style="font-size:11px;color:var(--muted);margin-bottom:14px">
-      COT direction bias merged with CME volume spikes, OANDA order book contrarian signals, and unusual flow alerts. 
+      COT direction bias merged with CME volume spikes, OANDA order book contrarian signals, and unusual flow alerts.
       Final score = weighted composite (COT 40% · CME 20% · OANDA 20% · Flow 20%).
     </p>
-
     <div class="intel-legend">
       <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>COT Signal (40%)</div>
       <div class="legend-item"><div class="legend-dot" style="background:#06b6d4"></div>CME Vol/OI (20%)</div>
       <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>OANDA Book (20%)</div>
       <div class="legend-item"><div class="legend-dot" style="background:#ffd700"></div>Unusual Flow (20%)</div>
     </div>
-
     <div class="intel-filter">
       <button class="filter-btn active" data-filter="all">All Pairs</button>
       <button class="filter-btn" data-filter="buy">BUY Only</button>
       <button class="filter-btn" data-filter="sell">SELL Only</button>
       <button class="filter-btn" data-filter="high">High Conviction</button>
     </div>
-
     <div class="intel-grid" id="intelGrid"></div>
   </div>
 
-  <div class="disclaimer">
-    ⚠️ Informational only. COT + flow data are sentiment/positioning indicators, not timing tools. Always combine with price action and proper risk management. CME volume & OANDA book data simulated for demonstration (wire real APIs for live use).
-  </div>
+  <div class="disclaimer">⚠️ For informational purposes only. COT data is a sentiment/positioning indicator, not a timing tool. Always combine with price action and risk management. Data from CFTC Traders in Financial Futures report.</div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 // ============================================================
 // 1. COT DATA & ANALYTICS (from original COT FX Pro)
@@ -698,30 +1043,351 @@ function renderMatrix(){
   table.innerHTML=html+'</tbody>';
 }
 
-function renderCOTSignals(){
-  const container=document.getElementById('signal-cards'); container.innerHTML='';
-  const keys=Object.keys(CURRENCIES);
-  const pairs=[];
-  for(let i=0;i<keys.length;i++) for(let j=i+1;j<keys.length;j++){
-    const base=CURRENCIES[keys[i]],quote=CURRENCIES[keys[j]];
-    if(!base.cotIndex&&base.cotIndex!==0) continue;
-    if(!quote.cotIndex&&quote.cotIndex!==0) continue;
-    const sig=computeCOTSignal(base,quote);
-    const absDiff=Math.abs(base.cotIndex-quote.cotIndex);
-    if(absDiff<10&&sig.signalType!=='CONTRARIAN') continue;
-    pairs.push({pair:`${keys[i]}/${keys[j]}`,base:keys[i],quote:keys[j],baseIdx:base.cotIndex,quoteIdx:quote.cotIndex,...sig});
+/* ═══════════════════════════════════════════════
+   COT SCENARIO ENGINE  (B-1…B-7 / S-1…S-7)
+   ═══════════════════════════════════════════════ */
+
+function getCotZone(i){if(i>=80)return'EXTREME_LONG';if(i<=20)return'EXTREME_SHORT';if(i>=60)return'HIGH_LONG';if(i<=40)return'HIGH_SHORT';return'NEUTRAL';}
+function getDealerBias(c){const n=c.dealer.long-c.dealer.short;return n>0?'NET_LONG':n<0?'NET_SHORT':'NEUTRAL';}
+function isMomBull(c){return c.trendUp&&c.weekChange>0;}
+function isMomBear(c){return !c.trendUp&&c.weekChange<0;}
+function isUnwindShort(c){return c.weekChange>0&&c.cotIndex<=40;}
+function isUnwindLong(c){return c.weekChange<0&&c.cotIndex>=60;}
+
+/* Score currency FOR a bullish reading (you want to BUY this currency) */
+function scoreBull(c){
+  const zone=getCotZone(c.cotIndex),dealer=getDealerBias(c);
+  let score=0;const s={};
+  // 1. COT Index
+  if(zone==='EXTREME_SHORT'){score+=3;s.cot={val:`${c.cotIndex} — EXTREME SHORT`,cls:'green',note:'Specs at 52-week short extreme → reversal fuel'};}
+  else if(zone==='HIGH_SHORT'){score+=2;s.cot={val:`${c.cotIndex} — Bearish zone`,cls:'amber',note:'Specs bearish, not yet at full extreme'};}
+  else if(zone==='EXTREME_LONG'){score-=1;s.cot={val:`${c.cotIndex} — EXTREME LONG`,cls:'red',note:'Specs overly long — long-squeeze risk'};}
+  else if(zone==='HIGH_LONG'){score+=1;s.cot={val:`${c.cotIndex} — Bullish zone`,cls:'green',note:'Specs bullish, not extreme yet'};}
+  else{s.cot={val:`${c.cotIndex} — Neutral`,cls:'muted',note:'No extreme positioning'};}
+  // 2. OI proxy
+  if(c.oiProxy==='RISING'){score+=2;s.oi={val:'Rising ↑',cls:'green',note:'New money entering — conviction behind move'};}
+  else if(c.oiProxy==='FALLING'){score+=1;s.oi={val:'Falling ↓',cls:'amber',note:'Positions closing — possible squeeze loading'};}
+  else{s.oi={val:'Flat →',cls:'muted',note:'No clear acceleration in positioning'};}
+  // 3. Commercial (dealer proxy)
+  if(dealer==='NET_LONG'){score+=2;s.commercial={val:'Net Long',cls:'green',note:'Smart money on the bullish side'};}
+  else if(dealer==='NET_SHORT'){score-=1;s.commercial={val:'Net Short',cls:'red',note:'Smart money hedging against upside'};}
+  else{s.commercial={val:'Neutral',cls:'muted',note:'No strong commercial bias'};}
+  // 4. Momentum
+  if(isUnwindShort(c)){score+=2;s.momentum={val:'Unwinding shorts ↑',cls:'green',note:'Shorts covering — reversal accelerating'};}
+  else if(isMomBull(c)){score+=1;s.momentum={val:getMomentumLabel(c.momentum).text,cls:'green',note:'4w MA above 13w + weekly change positive'};}
+  else if(isMomBear(c)){score-=1;s.momentum={val:getMomentumLabel(c.momentum).text,cls:'red',note:'Trend still bearish — not yet turning'};}
+  else{s.momentum={val:getMomentumLabel(c.momentum).text,cls:'muted',note:'Momentum mixed or flat'};}
+  return{score,s};
+}
+
+/* Score currency FOR a bearish reading (you want to SELL this currency) */
+function scoreBear(c){
+  const zone=getCotZone(c.cotIndex),dealer=getDealerBias(c);
+  let score=0;const s={};
+  if(zone==='EXTREME_LONG'){score+=3;s.cot={val:`${c.cotIndex} — EXTREME LONG`,cls:'green',note:'Specs at 52-week long extreme → reversal fuel'};}
+  else if(zone==='HIGH_LONG'){score+=2;s.cot={val:`${c.cotIndex} — Bullish zone`,cls:'amber',note:'Specs bullish, not yet at full extreme'};}
+  else if(zone==='EXTREME_SHORT'){score-=1;s.cot={val:`${c.cotIndex} — EXTREME SHORT`,cls:'red',note:'Specs already very short — squeeze risk'};}
+  else if(zone==='HIGH_SHORT'){score+=1;s.cot={val:`${c.cotIndex} — Bearish zone`,cls:'green',note:'Specs bearish, not extreme yet'};}
+  else{s.cot={val:`${c.cotIndex} — Neutral`,cls:'muted',note:'No extreme positioning'};}
+  if(c.oiProxy==='RISING'){score+=2;s.oi={val:'Rising ↑',cls:'green',note:'New short money entering — bearish conviction'};}
+  else if(c.oiProxy==='FALLING'){score+=1;s.oi={val:'Falling ↓',cls:'amber',note:'Longs liquidating — bearish but fading'};}
+  else{s.oi={val:'Flat →',cls:'muted',note:'No clear acceleration in positioning'};}
+  if(dealer==='NET_SHORT'){score+=2;s.commercial={val:'Net Short',cls:'green',note:'Smart money hedging — bearish side aligned'};}
+  else if(dealer==='NET_LONG'){score-=1;s.commercial={val:'Net Long',cls:'red',note:'Smart money bullish — conflict with short thesis'};}
+  else{s.commercial={val:'Neutral',cls:'muted',note:'No strong commercial bias'};}
+  if(isUnwindLong(c)){score+=2;s.momentum={val:'Unwinding longs ↓',cls:'green',note:'Longs liquidating — bearish accelerating'};}
+  else if(isMomBear(c)){score+=1;s.momentum={val:getMomentumLabel(c.momentum).text,cls:'green',note:'4w MA below 13w + weekly change negative'};}
+  else if(isMomBull(c)){score-=1;s.momentum={val:getMomentumLabel(c.momentum).text,cls:'red',note:'Trend still bullish — not yet turning'};}
+  else{s.momentum={val:getMomentumLabel(c.momentum).text,cls:'muted',note:'Momentum mixed or flat'};}
+  return{score,s};
+}
+
+function classifyScenario(dir,base,quote,bScore,qScore){
+  const bZ=getCotZone(base.cotIndex),qZ=getCotZone(quote.cotIndex);
+  const bDealer=getDealerBias(base),qDealer=getDealerBias(quote);
+  const bOiR=base.oiProxy==='RISING',qOiR=quote.oiProxy==='RISING';
+  if(dir==='BUY'){
+    const bExtS=bZ==='EXTREME_SHORT',qExtL=qZ==='EXTREME_LONG';
+    const bCommL=bDealer==='NET_LONG',qCommS=qDealer==='NET_SHORT';
+    if(bExtS&&qExtL&&bCommL&&qCommS&&(bOiR||qOiR))return{id:'B-1',name:'The Perfect Bull — All 4 Pillars Aligned',tier:1};
+    if((bExtS||qExtL)&&bCommL&&!bOiR&&!qOiR)return{id:'B-2',name:'Strong Bull — OI Not Yet Confirming',tier:2};
+    if(isUnwindShort(base)||isUnwindShort(quote))return{id:'B-7',name:'Short Squeeze Loading — OI Collapsing at Extremes',tier:2};
+    if((bExtS||qExtL)&&(bOiR||qOiR))return{id:'B-3',name:'Bull Setup Forming — Waiting for Price Confirmation',tier:2};
+    if(bExtS&&qExtL&&!bCommL)return{id:'B-6',name:'Contrarian Long — Overcrowded Spec Shorts',tier:2};
+    if((bZ==='HIGH_SHORT'||qZ==='HIGH_LONG')&&bCommL)return{id:'B-4',name:'Early Bull — Commercials Flipping Long',tier:3};
+    if((bExtS||qExtL)&&!bCommL&&!qCommS)return{id:'B-5',name:'COT Bullish — Price Confirmation Still Needed',tier:3};
+    return{id:'B-4',name:'Early Bull — COT Divergence Developing',tier:3};
   }
-  pairs.sort((a,b)=>{if(a.signalType==='CONFLICT'&&b.signalType!=='CONFLICT') return 1;if(b.signalType==='CONFLICT'&&a.signalType!=='CONFLICT') return-1;return b.conviction-a.conviction;});
-  if(!pairs.length){container.innerHTML='<div style="color:var(--muted);padding:20px">No significant signals.</div>';return;}
-  pairs.slice(0,14).forEach(p=>{
-    const isConflict=p.signalType==='CONFLICT';
-    const sigClass=p.direction==='BUY'?'buy':'sell';
-    const convLabel=isConflict?'CONFLICT':p.conviction>=7?'HIGH':p.conviction>=4?'MEDIUM':'LOW';
-    const convColor=isConflict?'var(--muted)':p.conviction>=7?'var(--green)':p.conviction>=4?'var(--amber)':'var(--muted)';
-    const typeTag={CONTRARIAN:'⟳ CONTRARIAN',TREND:'→ TREND',CONFLICT:'⚡ CONFLICT'}[p.signalType]||'';
-    const typeColor={CONTRARIAN:'var(--amber)',TREND:'#60a5fa',CONFLICT:'var(--muted)'}[p.signalType];
-    container.innerHTML+=`<div class="pair-card" style="${isConflict?'opacity:0.6':''}"><div style="display:flex;justify-content:space-between;align-items:center"><div class="pair-name">${p.pair}</div><div style="display:flex;gap:8px;align-items:center"><span style="font-size:10px;color:${typeColor}">${typeTag}</span><div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:${convColor}">${convLabel}</div></div></div><div style="display:flex;gap:6px;margin:6px 0"><span class="pill ${p.baseIdx>=75?'extreme-bull':p.baseIdx<=25?'extreme-bear':p.baseIdx>=50?'bullish':'bearish'}">${p.base}: ${p.baseIdx}</span><span class="pill ${p.quoteIdx>=75?'extreme-bull':p.quoteIdx<=25?'extreme-bear':p.quoteIdx>=50?'bullish':'bearish'}">${p.quote}: ${p.quoteIdx}</span></div><div class="signal-box ${isConflict?'':sigClass==='buy'?'buy':'sell'}" style="${isConflict?'background:rgba(255,255,255,.05);color:var(--muted)':''}">${isConflict?`AVOID — Conflicting Extremes`:`${p.direction} ${p.pair} — Spread: ${p.spread>0?'+':''}${p.spread}`}</div><div style="margin-top:7px;font-size:11px;color:var(--muted);line-height:1.5">${p.reasons.map(r=>`• ${r}`).join('<br>')}</div>${p.warnings.length?`<div style="margin-top:5px;font-size:10px;color:var(--amber);line-height:1.5">${p.warnings.map(w=>w).join('<br>')}</div>`:''}<div style="margin-top:6px;font-size:11px;color:var(--muted)">Conviction: ${p.conviction}/9</div></div>`;
+  if(dir==='SELL'){
+    const bExtL=bZ==='EXTREME_LONG',qExtS=qZ==='EXTREME_SHORT';
+    const bCommS=bDealer==='NET_SHORT',qCommL=qDealer==='NET_LONG';
+    if(bExtL&&qExtS&&bCommS&&qCommL&&(bOiR||qOiR))return{id:'S-1',name:'The Perfect Bear — All 4 Pillars Aligned',tier:1};
+    if((bExtL||qExtS)&&bCommS&&!bOiR&&!qOiR)return{id:'S-2',name:'Strong Bear — OI Not Yet Confirming',tier:2};
+    if(isUnwindLong(base)||isUnwindLong(quote))return{id:'S-7',name:'Long Squeeze Loading — OI Collapsing at Extremes',tier:2};
+    if((bExtL||qExtS)&&(bOiR||qOiR))return{id:'S-3',name:'Bear Setup Forming — Waiting for Price Confirmation',tier:2};
+    if(bExtL&&qExtS&&!bCommS)return{id:'S-6',name:'Contrarian Short — Overcrowded Spec Longs',tier:2};
+    if((bZ==='HIGH_LONG'||qZ==='HIGH_SHORT')&&bCommS)return{id:'S-4',name:'Early Bear — Commercials Flipping Short',tier:3};
+    if((bExtL||qExtS)&&!bCommS&&!qCommL)return{id:'S-5',name:'COT Bearish — Price Confirmation Still Needed',tier:3};
+    return{id:'S-4',name:'Early Bear — COT Divergence Developing',tier:3};
+  }
+  return{id:'WAIT',name:'No Clear COT Edge — Positioning Too Neutral',tier:4};
+}
+
+function getActionText(id,dir,pair,bCode,qCode){
+  const d=dir==='BUY'?'LONG':'SHORT';
+  const a={
+    'B-1':`Enter ${d} ${pair} on a breakout above key resistance. All 4 COT pillars are aligned. Stop below the recent swing low. Hold until COT starts reversing.`,
+    'B-2':`Valid ${d} setup — but OI not yet confirming. Enter on breakout with tighter stops. If OI rises after entry, add to the position.`,
+    'B-3':`Setup forming but price confirmation still needed. Mark resistance, set an alert. Wait for the breakout candle before entering.`,
+    'B-4':`Early stage ${d}. Use smaller size until COT extreme develops fully (index < 20). Potential best R:R if trend is just starting.`,
+    'B-5':`COT is bullish but price hasn't confirmed yet. Stand aside. Two rejections could flip this to a bearish scenario entirely.`,
+    'B-6':`Contrarian ${d} — fading overcrowded spec shorts. Enter on support bounce, stop below support. Move can be fast and sharp when shorts squeeze.`,
+    'B-7':`Short squeeze may already be loading. Enter on support hold with stop below. Falling OI = shorts covering. Remaining shorts panic-exit accelerates the move.`,
+    'S-1':`Enter ${d} ${pair} on rejection at key resistance. All 4 COT pillars aligned. Stop above the recent swing high. Hold until COT starts reversing.`,
+    'S-2':`Valid ${d} setup — but OI not yet confirming. Enter on rejection with tighter stops. If OI rises after entry, add to the position.`,
+    'S-3':`Setup forming but price confirmation still needed. Mark resistance, set an alert. Wait for the rejection candle before entering.`,
+    'S-4':`Early stage ${d}. Use smaller size until COT extreme develops fully (index > 80). Potential best R:R if trend is just starting.`,
+    'S-5':`COT is bearish but price hasn't confirmed yet. Stand aside. A breakout above resistance could flip this bullish entirely.`,
+    'S-6':`Contrarian ${d} — fading overcrowded spec longs. Enter on resistance rejection, stop above. Long squeeze can be violent and fast.`,
+    'S-7':`Long squeeze may already be loading. Enter on resistance hold with stop above. Falling OI = longs covering. Remaining longs panic-exit accelerates the move.`,
+    'WAIT':`No actionable signal on ${bCode}/${qCode}. Positioning is too neutral on both sides. Monitor for an extreme to develop before committing.`,
+  };
+  return a[id]||'No action guidance available for this scenario.';
+}
+
+function computePairSignal(base,quote){
+  const bBull=scoreBull(base),bBear=scoreBear(base);
+  const qBull=scoreBull(quote),qBear=scoreBear(quote);
+  const buyScore=bBull.score+qBear.score;
+  const sellScore=bBear.score+qBull.score;
+  let dir,bSig,qSig,raw;
+  if(buyScore>sellScore&&buyScore>2){dir='BUY';raw=buyScore;bSig=bBull.s;qSig=qBear.s;}
+  else if(sellScore>buyScore&&sellScore>2){dir='SELL';raw=sellScore;bSig=bBear.s;qSig=qBull.s;}
+  else{dir='WAIT';raw=Math.max(buyScore,sellScore);bSig=bBull.s;qSig=qBear.s;}
+  const conviction=Math.min(9,Math.max(1,Math.round(raw*9/18)));
+  const bS=dir==='BUY'?bBull.score:bBear.score;
+  const qS=dir==='BUY'?qBear.score:qBull.score;
+  const scenario=classifyScenario(dir,base,quote,bS,qS);
+  const action=getActionText(scenario.id,dir,`${base.code}/${quote.code}`,base.code,quote.code);
+  return{dir,conviction,scenario,bSig,qSig,action,buyScore,sellScore};
+}
+
+/* ─── Render Signals ─── */
+let currentFilter='all';
+
+function renderSignals(){
+  const container=document.getElementById('signal-cards');
+  container.innerHTML='';
+  const keys=Object.keys(CURRENCIES).filter(k=>CURRENCIES[k].cotIndex!==undefined);
+  const pairs=[];
+  for(let i=0;i<keys.length;i++){
+    for(let j=i+1;j<keys.length;j++){
+      const base=CURRENCIES[keys[i]],quote=CURRENCIES[keys[j]];
+      if(base.cotIndex===undefined||quote.cotIndex===undefined)continue;
+      const sig=computePairSignal(base,quote);
+      if(sig.dir==='WAIT'&&sig.conviction<2)continue;
+      if(Math.abs(base.cotIndex-quote.cotIndex)<8&&sig.dir==='WAIT')continue;
+      pairs.push({pairName:`${keys[i]}/${keys[j]}`,base,quote,...sig});
+    }
+  }
+  pairs.sort((a,b)=>{
+    if(a.dir==='WAIT'&&b.dir!=='WAIT')return 1;
+    if(b.dir==='WAIT'&&a.dir!=='WAIT')return-1;
+    if(a.scenario.tier!==b.scenario.tier)return a.scenario.tier-b.scenario.tier;
+    return b.conviction-a.conviction;
   });
+  const filtered=pairs.filter(p=>{
+    if(currentFilter==='all')return true;
+    if(currentFilter==='bull')return p.dir==='BUY';
+    if(currentFilter==='bear')return p.dir==='SELL';
+    if(currentFilter==='wait')return p.dir==='WAIT';
+    return true;
+  });
+  if(!filtered.length){container.innerHTML='<div style="color:var(--muted);padding:24px;font-size:13px">No signals match the current filter.</div>';return;}
+  filtered.slice(0,20).forEach(p=>{
+    const isBull=p.dir==='BUY',isSell=p.dir==='SELL',isWait=p.dir==='WAIT';
+    const cardCls=isWait?'wait-card':isBull?'bull-card':'bear-card';
+    const dirCls=isWait?'wait':isBull?'bull':'bear';
+    const dirLabel=isWait?'⏳ WATCH':isBull?'▲ LONG':'▼ SHORT';
+    const idCls=p.scenario.id.startsWith('B')?'bull':p.scenario.id.startsWith('S')?'bear':'wait';
+    const convColor=p.conviction>=7?'#10b981':p.conviction>=5?'#f59e0b':'#8892a8';
+    const convPct=(p.conviction/9*100).toFixed(0);
+    const bCot=p.base.cotIndex,qCot=p.quote.cotIndex;
+    const bPill=bCot>=80?'extreme-bull':bCot<=20?'extreme-bear':bCot>=50?'bullish':'bearish';
+    const qPill=qCot>=80?'extreme-bull':qCot<=20?'extreme-bear':qCot>=50?'bullish':'bearish';
+    const cr=(lbl,sig)=>{if(!sig)return'';return`<tr><td class="sig-check-label">${lbl}</td><td><span class="sig-check-val ${sig.cls}">${sig.val}</span></td><td class="sig-check-note">${sig.note}</td></tr>`;};
+    container.innerHTML+=`
+    <div class="sig-card ${cardCls}">
+      <div class="sig-card-head">
+        <div class="sig-pair">${p.pairName}</div>
+        <div class="sig-dir-badge ${dirCls}">${dirLabel}</div>
+      </div>
+      <div class="sig-scenario-id ${idCls}">${p.scenario.id} — Tier ${p.scenario.tier}</div>
+      <div class="sig-scenario-name">${p.scenario.name}</div>
+      <div style="padding:0 16px 10px;display:flex;gap:6px;flex-wrap:wrap">
+        <span class="pill ${bPill}">${p.base.code}: ${bCot}</span>
+        <span class="pill ${qPill}">${p.quote.code}: ${qCot}</span>
+      </div>
+      <table class="sig-checks"><tbody>
+        <tr><td colspan="3" class="sig-section-header">${p.base.flag} ${p.base.code} — signals</td></tr>
+        ${cr('COT Index',p.bSig.cot)}${cr('OI Proxy',p.bSig.oi)}${cr('Commercial',p.bSig.commercial)}${cr('Momentum',p.bSig.momentum)}
+        <tr><td colspan="3" class="sig-section-header">${p.quote.flag} ${p.quote.code} — signals</td></tr>
+        ${cr('COT Index',p.qSig.cot)}${cr('OI Proxy',p.qSig.oi)}${cr('Commercial',p.qSig.commercial)}${cr('Momentum',p.qSig.momentum)}
+      </tbody></table>
+      <div class="sig-conviction">
+        <span class="conv-label">Conviction</span>
+        <div class="conv-bar-wrap"><div class="conv-bar" style="width:${convPct}%;background:${convColor}"></div></div>
+        <span class="conv-score" style="color:${convColor}">${p.conviction}/9</span>
+      </div>
+      <div class="sig-action">
+        <div class="action-headline ${dirCls}">${isWait?'⏳ No Trade Yet':isBull?'▲ Action: Consider Long':'▼ Action: Consider Short'}</div>
+        ${p.action}
+      </div>
+    </div>`;
+  });
+}
+
+document.querySelectorAll('.sig-filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.sig-filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter=btn.dataset.filter;
+    renderSignals();
+  });
+});
+
+/* ─── Other tabs (unchanged) ─── */
+function renderOverview(){
+  const c2=document.getElementById('currency-cards');c2.innerHTML='';
+  Object.entries(CURRENCIES).forEach(([k,c])=>{
+    const cotCls=getCotClass(c.cotIndex),ml=getMomentumLabel(c.momentum);
+    const maxAbs=Math.max(...c.history.map(Math.abs));
+    const bars=c.history.slice(-26).map(v=>`<div class="spark-bar" style="height:${Math.max(4,(Math.abs(v)/maxAbs)*40)}px;background:${v>=0?'var(--green)':'var(--red)'};opacity:0.7"></div>`).join('');
+    c2.innerHTML+=`<div class="card">
+      <div class="card-header"><div><div class="currency-label">${c.flag} ${c.code}</div><div style="font-size:12px;color:var(--muted)">${c.name}</div></div>
+      <div class="net-pos ${c.totalSpecNet>=0?'positive':'negative'}">${sign(c.totalSpecNet)}${fmtFull(c.totalSpecNet)}</div></div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-label">52w High</div><div class="stat-value" style="color:var(--green)">${fmt(c.w52High)}</div></div>
+        <div class="stat"><div class="stat-label">52w Low</div><div class="stat-value" style="color:var(--red)">${fmt(c.w52Low)}</div></div>
+        <div class="stat"><div class="stat-label">1w Change</div><div class="stat-value" style="color:${c.weekChange>=0?'var(--green)':'var(--red)'}">${sign(c.weekChange)}${fmt(c.weekChange)}</div></div>
+      </div>
+      <div class="cot-index-bar"><div class="cot-index-marker" style="left:${c.cotIndex}%"></div></div>
+      <div class="cot-index-label"><span>0 (Bearish)</span><span>COT Index: ${c.cotIndex}</span><span>100 (Bullish)</span></div>
+      <div class="pills"><div class="pill ${cotCls}">COT ${c.cotIndex}</div><div class="pill ${c.trendUp?'bullish':'bearish'}">${c.trendUp?'↑ UPTREND':'↓ DOWNTREND'}</div><div class="pill ${ml.cls}">${ml.text}</div></div>
+      <div class="spark-container"><div class="spark-label">Last 26 Weeks Net Position</div><div class="spark">${bars}</div></div>
+      <div class="wow-section"><div class="wow-grid">
+        <div class="wow-item"><span class="label">Asset Mgr Net</span><span class="val ${c.assetMgrNet>=0?'up':'down'}">${sign(c.assetMgrNet)}${fmtFull(c.assetMgrNet)}</span></div>
+        <div class="wow-item"><span class="label">Lev Funds Net</span><span class="val ${c.levFundsNet>=0?'up':'down'}">${sign(c.levFundsNet)}${fmtFull(c.levFundsNet)}</span></div>
+        <div class="wow-item"><span class="label">4w MA</span><span class="val">${fmt(c.ma4)}</span></div>
+        <div class="wow-item"><span class="label">13w MA</span><span class="val">${fmt(c.ma13)}</span></div>
+      </div></div></div>`;
+  });
+}
+
+function renderChanges(){
+  const tb=document.querySelector('#changes-table tbody');tb.innerHTML='';
+  Object.entries(CURRENCIES).forEach(([k,c])=>{
+    const prev=c.history[c.history.length-2],ml=getMomentumLabel(c.momentum),cotCls=getCotClass(c.cotIndex);
+    tb.innerHTML+=`<tr>
+      <td style="font-weight:700;font-family:'Plus Jakarta Sans',sans-serif">${c.flag} ${c.code}</td>
+      <td style="color:${c.current>=0?'var(--green)':'var(--red)'}">${fmtFull(c.current)}</td>
+      <td style="color:var(--muted)">${fmtFull(prev)}</td>
+      <td><span class="change-badge ${c.weekChange>=0?'up':'down'}">${sign(c.weekChange)}${fmtFull(c.weekChange)}</span></td>
+      <td><span class="change-badge ${c.changes.assetMgrNet>=0?'up':'down'}">${sign(c.changes.assetMgrNet)}${fmt(c.changes.assetMgrNet)}</span></td>
+      <td><span class="change-badge ${c.changes.levFundsNet>=0?'up':'down'}">${sign(c.changes.levFundsNet)}${fmt(c.changes.levFundsNet)}</span></td>
+      <td><span class="pill ${c.trendUp?'bullish':'bearish'}">${c.trendUp?'↑ UP':'↓ DOWN'}</span></td>
+      <td><span class="pill ${ml.cls}">${ml.text}</span></td>
+      <td><span class="pill ${cotCls}">${c.cotIndex}</span></td></tr>`;
+  });
+}
+
+let historyChart=null;
+function renderHistory(){
+  const btns=document.getElementById('history-currency-btns');btns.innerHTML='';
+  const keys=Object.keys(CURRENCIES);
+  keys.forEach((k,i)=>{btns.innerHTML+=`<button class="chart-btn ${i===0?'active':''}" data-cur="${k}">${CURRENCIES[k].flag} ${k}</button>`;});
+  btns.querySelectorAll('.chart-btn').forEach(btn=>{btn.addEventListener('click',()=>{btns.querySelectorAll('.chart-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateHistoryChart(btn.dataset.cur);});});
+  updateHistoryChart(keys[0]);
+  const tb=document.querySelector('#history-stats-table tbody');tb.innerHTML='';
+  Object.entries(CURRENCIES).forEach(([k,c])=>{
+    const tc=c.ma4>c.ma13?'var(--green)':'var(--red)';
+    tb.innerHTML+=`<tr>
+      <td style="font-weight:700;font-family:'Plus Jakarta Sans',sans-serif">${c.flag} ${c.code}</td>
+      <td style="color:${c.current>=0?'var(--green)':'var(--red)'}">${fmtFull(c.current)}</td>
+      <td style="color:var(--green)">${fmtFull(c.w52High)}</td><td style="color:var(--red)">${fmtFull(c.w52Low)}</td>
+      <td><span class="pill ${getCotClass(c.cotIndex)}">${c.cotIndex}</span></td>
+      <td>${fmtFull(c.ma4)}</td><td>${fmtFull(c.ma13)}</td>
+      <td style="color:${tc}">${c.ma4>c.ma13?'4w > 13w ↑':'4w < 13w ↓'}</td>
+      <td>${fmtFull(c.distToHigh)}</td><td>${fmtFull(c.distToLow)}</td></tr>`;
+  });
+}
+
+function updateHistoryChart(k){
+  const c=CURRENCIES[k];
+  if(historyChart)historyChart.destroy();
+  historyChart=new Chart(document.getElementById('historyChart'),{type:'line',data:{labels:c.history.map((_,i)=>`W${i+1}`),datasets:[
+    {label:`${c.code} Net Position`,data:c.history,borderColor:'#3b82f6',backgroundColor:c.history.map(v=>v>=0?'rgba(16,185,129,0.15)':'rgba(239,68,68,0.15)'),borderWidth:2,fill:true,tension:0.3,pointRadius:0,pointHoverRadius:5},
+    {label:'52w High',data:Array(c.history.length).fill(c.w52High),borderColor:'rgba(16,185,129,0.4)',borderWidth:1,borderDash:[5,5],pointRadius:0,fill:false},
+    {label:'52w Low',data:Array(c.history.length).fill(c.w52Low),borderColor:'rgba(239,68,68,0.4)',borderWidth:1,borderDash:[5,5],pointRadius:0,fill:false},
+    {label:'Zero',data:Array(c.history.length).fill(0),borderColor:'rgba(255,255,255,0.15)',borderWidth:1,pointRadius:0,fill:false}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#8892a8',font:{family:'JetBrains Mono',size:11}}},tooltip:{backgroundColor:'#1a2235',borderColor:'#2a3550',borderWidth:1,titleFont:{family:'JetBrains Mono'},bodyFont:{family:'JetBrains Mono'},callbacks:{label:x=>`${x.dataset.label}: ${fmtFull(x.parsed.y)}`}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8892a8',font:{family:'JetBrains Mono',size:10},maxTicksLimit:13}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8892a8',font:{family:'JetBrains Mono',size:11},callback:v=>fmt(v)}}}}});
+}
+
+function renderMatrix(){
+  const table=document.getElementById('matrix-table'),keys=Object.keys(CURRENCIES);
+  let h='<thead><tr><th></th>';keys.forEach(k=>{h+=`<th>${k}</th>`;});h+='</tr></thead><tbody>';
+  keys.forEach(b=>{h+=`<tr><th>${b}</th>`;keys.forEach(q=>{
+    if(b===q){h+='<td class="self">—</td>';return;}
+    const d=CURRENCIES[b].cotIndex-CURRENCIES[q].cotIndex,int=Math.min(Math.abs(d)/80,1);
+    const bg=d>5?`rgba(16,185,129,${int*0.5+0.1})`:d<-5?`rgba(239,68,68,${int*0.5+0.1})`:'rgba(255,255,255,0.05)';
+    const tc=d>5?'var(--green)':d<-5?'var(--red)':'var(--muted)';
+    h+=`<td style="background:${bg};color:${tc}">${d>0?'+':''}${d}</td>`;
+  });h+='</tr>';});h+='</tbody>';table.innerHTML=h;
+}
+
+document.querySelectorAll('.tab').forEach(tab=>{tab.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  tab.classList.add('active');document.getElementById(tab.dataset.tab).classList.add('active');
+  if(tab.dataset.tab==='history'&&!historyChart)renderHistory();
+});});
+
+async function init(){
+  const md=document.getElementById('meta-date');
+  try{
+    const r=await fetch('cot_data.json');if(!r.ok)throw new Error();
+    const j=await r.json();if(j.error)throw new Error();
+    CURRENCIES=buildCurrencies(j);computeAnalytics(CURRENCIES);
+    if(md)md.textContent=`Data updated: ${j.updated_at||'Unknown'}`;
+  }catch(e){
+    console.warn('Using embedded fallback data.');
+    if(md)md.textContent='Data: embedded fallback';
+    CURRENCIES={
+      EUR:{name:"Euro",flag:"🇪🇺",code:"EUR",contract:125000,assetMgr:{long:549252,short:135539},levFunds:{long:126502,short:82953},dealer:{long:54606,short:579530},changes:{assetMgrNet:3175,levFundsNet:-6655},history:[175000,168000,160000,152000,158000,170000,182000,195000,205000,215000,225000,240000,250000,260000,268000,275000,285000,295000,310000,325000,335000,340000,345000,350000,355000,360000,365000,370000,375000,380000,385000,388000,392000,396000,400000,405000,410000,415000,420000,425000,430000,435000,438000,440000,443000,445000,448000,452000,455000,457262,455000,457262]},
+      GBP:{name:"British Pound",flag:"🇬🇧",code:"GBP",contract:62500,assetMgr:{long:44919,short:138462},levFunds:{long:74888,short:32522},dealer:{long:63206,short:17673},changes:{assetMgrNet:-14942,levFundsNet:-1113},history:[-35000,-32000,-28000,-22000,-18000,-15000,-20000,-25000,-30000,-28000,-22000,-15000,-10000,-5000,0,5000,10000,15000,20000,25000,18000,12000,8000,2000,-5000,-10000,-15000,-20000,-25000,-30000,-35000,-40000,-45000,-48000,-50000,-52000,-54000,-56000,-58000,-60000,-62000,-64000,-65000,-68000,-70000,-72000,-75000,-78000,-80000,-82000,-85000,-51177]},
+      JPY:{name:"Japanese Yen",flag:"🇯🇵",code:"JPY",contract:12500000,assetMgr:{long:76665,short:36119},levFunds:{long:82783,short:112104},dealer:{long:29223,short:110160},changes:{assetMgrNet:15030,levFundsNet:24546},history:[-120000,-115000,-108000,-100000,-95000,-88000,-80000,-72000,-65000,-58000,-50000,-42000,-35000,-28000,-20000,-12000,-5000,2000,8000,15000,10000,5000,-2000,-8000,-15000,-20000,-25000,-18000,-10000,-5000,0,5000,10000,15000,20000,25000,18000,12000,5000,-2000,-8000,-15000,-10000,-5000,0,5000,10000,8000,5000,2000,8000,11225]},
+      CAD:{name:"Canadian Dollar",flag:"🇨🇦",code:"CAD",contract:100000,assetMgr:{long:107608,short:39044},levFunds:{long:22004,short:64038},dealer:{long:31674,short:79347},changes:{assetMgrNet:11669,levFundsNet:8974},history:[-65000,-60000,-55000,-48000,-42000,-38000,-35000,-30000,-25000,-20000,-15000,-10000,-5000,0,2000,5000,8000,12000,15000,18000,15000,10000,5000,0,-5000,-10000,-15000,-12000,-8000,-5000,0,3000,6000,10000,15000,18000,22000,25000,28000,30000,32000,35000,30000,25000,20000,18000,22000,25000,22000,20000,24000,26530]},
+      AUD:{name:"Australian Dollar",flag:"🇦🇺",code:"AUD",contract:100000,assetMgr:{long:65100,short:63339},levFunds:{long:103196,short:32936},dealer:{long:17675,short:125763},changes:{assetMgrNet:15676,levFundsNet:6322},history:[-80000,-75000,-68000,-62000,-58000,-52000,-45000,-38000,-32000,-28000,-22000,-18000,-12000,-8000,-5000,0,5000,10000,15000,22000,18000,12000,8000,5000,0,-5000,-10000,-15000,-20000,-25000,-30000,-35000,-28000,-22000,-15000,-10000,-5000,0,5000,10000,15000,20000,25000,30000,35000,40000,45000,50000,55000,60000,65000,72021]},
+      CHF:{name:"Swiss Franc",flag:"🇨🇭",code:"CHF",contract:125000,assetMgr:{long:4803,short:58674},levFunds:{long:7841,short:5386},dealer:{long:56518,short:8658},changes:{assetMgrNet:-1301,levFundsNet:3255},history:[-58000,-55000,-52000,-48000,-45000,-42000,-40000,-38000,-35000,-32000,-30000,-28000,-25000,-22000,-20000,-18000,-15000,-12000,-10000,-8000,-12000,-15000,-18000,-22000,-25000,-28000,-30000,-32000,-35000,-38000,-40000,-42000,-44000,-46000,-48000,-50000,-48000,-45000,-42000,-40000,-42000,-44000,-46000,-48000,-50000,-52000,-50000,-48000,-50000,-52000,-50000,-51416]},
+      NZD:{name:"New Zealand Dollar",flag:"🇳🇿",code:"NZD",contract:100000,assetMgr:{long:14819,short:40971},levFunds:{long:9443,short:21908},dealer:{long:39909,short:4284},changes:{assetMgrNet:3070,levFundsNet:-1680},history:[-42000,-40000,-38000,-35000,-32000,-30000,-28000,-25000,-22000,-20000,-18000,-15000,-12000,-10000,-8000,-5000,-3000,0,2000,5000,2000,-2000,-5000,-8000,-12000,-15000,-18000,-20000,-22000,-25000,-28000,-30000,-28000,-25000,-22000,-20000,-18000,-22000,-25000,-28000,-30000,-32000,-34000,-36000,-35000,-33000,-35000,-36000,-38000,-37000,-38000,-38617]},
+      USD:{name:"US Dollar Index",flag:"🇺🇸",code:"USD",contract:1000,assetMgr:{long:0,short:0},levFunds:{long:0,short:0},dealer:{long:0,short:0},changes:{assetMgrNet:0,levFundsNet:0},history:[5000,5200,4800,4500,4200,3900,3600,3800,4000,4300,4600,4900,5100,5400,5600,5800,6000,5700,5400,5100,4800,4500,4200,3900,3600,3300,3000,3200,3500,3800,4100,4400,4700,5000,5300,5600,5900,6200,6500,6800,7000,7200,7500,7800,8000,8200,8500,8800,9000,9200,9500,9800]},
+    };
+    computeAnalytics(CURRENCIES);
+  }
+  renderOverview();renderChanges();renderHistory();renderMatrix();renderSignals();
+}
+/* ─── Guidance Tab ─── */
+function showGPanel(id, btn) {
+  document.querySelectorAll('.g-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.g-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleG(head) {
+  const body=head.nextElementSibling;
+  const open=head.classList.contains('open');
+  head.classList.toggle('open',!open);
+  body.classList.toggle('open',!open);
 }
 
 // ============================================================
@@ -865,7 +1531,7 @@ function updateTicker(allData){
   FLOW_PAIRS.forEach(pair=>{
     const{sms}=allData[pair.id];
     const dirCol=sms.direction==='LONG'?'#10b981':sms.direction==='SHORT'?'#ef4444':'#f59e0b';
-    ticker.innerHTML+=`<div class="ticker-item ${selectedFlowPair===pair.id&&document.querySelector('.tab[data-tab="flow"]').classList.contains('active')?'active-flow':''}" onclick="selectFlowPair('${pair.id}');document.querySelector('.tab[data-tab=\\'flow\\']').click()"><span style="font-size:11px">${pair.flag}</span><span class="ticker-label">${pair.label}</span><span class="ticker-score" style="color:${dirCol}">${sms.score.toFixed(1)}</span><span class="ticker-dir" style="color:${dirCol}">${sms.direction}</span></div>`;
+    ticker.innerHTML+=`<div class="ticker-item ${selectedFlowPair===pair.id&&document.querySelector('.tab[data-tab="flow"]').classList.contains('active')?'active-flow':''}" onclick="selectFlowPair('${pair.id}');document.querySelector('.tab[data-tab=\'flow\']').click()"><span style="font-size:11px">${pair.flag}</span><span class="ticker-label">${pair.label}</span><span class="ticker-score" style="color:${dirCol}">${sms.score.toFixed(1)}</span><span class="ticker-dir" style="color:${dirCol}">${sms.direction}</span></div>`;
   });
 }
 
@@ -1049,7 +1715,7 @@ async function init(){
   renderChanges();
   renderHistory();
   renderMatrix();
-  renderCOTSignals();
+  renderSignals();
 
   // Precompute flow for ticker bar
   const allFlowData=getAllFlowData();
