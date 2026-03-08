@@ -141,6 +141,53 @@ canvas{width:100%!important;max-height:300px}
 .sig-action .action-headline.wait{color:var(--amber)}
 .sig-section-header{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4a6080;background:rgba(59,130,246,.04);padding:5px 14px}
 .disclaimer{font-size:11px;color:var(--muted);text-align:center;padding:32px 16px;border-top:1px solid var(--border);margin-top:32px;line-height:1.6}
+
+/* ═══════════ GUIDANCE TAB ═══════════ */
+.g-tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:4px;width:fit-content}
+.g-tab{padding:10px 24px;border-radius:7px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;font-weight:700;text-transform:uppercase;border:none;background:transparent;color:var(--muted);transition:all .2s}
+.g-tab:hover{background:var(--border);color:var(--text)}
+.g-tab.g-bull.active{background:rgba(16,185,129,.2);color:var(--green)}
+.g-tab.g-bear.active{background:rgba(239,68,68,.2);color:var(--red)}
+.g-panel{display:none}
+.g-panel.active{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.g-tier-label{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:6px;margin-bottom:14px}
+.g-tier-label.bull{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2)}
+.g-tier-label.bear{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.g-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;transition:border-color .2s}
+.g-card:hover{border-color:#3d4f70}
+.g-card.bull-card{border-left:3px solid var(--green)}
+.g-card.bear-card{border-left:3px solid var(--red)}
+.g-card-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;cursor:pointer;user-select:none}
+.g-card-left{display:flex;align-items:center;gap:12px}
+.g-id{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:800;padding:3px 10px;border-radius:5px;background:rgba(16,185,129,.12);color:var(--green);letter-spacing:.06em}
+.g-id.bear{background:rgba(239,68,68,.12);color:var(--red)}
+.g-name{font-size:14px;font-weight:700;color:var(--text)}
+.g-chev{color:var(--muted);font-size:16px;transition:transform .25s}
+.g-card-head.open .g-chev{transform:rotate(180deg)}
+.g-card-body{display:none;padding:0 18px 16px}
+.g-card-body.open{display:block}
+.g-strength{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:12px}
+.s-max{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3)}
+.s-max-bear{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.s-high{background:rgba(100,210,140,.1);color:#6dcf8e;border:1px solid rgba(100,210,140,.25)}
+.s-high-bear{background:rgba(220,100,120,.1);color:#e07080;border:1px solid rgba(220,100,120,.25)}
+.s-med{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
+.s-low{background:rgba(123,140,170,.1);color:var(--muted);border:1px solid rgba(123,140,170,.2)}
+.g-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px}
+.g-table th{text-align:left;padding:7px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--border)}
+.g-table td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;line-height:1.45;color:var(--muted)}
+.g-table td:first-child{color:var(--text);font-weight:600;white-space:nowrap}
+.g-table tr:last-child td{border-bottom:none}
+.gv{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;white-space:nowrap}
+.gv.bull{color:var(--green)}
+.gv.bear{color:var(--red)}
+.gv.amber{color:var(--amber)}
+.g-action{margin-top:12px;padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.6}
+.g-action.bull-action{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:#a0f0d0}
+.g-action.bull-action strong{color:var(--green)}
+.g-action.bear-action{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);color:#ffa8b8}
+.g-action.bear-action strong{color:var(--red)}
 </style>
 </head>
 <body>
@@ -165,6 +212,7 @@ canvas{width:100%!important;max-height:300px}
     <div class="tab" data-tab="history">52-Week History</div>
     <div class="tab" data-tab="pairs">Pair Matrix</div>
     <div class="tab" data-tab="signals">Signals</div>
+    <div class="tab" data-tab="guidance">📖 Scenario Guide</div>
   </div>
 
   <div class="tab-content active" id="overview">
@@ -222,6 +270,274 @@ canvas{width:100%!important;max-height:300px}
 
     <div class="sig-grid" id="signal-cards"></div>
   </div>
+
+  <!-- ══════════ GUIDANCE TAB ══════════ -->
+  <div class="tab-content" id="guidance">
+    <div class="section-title">COT Scenario Reference Guide</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:20px">All bullish and bearish signal combinations explained — use this to understand why the Signals tab generates each scenario label.</p>
+
+    <!-- Tab switcher inside guidance -->
+    <div class="g-tabs">
+      <button class="g-tab g-bull active" onclick="showGPanel('gbull',this)">▲ Bullish Scenarios (B-1 to B-7)</button>
+      <button class="g-tab g-bear" onclick="showGPanel('gbear',this)">▼ Bearish Scenarios (S-1 to S-7)</button>
+    </div>
+
+    <!-- BULLISH PANEL -->
+    <div class="g-panel active" id="gbull">
+
+      <div class="g-tier-label bull">Tier 1 — Maximum Conviction</div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-1</span><span class="g-name">The Perfect Bull — All 4 Pillars Aligned</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-max">Max Strength</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body open">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80–100%</td><td>Specs at or near most net-long in 52 weeks — extreme bullish crowding</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bull">Rising</td><td>New money entering the market — move has real fuel behind it</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long</td><td>Smart money on the bullish side — hedgers backing the move</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bull">Breaking Resistance</td><td>Price confirms the COT signal — breakout above key weekly/monthly level</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Enter long on breakout confirmation. Target next weekly/monthly resistance. Stop below breakout level or recent swing low. Hold until COT starts reversing or OI drops sharply.</div>
+        </div>
+      </div>
+
+      <div class="g-tier-label bull" style="margin-top:32px">Tier 2 — Strong Setups</div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-2</span><span class="g-name">Strong Bull — OI Not Yet Confirming</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80%</td><td>Specs heavily crowded long</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv amber">Falling / Flat</td><td>Old positions closing, not new money entering — may lack fresh momentum</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long</td><td>Smart money still bullish</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bull">Breaking Resistance</td><td>Breakout confirmed by price</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Valid long but watch OI closely. If OI starts rising after entry, add to position. If OI keeps falling, breakout may be a fakeout — keep stops tight.</div>
+        </div>
+      </div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-3</span><span class="g-name">Bull Setup Forming — Waiting for Price Confirmation</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80%</td><td>Extreme long positioning by specs</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bull">Rising</td><td>New money building — conviction is there</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long</td><td>Smart money aligned bullish</td></tr>
+            <tr><td>⏳ Price Action</td><td class="gv amber">Approaching Resistance</td><td>Price not yet broken out — still below the key level</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Do NOT enter yet. Mark your resistance level, set a price alert, and wait for the breakout candle. High-quality setup in the making — patience gives a better entry with a tighter stop.</div>
+        </div>
+      </div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-6</span><span class="g-name">Contrarian Long — Overcrowded Spec Shorts</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20% (near 0%)</td><td>Specs at most net-short in 52 weeks — overcrowded, ripe for squeeze</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bull">Rising</td><td>Positioning building — extreme is being built, not yet unwound</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long (at extreme)</td><td>Smart money aggressively buying the other side — strong divergence</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bull">Bouncing off Support</td><td>Price holding a major support zone, showing reversal pattern</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Contrarian long — fading overcrowded spec shorts. Enter on support bounce, stop below support. When squeeze starts, shorts rush for the exit simultaneously. Fast, sharp move. High R:R.</div>
+        </div>
+      </div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-7</span><span class="g-name">Short Squeeze Loading — OI Collapsing at Extremes</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20%</td><td>Specs heavily short</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv bull">Falling Sharply</td><td>Shorts already covering and closing — capitulation in progress</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long</td><td>Smart money absorbing the sell-off</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bull">Support Holding</td><td>Price stable at a key level while shorts unwind</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Squeeze may already be starting. Enter as price holds support, tight stop. Drop in OI confirms shorts are closing — not new sellers. Move can accelerate quickly as remaining shorts pile into exits.</div>
+        </div>
+      </div>
+
+      <div class="g-tier-label bull" style="margin-top:32px">Tier 3 — Early / Watch</div>
+
+      <div class="g-card bull-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-4</span><span class="g-name">Early Bull — Commercials Flipping Long</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-med">Medium</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv amber">40–60%</td><td>Specs neutral — not yet at a bullish extreme</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bull">Rising</td><td>Positioning building — early smart money moving in</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Flipping Net Long</td><td>Commercials recently crossed from net-short to net-long — early warning</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bull">Breaking Resistance</td><td>Price confirming the early smart-money accumulation</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Early entry — trend may be just starting. Lower conviction than B-1 but potentially better R:R. Use smaller position size. Watch for COT Index to climb above 80% as confirmation the move is developing.</div>
+        </div>
+      </div>
+
+      <div class="g-card bull-card" style="opacity:.75">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id">B-5</span><span class="g-name">COT Bullish — Price Confirmation Still Needed</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-low">Wait</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80%</td><td>Specs very bullish</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv amber">Falling</td><td>Longs being liquidated</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bull">Net Long</td><td>Smart money still holds bullish position</td></tr>
+            <tr><td>🚫 Price Action</td><td class="gv bear">Rejecting Resistance</td><td>Price failed to break above — sellers defending the level hard</td></tr>
+          </tbody></table>
+          <div class="g-action bull-action"><strong>Action:</strong> Stand aside. COT is bullish but price is saying no. Wait for price to consolidate and attempt the breakout again. A second rejection could flip this to a bearish setup.</div>
+        </div>
+      </div>
+
+    </div><!-- end gbull -->
+
+    <!-- BEARISH PANEL -->
+    <div class="g-panel" id="gbear">
+
+      <div class="g-tier-label bear">Tier 1 — Maximum Conviction</div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-1</span><span class="g-name">The Perfect Bear — All 4 Pillars Aligned</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-max-bear">Max Strength</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body open">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20% (near 0%)</td><td>Specs at or near most net-short in 52 weeks — extreme bearish conviction</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bear">Rising</td><td>New money entering on the short side — fresh bearish positions being added</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short</td><td>Smart money hedging against a downside move — selling into strength</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bear">Rejecting Resistance / Breaking Support</td><td>Price confirms the COT bias — failed at major level or breaking down</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Enter short on rejection or support breakdown. Target next weekly/monthly support. Stop above rejection high or recent swing high. Hold until COT starts reversing or OI drops sharply.</div>
+        </div>
+      </div>
+
+      <div class="g-tier-label bear" style="margin-top:32px">Tier 2 — Strong Setups</div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-2</span><span class="g-name">Strong Bear — OI Not Yet Confirming</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high-bear">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20%</td><td>Specs heavily crowded short</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv amber">Falling / Flat</td><td>Old positions being unwound, not fresh shorts — may lose momentum</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short</td><td>Smart money bearish</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bear">Rejecting Resistance</td><td>Price confirmed the rejection at a key level</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Valid short but watch OI. If OI picks up as price falls, add to position. If OI keeps declining, breakdown may stall. Tighter stops, take partial profits at first support zone.</div>
+        </div>
+      </div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-3</span><span class="g-name">Bear Setup Forming — Waiting for Price Confirmation</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high-bear">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20%</td><td>Specs at extreme short positioning</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bear">Rising</td><td>New short money building — conviction behind the bearish thesis</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short</td><td>Smart money positioned for downside</td></tr>
+            <tr><td>⏳ Price Action</td><td class="gv amber">Approaching Resistance</td><td>Price not yet at the key level for entry</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Do NOT enter yet. Set alerts for your resistance level. Wait for rejection candle or support break confirmation. You have the COT edge — don't waste it with an early entry and wide stop.</div>
+        </div>
+      </div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-6</span><span class="g-name">Contrarian Short — Overcrowded Spec Longs</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high-bear">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80–100%</td><td>Specs at most net-long in 52 weeks — overcrowded longs, vulnerable to liquidation</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bear">Rising</td><td>Longs still being added — crowding getting worse before it gets better</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short (at extreme)</td><td>Smart money aggressively selling into spec buying — classic divergence</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bear">Rejecting at Resistance</td><td>Price failing at a major level — catalyst for the long squeeze</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Contrarian short — fading overcrowded spec longs. Enter on resistance rejection, stop above the high. When squeeze starts, longs rush for the exit simultaneously. Fast, sharp drops. High R:R when timed right.</div>
+        </div>
+      </div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-7</span><span class="g-name">Long Squeeze Loading — OI Collapsing at Extremes</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-high-bear">High</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bull">≥ 80%</td><td>Specs heavily long</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv bear">Falling Sharply</td><td>Longs liquidating fast — capitulation already underway</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short</td><td>Smart money taking profits or adding to shorts</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bear">Resistance Holding / Turning Down</td><td>Price stalling or turning while longs exit</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Long squeeze may already be in motion. Short on confirmation of the turn, stop above resistance. Drop in OI = longs covering already. Remaining longs will panic-exit as price falls.</div>
+        </div>
+      </div>
+
+      <div class="g-tier-label bear" style="margin-top:32px">Tier 3 — Early / Watch</div>
+
+      <div class="g-card bear-card">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-4</span><span class="g-name">Early Bear — Commercials Flipping Short</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-med">Medium</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv amber">40–60%</td><td>Specs neutral — bearish extreme not reached yet</td></tr>
+            <tr><td>📈 Open Interest</td><td class="gv bear">Rising</td><td>New positions building</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Flipping Net Short</td><td>Commercials just crossed into net-short — early warning smart money hedging</td></tr>
+            <tr><td>💹 Price Action</td><td class="gv bear">Rejecting Resistance</td><td>Price already showing rejection at a key level</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Early entry on a developing bearish trend. Good R:R if getting in before the crowd. Use smaller size until COT Index drops below 20%. This is where big moves often start — before the full extreme is reached.</div>
+        </div>
+      </div>
+
+      <div class="g-card bear-card" style="opacity:.75">
+        <div class="g-card-head" onclick="toggleG(this)">
+          <div class="g-card-left"><span class="g-id bear">S-5</span><span class="g-name">COT Bearish — Price Breaking Up — Avoid</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><span class="g-strength s-low">Avoid</span><span class="g-chev">▾</span></div>
+        </div>
+        <div class="g-card-body">
+          <table class="g-table"><thead><tr><th>Signal</th><th>Reading</th><th>What It Means</th></tr></thead><tbody>
+            <tr><td>📊 COT Index (Specs)</td><td class="gv bear">≤ 20%</td><td>Specs very bearish</td></tr>
+            <tr><td>📉 Open Interest</td><td class="gv amber">Falling</td><td>Shorts being covered</td></tr>
+            <tr><td>🏦 Commercials</td><td class="gv bear">Net Short</td><td>Smart money still hedging short</td></tr>
+            <tr><td>🚫 Price Action</td><td class="gv bull">Breaking Above Resistance</td><td>Price moving against the COT signal — possible fundamental shift</td></tr>
+          </tbody></table>
+          <div class="g-action bear-action"><strong>Action:</strong> Do NOT short here. Price is disagreeing with the COT signal — dangerous territory. A fundamental catalyst may be overriding positioning. Stand aside and reassess next week's COT report.</div>
+        </div>
+      </div>
+
+    </div><!-- end gbear -->
+
+    <!-- The Thief Trader Rule -->
+    <div style="margin-top:32px;padding:20px 24px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:12px;border-left:4px solid var(--accent)">
+      <div style="font-size:13px;font-weight:800;color:var(--accent);margin-bottom:8px;letter-spacing:.04em">⚔️ THE THIEF TRADER RULE</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.7">
+        <strong style="color:var(--text)">Don't fight commercials. Follow their footprints.</strong><br>
+        Commercials don't speculate — they hedge real business exposure. An exporter locking in a USD price <em>knows</em> their order book. When they're aggressively positioned, it's because the underlying fundamentals support it. Their positioning reflects informational edge, not momentum chasing. When Large Specs are at one extreme and Commercials are at the opposite — that divergence is the signal.
+      </div>
+    </div>
+
+  </div><!-- end guidance tab -->
 
   <div class="disclaimer">⚠️ For informational purposes only. COT data is a sentiment/positioning indicator, not a timing tool. Always combine with price action and risk management. Data from CFTC Traders in Financial Futures report.</div>
 </div>
@@ -574,6 +890,20 @@ async function init(){
   }
   renderOverview();renderChanges();renderHistory();renderMatrix();renderSignals();
 }
+/* ─── Guidance Tab ─── */
+function showGPanel(id, btn) {
+  document.querySelectorAll('.g-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.g-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleG(head) {
+  const body=head.nextElementSibling;
+  const open=head.classList.contains('open');
+  head.classList.toggle('open',!open);
+  body.classList.toggle('open',!open);
+}
+
 init();
 </script>
 </body>
