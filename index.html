@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>COT FX Pro — 52-Week Analysis</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>COT FX Pro — Complete Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
+
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#0a0e17;--surface:#111827;--card:#1a2235;--border:#2a3550;
@@ -189,6 +190,9 @@ canvas{width:100%!important;max-height:300px}
 .g-action.bear-action{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);color:#ffa8b8}
 .g-action.bear-action strong{color:var(--red)}
 
+.tab.flow-tab.active{color:#f97316;border-bottom-color:#f97316}
+.tab.intel-tab.active{color:#a855f7;border-bottom-color:#a855f7}
+
 /* ===== FLOW TAB ===== */
 .flow-header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
 .flow-subtitle{font-size:12px;color:var(--muted)}
@@ -291,7 +295,7 @@ canvas{width:100%!important;max-height:300px}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-
+</style>
 </head>
 <body>
 <div class="grain"></div>
@@ -317,8 +321,8 @@ canvas{width:100%!important;max-height:300px}
     <div class="tab" data-tab="pairs">Pair Matrix</div>
     <div class="tab" data-tab="signals">Signals</div>
     <div class="tab" data-tab="guidance">📖 Scenario Guide</div>
-    <div class="tab flow-tab" data-tab="flow">⚡ Inst. Flow<span class="tab-badge" style="background:#f97316;margin-left:6px;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:800;color:#fff">3L</span></div>
-    <div class="tab intel-tab" data-tab="intel">🧠 Intelligence<span class="tab-badge" style="margin-left:6px;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:800;background:#a855f7;color:#fff">NEW</span></div>
+    <div class="tab flow-tab" data-tab="flow">⚡ Inst. Flow<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:800;margin-left:5px;background:#f97316;color:#fff">3L</span></div>
+    <div class="tab intel-tab" data-tab="intel">🧠 Intelligence<span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:800;margin-left:5px;background:#a855f7;color:#fff">NEW</span></div>
   </div>
 
   <div class="tab-content active" id="overview">
@@ -646,7 +650,7 @@ canvas{width:100%!important;max-height:300px}
   </div><!-- end guidance tab -->
 
 
-  <!-- ══════════ FLOW TAB ══════════ -->
+  <!-- INSTITUTIONAL FLOW TAB -->
   <div class="tab-content" id="flow">
     <div class="flow-header-bar">
       <div>
@@ -668,25 +672,29 @@ canvas{width:100%!important;max-height:300px}
     </div>
   </div>
 
-  <!-- ══════════ INTELLIGENCE TAB ══════════ -->
+
+  <!-- INTELLIGENCE TAB -->
   <div class="tab-content" id="intel">
     <div class="section-title" style="color:#a855f7">🧠 Combined Intelligence — COT × Institutional Flow</div>
     <p style="font-size:11px;color:var(--muted);margin-bottom:14px">
-      COT direction bias merged with CME volume spikes, OANDA order book contrarian signals, and unusual flow alerts.
+      COT direction bias merged with CME volume spikes, OANDA order book contrarian signals, and unusual flow alerts. 
       Final score = weighted composite (COT 40% · CME 20% · OANDA 20% · Flow 20%).
     </p>
+
     <div class="intel-legend">
       <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>COT Signal (40%)</div>
       <div class="legend-item"><div class="legend-dot" style="background:#06b6d4"></div>CME Vol/OI (20%)</div>
       <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>OANDA Book (20%)</div>
       <div class="legend-item"><div class="legend-dot" style="background:#ffd700"></div>Unusual Flow (20%)</div>
     </div>
+
     <div class="intel-filter">
       <button class="filter-btn active" data-filter="all">All Pairs</button>
       <button class="filter-btn" data-filter="buy">BUY Only</button>
       <button class="filter-btn" data-filter="sell">SELL Only</button>
       <button class="filter-btn" data-filter="high">High Conviction</button>
     </div>
+
     <div class="intel-grid" id="intelGrid"></div>
   </div>
 
@@ -695,353 +703,19 @@ canvas{width:100%!important;max-height:300px}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-// ============================================================
-// 1. COT DATA & ANALYTICS (from original COT FX Pro)
-// ============================================================
-const CURRENCY_META = {
-  EUR:{name:"Euro",flag:"🇪🇺",contract:125000},
-  GBP:{name:"British Pound",flag:"🇬🇧",contract:62500},
-  JPY:{name:"Japanese Yen",flag:"🇯🇵",contract:12500000},
-  CAD:{name:"Canadian Dollar",flag:"🇨🇦",contract:100000},
-  AUD:{name:"Australian Dollar",flag:"🇦🇺",contract:100000},
-  CHF:{name:"Swiss Franc",flag:"🇨🇭",contract:125000},
-  NZD:{name:"New Zealand Dollar",flag:"🇳🇿",contract:100000},
-};
 
-let CURRENCIES = {};
+const CURRENCY_META={EUR:{name:"Euro",flag:"🇪🇺",contract:125000},GBP:{name:"British Pound",flag:"🇬🇧",contract:62500},JPY:{name:"Japanese Yen",flag:"🇯🇵",contract:12500000},CAD:{name:"Canadian Dollar",flag:"🇨🇦",contract:100000},AUD:{name:"Australian Dollar",flag:"🇦🇺",contract:100000},CHF:{name:"Swiss Franc",flag:"🇨🇭",contract:125000},NZD:{name:"New Zealand Dollar",flag:"🇳🇿",contract:100000},USD:{name:"US Dollar Index",flag:"🇺🇸",contract:1000}};
+let CURRENCIES={};
 
-function buildCurrencies(jsonData){
-  const result={};
-  Object.entries(jsonData.data).forEach(([code,d])=>{
-    const meta=CURRENCY_META[code]; if(!meta) return;
-    const weeks=d.weeks||[]; const latest=d.latest||{}; const prev=weeks[1]||{};
-    result[code]={
-      name:meta.name,flag:meta.flag,code,contract:meta.contract,
-      assetMgr:{long:latest.asset_long||0,short:latest.asset_short||0,spread:0},
-      levFunds:{long:latest.lev_long||0,short:latest.lev_short||0,spread:0},
-      dealer:{long:latest.dealer_long||0,short:latest.dealer_short||0},
-      changes:{assetMgrNet:(latest.net_asset||0)-(prev.net_asset||0),levFundsNet:(latest.net_lev||0)-(prev.net_lev||0),totalOI:0},
-      history:weeks.slice().reverse().map(w=>w.net_noncomm||0),
-    };
-  });
-  return result;
-}
+function buildCurrencies(j){const r={};Object.entries(j.data).forEach(([c,d])=>{const m=CURRENCY_META[c];if(!m)return;const w=d.weeks||[],l=d.latest||{},p=w[1]||{};r[c]={name:m.name,flag:m.flag,code:c,contract:m.contract,assetMgr:{long:l.asset_long||0,short:l.asset_short||0},levFunds:{long:l.lev_long||0,short:l.lev_short||0},dealer:{long:l.dealer_long||0,short:l.dealer_short||0},changes:{assetMgrNet:(l.net_asset||0)-(p.net_asset||0),levFundsNet:(l.net_lev||0)-(p.net_lev||0)},history:w.slice().reverse().map(x=>x.net_noncomm||0)}});return r;}
 
-function computeAnalytics(C){
-  Object.values(C).forEach(c=>{
-    c.assetMgrNet=c.assetMgr.long-c.assetMgr.short;
-    c.levFundsNet=c.levFunds.long-c.levFunds.short;
-    c.totalSpecNet=c.assetMgrNet+c.levFundsNet;
-    const h=c.history; if(!h||h.length===0) return;
-    c.w52High=Math.max(...h); c.w52Low=Math.min(...h); c.current=h[h.length-1];
-    c.cotIndex=c.w52High===c.w52Low?50:Math.round(((c.current-c.w52Low)/(c.w52High-c.w52Low))*100);
-    const last4=h.slice(-4),last13=h.slice(-13);
-    c.ma4=Math.round(last4.reduce((a,b)=>a+b,0)/last4.length);
-    c.ma13=Math.round(last13.reduce((a,b)=>a+b,0)/last13.length);
-    c.trendUp=c.ma4>c.ma13;
-    const prev2=h.length>=2?h[h.length-2]:c.current,prev3=h.length>=3?h[h.length-3]:prev2;
-    c.weekChange=c.current-prev2; c.prevWeekChange=prev2-prev3;
-    if(c.weekChange>0&&c.prevWeekChange>0&&c.weekChange>c.prevWeekChange) c.momentum="accelerating_up";
-    else if(c.weekChange>0&&c.prevWeekChange<=0) c.momentum="turning_up";
-    else if(c.weekChange<0&&c.prevWeekChange<0&&c.weekChange<c.prevWeekChange) c.momentum="accelerating_down";
-    else if(c.weekChange<0&&c.prevWeekChange>=0) c.momentum="turning_down";
-    else if(c.weekChange>0) c.momentum="up";
-    else if(c.weekChange<0) c.momentum="down";
-    else c.momentum="flat";
-    c.distToHigh=c.w52High-c.current; c.distToLow=c.current-c.w52Low;
-  });
-}
+function computeAnalytics(C){Object.values(C).forEach(c=>{c.assetMgrNet=c.assetMgr.long-c.assetMgr.short;c.levFundsNet=c.levFunds.long-c.levFunds.short;c.totalSpecNet=c.assetMgrNet+c.levFundsNet;const h=c.history;if(!h||!h.length)return;c.w52High=Math.max(...h);c.w52Low=Math.min(...h);c.current=h[h.length-1];c.cotIndex=c.w52High===c.w52Low?50:Math.round(((c.current-c.w52Low)/(c.w52High-c.w52Low))*100);const l4=h.slice(-4),l13=h.slice(-13);c.ma4=Math.round(l4.reduce((a,b)=>a+b,0)/l4.length);c.ma13=Math.round(l13.reduce((a,b)=>a+b,0)/l13.length);c.trendUp=c.ma4>c.ma13;const prev=h.length>=2?h[h.length-2]:c.current,prev2=h.length>=3?h[h.length-3]:prev;c.weekChange=c.current-prev;c.prevWeekChange=prev-prev2;const la=h.slice(-3).map(Math.abs);c.oiProxy=la[2]>la[1]&&la[1]>la[0]?'RISING':la[2]<la[1]&&la[1]<la[0]?'FALLING':'FLAT';if(c.weekChange>0&&c.prevWeekChange>0&&c.weekChange>c.prevWeekChange)c.momentum="accelerating_up";else if(c.weekChange>0&&c.prevWeekChange<=0)c.momentum="turning_up";else if(c.weekChange<0&&c.prevWeekChange<0&&c.weekChange<c.prevWeekChange)c.momentum="accelerating_down";else if(c.weekChange<0&&c.prevWeekChange>=0)c.momentum="turning_down";else if(c.weekChange>0)c.momentum="up";else if(c.weekChange<0)c.momentum="down";else c.momentum="flat";c.distToHigh=c.w52High-c.current;c.distToLow=c.current-c.w52Low;});}
 
-const FALLBACK={EUR:{name:"Euro",flag:"🇪🇺",code:"EUR",contract:125000,assetMgr:{long:549252,short:135539,spread:35640},levFunds:{long:126502,short:82953,spread:16100},dealer:{long:54606,short:579530},changes:{assetMgrNet:3175,levFundsNet:-6655,totalOI:-9460},history:[175000,168000,160000,152000,158000,170000,182000,195000,205000,215000,225000,240000,250000,260000,268000,275000,285000,295000,310000,325000,335000,340000,345000,350000,355000,360000,365000,370000,375000,380000,385000,388000,392000,396000,400000,405000,410000,415000,420000,425000,430000,435000,438000,440000,443000,445000,448000,452000,455000,457262,455000,457262]},GBP:{name:"British Pound",flag:"🇬🇧",code:"GBP",contract:62500,assetMgr:{long:44919,short:138462,spread:7350},levFunds:{long:74888,short:32522,spread:8931},dealer:{long:63206,short:17673},changes:{assetMgrNet:-14942,levFundsNet:-1113,totalOI:11271},history:[-35000,-32000,-28000,-22000,-18000,-15000,-20000,-25000,-30000,-28000,-22000,-15000,-10000,-5000,0,5000,10000,15000,20000,25000,18000,12000,8000,2000,-5000,-10000,-15000,-20000,-25000,-30000,-35000,-40000,-45000,-48000,-50000,-52000,-54000,-56000,-58000,-60000,-62000,-64000,-65000,-68000,-70000,-72000,-75000,-78000,-80000,-82000,-85000,-51177]},JPY:{name:"Japanese Yen",flag:"🇯🇵",code:"JPY",contract:12500000,assetMgr:{long:76665,short:36119,spread:39412},levFunds:{long:82783,short:112104,spread:3348},dealer:{long:29223,short:110160},changes:{assetMgrNet:15030,levFundsNet:24546,totalOI:19380},history:[-120000,-115000,-108000,-100000,-95000,-88000,-80000,-72000,-65000,-58000,-50000,-42000,-35000,-28000,-20000,-12000,-5000,2000,8000,15000,10000,5000,-2000,-8000,-15000,-20000,-25000,-18000,-10000,-5000,0,5000,10000,15000,20000,25000,18000,12000,5000,-2000,-8000,-15000,-10000,-5000,0,5000,10000,8000,5000,2000,8000,11225]},CAD:{name:"Canadian Dollar",flag:"🇨🇦",code:"CAD",contract:100000,assetMgr:{long:107608,short:39044,spread:5462},levFunds:{long:22004,short:64038,spread:4252},dealer:{long:31674,short:79347},changes:{assetMgrNet:11669,levFundsNet:8974,totalOI:3378},history:[-65000,-60000,-55000,-48000,-42000,-38000,-35000,-30000,-25000,-20000,-15000,-10000,-5000,0,2000,5000,8000,12000,15000,18000,15000,10000,5000,0,-5000,-10000,-15000,-12000,-8000,-5000,0,3000,6000,10000,15000,18000,22000,25000,28000,30000,32000,35000,30000,25000,20000,18000,22000,25000,22000,20000,24000,26530]},AUD:{name:"Australian Dollar",flag:"🇦🇺",code:"AUD",contract:100000,assetMgr:{long:65100,short:63339,spread:7586},levFunds:{long:103196,short:32936,spread:4674},dealer:{long:17675,short:125763},changes:{assetMgrNet:15676,levFundsNet:6322,totalOI:9019},history:[-80000,-75000,-68000,-62000,-58000,-52000,-45000,-38000,-32000,-28000,-22000,-18000,-12000,-8000,-5000,0,5000,10000,15000,22000,18000,12000,8000,5000,0,-5000,-10000,-15000,-20000,-25000,-30000,-35000,-28000,-22000,-15000,-10000,-5000,0,5000,10000,15000,20000,25000,30000,35000,40000,45000,50000,55000,60000,65000,72021]},CHF:{name:"Swiss Franc",flag:"🇨🇭",code:"CHF",contract:125000,assetMgr:{long:4803,short:58674,spread:1761},levFunds:{long:7841,short:5386,spread:50},dealer:{long:56518,short:8658},changes:{assetMgrNet:-1301,levFundsNet:3255,totalOI:-56},history:[-58000,-55000,-52000,-48000,-45000,-42000,-40000,-38000,-35000,-32000,-30000,-28000,-25000,-22000,-20000,-18000,-15000,-12000,-10000,-8000,-12000,-15000,-18000,-22000,-25000,-28000,-30000,-32000,-35000,-38000,-40000,-42000,-44000,-46000,-48000,-50000,-48000,-45000,-42000,-40000,-42000,-44000,-46000,-48000,-50000,-52000,-50000,-48000,-50000,-52000,-50000,-51416]},NZD:{name:"New Zealand Dollar",flag:"🇳🇿",code:"NZD",contract:100000,assetMgr:{long:14819,short:40971,spread:646},levFunds:{long:9443,short:21908,spread:1140},dealer:{long:39909,short:4284},changes:{assetMgrNet:3070,levFundsNet:-1680,totalOI:1156},history:[-42000,-40000,-38000,-35000,-32000,-30000,-28000,-25000,-22000,-20000,-18000,-15000,-12000,-10000,-8000,-5000,-3000,0,2000,5000,2000,-2000,-5000,-8000,-12000,-15000,-18000,-20000,-22000,-25000,-28000,-30000,-28000,-25000,-22000,-20000,-18000,-22000,-25000,-28000,-30000,-32000,-34000,-36000,-35000,-33000,-35000,-36000,-38000,-37000,-38000,-38617]}};
-
-// ============================================================
-// 2. COT SIGNAL ENGINE (unchanged from original)
-// ============================================================
-function getZone(idx){if(idx>=75)return'EXTREME_LONG';if(idx<=25)return'EXTREME_SHORT';return'NEUTRAL';}
-function isMomentumUnwinding(currency,zone){
-  if(zone==='EXTREME_LONG') return !currency.trendUp||currency.weekChange<0;
-  if(zone==='EXTREME_SHORT') return currency.trendUp||currency.weekChange>0;
-  return false;
-}
-function computeCOTSignal(base,quote){
-  const bIdx=base.cotIndex,qIdx=quote.cotIndex,bZone=getZone(bIdx),qZone=getZone(qIdx),spread=bIdx-qIdx;
-  const bothExtremeLong=bZone==='EXTREME_LONG'&&qZone==='EXTREME_LONG';
-  const bothExtremeShort=bZone==='EXTREME_SHORT'&&qZone==='EXTREME_SHORT';
-  const conflict=bothExtremeLong||bothExtremeShort;
-  let direction=null,signalType='',reasons=[],warnings=[];
-  let baseSignal=null,quoteSignal=null;
-  if(bZone==='EXTREME_LONG') baseSignal='SELL';
-  if(bZone==='EXTREME_SHORT') baseSignal='BUY';
-  if(qZone==='EXTREME_LONG') quoteSignal='BUY';
-  if(qZone==='EXTREME_SHORT') quoteSignal='SELL';
-  if(conflict){direction=spread>=0?'BUY':'SELL';signalType='CONFLICT';reasons.push('Both currencies at same extreme — no clear edge.');warnings.push('Conflicting positioning: avoid or wait for unwind.');}
-  else if(baseSignal&&quoteSignal&&baseSignal===quoteSignal){direction=baseSignal;signalType='CONTRARIAN';reasons.push(`${base.code} & ${quote.code} both at extremes → ${direction}`);}
-  else if(baseSignal&&!quoteSignal){direction=baseSignal;signalType='CONTRARIAN';reasons.push(`${base.code} at extreme ${bIdx} → fade overcrowded ${bZone==='EXTREME_LONG'?'longs':'shorts'}`);}
-  else if(!baseSignal&&quoteSignal){direction=quoteSignal;signalType='CONTRARIAN';reasons.push(`${quote.code} at extreme ${qIdx} → fade overcrowded ${qZone==='EXTREME_LONG'?'longs':'shorts'}`);}
-  else{direction=spread>=0?'BUY':'SELL';signalType='TREND';const a=Math.abs(spread);if(a>=40)reasons.push(`Strong COT divergence (spread=${spread})`);else if(a>=20)reasons.push(`Moderate COT divergence (spread=${spread})`);else reasons.push(`Mild divergence (spread=${spread})`);}
-  let conviction=0;
-  if(conflict) conviction=1;
-  else if(baseSignal&&quoteSignal&&baseSignal===quoteSignal) conviction+=5;
-  else if(baseSignal||quoteSignal) conviction+=3;
-  else{const a=Math.abs(spread);if(a>=40) conviction+=2;else if(a>=20) conviction+=1;}
-  const baseTrendAligns=direction==='BUY'?base.trendUp:!base.trendUp;
-  const quoteTrendAligns=direction==='BUY'?!quote.trendUp:quote.trendUp;
-  if(baseTrendAligns&&quoteTrendAligns){conviction+=2;reasons.push('MA trend aligned on both currencies');}
-  else if(baseTrendAligns){conviction+=1;reasons.push(`${base.code} MA trend aligns`);}
-  else if(quoteTrendAligns){conviction+=1;reasons.push(`${quote.code} MA trend aligns`);}
-  if(bZone!=='NEUTRAL'&&isMomentumUnwinding(base,bZone)){conviction+=2;reasons.push(`${base.code} unwinding from extreme`);}
-  if(qZone!=='NEUTRAL'&&isMomentumUnwinding(quote,qZone)){conviction+=2;reasons.push(`${quote.code} unwinding from extreme`);}
-  const baseWkAligns=direction==='BUY'?base.weekChange>0:base.weekChange<0;
-  const quoteWkAligns=direction==='BUY'?quote.weekChange<0:quote.weekChange>0;
-  if(baseWkAligns&&quoteWkAligns){conviction+=1;reasons.push('Weekly change aligned with trade direction');}
-  if(direction==='BUY'&&bZone==='EXTREME_LONG') warnings.push(`⚠️ ${base.code} longs already extreme – size carefully.`);
-  if(direction==='SELL'&&bZone==='EXTREME_SHORT') warnings.push(`⚠️ ${base.code} shorts already extreme.`);
-  conviction=Math.min(9,Math.max(1,Math.round(conviction)));
-  return{direction,conviction,signalType,spread,reasons,warnings,bZone,qZone};
-}
-
-// ============================================================
-// 3. INSTITUTIONAL FLOW DATA GENERATORS
-// ============================================================
-const FLOW_PAIRS=[
-  {id:"EUR",label:"EUR/USD",oandaPair:"EUR_USD",color:"#00d4ff",flag:"🇪🇺"},
-  {id:"GBP",label:"GBP/USD",oandaPair:"GBP_USD",color:"#ff6b35",flag:"🇬🇧"},
-  {id:"JPY",label:"USD/JPY",oandaPair:"USD_JPY",color:"#ffd700",flag:"🇯🇵"},
-  {id:"AUD",label:"AUD/USD",oandaPair:"AUD_USD",color:"#7fff7f",flag:"🇦🇺"},
-  {id:"CAD",label:"USD/CAD",oandaPair:"USD_CAD",color:"#ff9ff3",flag:"🇨🇦"},
-  {id:"CHF",label:"USD/CHF",oandaPair:"USD_CHF",color:"#ff4757",flag:"🇨🇭"},
-  {id:"NZD",label:"NZD/USD",oandaPair:"NZD_USD",color:"#a29bfe",flag:"🇳🇿"},
-];
-
-let flowTick=0;
-
-function genCME(pair){
-  const s=pair.id.charCodeAt(0)+Date.now()/86400000+flowTick*0.3;
-  const rng=n=>Math.abs(Math.sin(s*n)*10000)%1;
-  const bases={EUR:180000,GBP:95000,JPY:160000,AUD:72000,CAD:68000,CHF:45000,NZD:32000};
-  const base=bases[pair.id]||80000;
-  const days=20;
-  const history=Array.from({length:days},(_,i)=>({
-    volume:Math.round(base*(0.7+rng(i+1)*0.8)),
-    oi:Math.round(base*3.2*(0.85+rng(i+2)*0.3)),
-  }));
-  const vols=history.map(d=>d.volume);
-  const mean=vols.reduce((a,b)=>a+b,0)/vols.length;
-  const std=Math.sqrt(vols.reduce((a,b)=>a+Math.pow(b-mean,2),0)/vols.length);
-  const latest=history[history.length-1],prev=history[history.length-2];
-  const volZ=parseFloat(((latest.volume-mean)/std).toFixed(2));
-  const oiChg=parseFloat((((latest.oi-prev.oi)/prev.oi)*100).toFixed(2));
-  let spikeSignal="NEUTRAL",spikeStr=0;
-  if(Math.abs(volZ)>2.0){spikeSignal=volZ>0?"STRONG_BULL":"STRONG_BEAR";spikeStr=3;}
-  else if(Math.abs(volZ)>1.5){spikeSignal=volZ>0?"BULL":"BEAR";spikeStr=2;}
-  else if(Math.abs(volZ)>1.0){spikeSignal=volZ>0?"MILD_BULL":"MILD_BEAR";spikeStr=1;}
-  return{history,currentVolume:latest.volume,currentOI:latest.oi,volZ,oiChg,spikeSignal,spikeStr,mean:Math.round(mean)};
-}
-
-function genOANDA(pair){
-  const s=pair.id.charCodeAt(0)*7+Date.now()/3600000+flowTick*0.5;
-  const rng=n=>Math.abs(Math.sin(s*n+1.7)*10000)%1;
-  const longPct=parseFloat((30+rng(1)*40).toFixed(1));
-  const shortPct=parseFloat((100-longPct).toFixed(1));
-  const bias=longPct>60?"CROWDED_LONG":longPct<40?"CROWDED_SHORT":"BALANCED";
-  let contrarian="NEUTRAL",contStr=0;
-  if(longPct>65){contrarian="INST_SHORT";contStr=3;}
-  else if(longPct>60){contrarian="INST_SHORT";contStr=2;}
-  else if(longPct<35){contrarian="INST_LONG";contStr=3;}
-  else if(longPct<40){contrarian="INST_LONG";contStr=2;}
-  else contStr=1;
-  const clusters=Array.from({length:5},(_,i)=>({
-    level:(rng(i+10)*0.02-0.01).toFixed(4),
-    type:rng(i+20)>0.5?"BUY":"SELL",
-    size:Math.round(rng(i+30)*80+20),
-  })).sort((a,b)=>b.size-a.size);
-  return{longPct,shortPct,bias,contrarian,contStr,clusters,updated:new Date().toLocaleTimeString()};
-}
-
-function genFlow(pair){
-  const s=pair.id.charCodeAt(0)*13+Date.now()/1800000+flowTick*0.7;
-  const rng=n=>Math.abs(Math.sin(s*n+2.3)*10000)%1;
-  const alertTypes=["LARGE_BLOCK","SWEEP","OI_SURGE","GAMMA_FLIP","DARK_POOL"];
-  const alerts=[];
-  const count=Math.floor(rng(1)*3)+1;
-  for(let i=0;i<count;i++){
-    const premium=Math.round(rng(i+5)*8000+500);
-    alerts.push({
-      type:alertTypes[Math.floor(rng(i+6)*alertTypes.length)],
-      direction:rng(i+7)>0.5?"BULLISH":"BEARISH",
-      premium,urgency:premium>5000?"HIGH":premium>2000?"MED":"LOW",
-      time:new Date(Date.now()-Math.floor(rng(i+8)*7200000)).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),
-    });
-  }
-  const bullish=alerts.filter(a=>a.direction==="BULLISH").length;
-  const bearish=alerts.filter(a=>a.direction==="BEARISH").length;
-  const flowBias=bullish>bearish?"BULLISH":bearish>bullish?"BEARISH":"NEUTRAL";
-  return{alerts,flowBias,flowStr:Math.max(bullish,bearish)};
-}
-
-function computeSMS(cme,oanda,flow){
-  let score=5,signals=[];
-  if(cme.spikeStr>=3){score+=cme.spikeSignal.includes("BULL")?1.5:-1.5;signals.push({layer:"CME",msg:`Vol Z=${cme.volZ}σ — ${cme.spikeSignal.replace("_"," ")}`,bull:cme.spikeSignal.includes("BULL")});}
-  else if(cme.spikeStr>=2){score+=cme.spikeSignal.includes("BULL")?1.0:-1.0;signals.push({layer:"CME",msg:`Vol spike Z=${cme.volZ}σ`,bull:cme.spikeSignal.includes("BULL")});}
-  if(cme.oiChg>1.5){score+=0.5;signals.push({layer:"CME",msg:`OI +${cme.oiChg}%`,bull:true});}
-  else if(cme.oiChg<-1.5){score-=0.5;signals.push({layer:"CME",msg:`OI ${cme.oiChg}%`,bull:false});}
-  if(oanda.contStr>=3){score+=oanda.contrarian==="INST_LONG"?1.5:-1.5;signals.push({layer:"OANDA",msg:`${oanda.longPct}% retail long → ${oanda.contrarian}`,bull:oanda.contrarian==="INST_LONG"});}
-  else if(oanda.contStr>=2){score+=oanda.contrarian==="INST_LONG"?1.0:-1.0;signals.push({layer:"OANDA",msg:`Retail skew ${oanda.longPct}% long`,bull:oanda.contrarian==="INST_LONG"});}
-  if(flow.flowStr>=2){score+=flow.flowBias==="BULLISH"?1.5:-1.5;signals.push({layer:"FLOW",msg:`${flow.flowStr}× ${flow.flowBias} flow`,bull:flow.flowBias==="BULLISH"});}
-  else if(flow.flowStr>=1){score+=flow.flowBias==="BULLISH"?0.5:-0.5;signals.push({layer:"FLOW",msg:`Bias: ${flow.flowBias}`,bull:flow.flowBias==="BULLISH"});}
-  const finalScore=Math.max(0,Math.min(10,score));
-  const direction=finalScore>=6.5?"LONG":finalScore<=3.5?"SHORT":"NEUTRAL";
-  const conviction=finalScore>=8||finalScore<=2?"HIGH":finalScore>=6.5||finalScore<=3.5?"MED":"LOW";
-  return{score:parseFloat(finalScore.toFixed(1)),direction,conviction,signals};
-}
-
-// ============================================================
-// 4. COMBINED INTELLIGENCE ENGINE
-// ============================================================
-function computeIntelligence(cotSig, sms, pairId, baseCur, quoteCur){
-  // Map flow SMS to directional contribution
-  const flowDir = sms.direction; // LONG/SHORT/NEUTRAL
-  const cotDir  = cotSig.direction; // BUY/SELL
-  const cotConviction = cotSig.conviction; // 1-9
-
-  // Normalize COT conviction to 0-10 scale
-  const cotScore = Math.min(10, cotConviction * (10/9));
-
-  // Map SMS score to directional score (already 0-10)
-  const smsScore = sms.score;
-
-  // Agreement bonus
-  let dirAlignment = false;
-  if (cotDir === 'BUY' && flowDir === 'LONG') dirAlignment = true;
-  if (cotDir === 'SELL' && flowDir === 'SHORT') dirAlignment = true;
-  const conflict = cotSig.signalType === 'CONFLICT';
-
-  // Weighted composite (COT 40%, flow 60% split across 3 layers)
-  // SMS score already encodes flow direction. We remap to 0-10 where LONG=high, SHORT=low
-  let smsDirectional = smsScore; // already directional
-  if (cotDir === 'SELL') {
-    // Invert SMS to align with pair direction
-    // If COT says sell EUR/USD, flow score being high (bullish EUR/USD) is bad
-  }
-
-  // Final combined score
-  let combined;
-  const cotWeight = 0.40;
-  const flowWeight = 0.60;
-
-  if (conflict) {
-    combined = 5.0; // neutral on conflict
-  } else {
-    combined = (cotScore * cotWeight) + (smsScore * flowWeight);
-    // Normalize: cotScore needs to be directional
-    // COT conviction in BUY direction → push score up, SELL → push down
-    const cotDirectional = cotDir === 'BUY' ? (5 + cotScore/2) : (5 - cotScore/2);
-    combined = (cotDirectional * cotWeight) + (smsScore * flowWeight);
-  }
-
-  combined = Math.max(0, Math.min(10, combined));
-
-  const finalDir = combined >= 6.5 ? 'BUY' : combined <= 3.5 ? 'SELL' : 'NEUTRAL';
-  const finalConv = combined >= 8 || combined <= 2 ? 'HIGH' : combined >= 7 || combined <= 3 ? 'MED-HIGH' : combined >= 6 || combined <= 4 ? 'MED' : 'LOW';
-
-  // Layer breakdown percentages for bar display
-  const cotPct = conflict ? 50 : (cotDir === 'BUY' ? Math.min(100, 50 + cotConviction*5) : Math.max(0, 50 - cotConviction*5));
-
-  const cmePct = sms.score >= 5 ? Math.min(100, (sms.score/10)*100) : Math.max(0, (sms.score/10)*100);
-  const oandaContrib = sms.signals.find(s=>s.layer==='OANDA');
-  const oandaPct = oandaContrib ? (oandaContrib.bull ? 70 : 30) : 50;
-  const flowContrib = sms.signals.find(s=>s.layer==='FLOW');
-  const flowPct = flowContrib ? (flowContrib.bull ? 70 : 30) : 50;
-
-  return {
-    combined: parseFloat(combined.toFixed(1)),
-    finalDir, finalConv,
-    cotPct, cmePct, oandaPct, flowPct,
-    dirAlignment, conflict,
-    allSignals: [...cotSig.reasons, ...sms.signals.map(s=>`[${s.layer}] ${s.msg}`)],
-    warnings: cotSig.warnings,
-  };
-}
-
-// ============================================================
-// 5. RENDERERS — COT TABS (original)
-// ============================================================
-function fmt(n){return Math.abs(n)>=1000?(n/1000).toFixed(1)+'K':n.toString()}
-function fmtFull(n){return n.toLocaleString()}
-function sign(n){return n>0?'+':''}
-function getMomentumLabel(m){
-  const map={accelerating_up:{text:'▲▲ Accelerating',cls:'bullish'},turning_up:{text:'▲ Turning Up',cls:'bullish'},up:{text:'▲ Rising',cls:'bullish'},accelerating_down:{text:'▼▼ Decelerating',cls:'bearish'},turning_down:{text:'▼ Turning Down',cls:'bearish'},down:{text:'▼ Falling',cls:'bearish'},flat:{text:'— Flat',cls:'neutral'}};
-  return map[m]||{text:'—',cls:'neutral'};
-}
-function getCotClass(idx){
-  if(idx>=75) return'bullish extreme-bull';
-  if(idx>=55) return'bullish';
-  if(idx<=25) return'bearish extreme-bear';
-  if(idx<=45) return'bearish';
-  return'neutral';
-}
-
-function renderOverview(){
-  const c2=document.getElementById('currency-cards'); c2.innerHTML='';
-  Object.entries(CURRENCIES).forEach(([key,c])=>{
-    const cotCls=getCotClass(c.cotIndex),momLabel=getMomentumLabel(c.momentum),trendCls=c.trendUp?'bullish':'bearish';
-    const maxAbs=Math.max(...c.history.map(Math.abs));
-    const sparkBars=c.history.slice(-26).map(v=>{const h=Math.max(4,(Math.abs(v)/maxAbs)*36);const col=v>=0?'var(--green)':'var(--red)';return`<div class="spark-bar" style="height:${h}px;background:${col};opacity:0.7"></div>`;}).join('');
-    c2.innerHTML+=`<div class="card"><div class="card-header"><div><div class="currency-label">${c.flag} ${c.code}</div><div style="font-size:11px;color:var(--muted)">${c.name}</div></div><div class="net-pos ${c.totalSpecNet>=0?'positive':'negative'}">${sign(c.totalSpecNet)}${fmtFull(c.totalSpecNet)}</div></div><div class="stats-row"><div class="stat"><div class="stat-label">52w High</div><div class="stat-value" style="color:var(--green)">${fmt(c.w52High)}</div></div><div class="stat"><div class="stat-label">52w Low</div><div class="stat-value" style="color:var(--red)">${fmt(c.w52Low)}</div></div><div class="stat"><div class="stat-label">1w Change</div><div class="stat-value" style="color:${c.weekChange>=0?'var(--green)':'var(--red)'}">${sign(c.weekChange)}${fmt(c.weekChange)}</div></div></div><div class="cot-index-bar"><div class="cot-index-marker" style="left:${c.cotIndex}%"></div></div><div class="cot-index-label"><span>0 Bearish</span><span>COT Index: ${c.cotIndex}</span><span>100 Bullish</span></div><div class="pills"><div class="pill ${cotCls}">COT ${c.cotIndex}</div><div class="pill ${trendCls}">${c.trendUp?'↑ UP':'↓ DOWN'}</div><div class="pill ${momLabel.cls}">${momLabel.text}</div></div><div class="spark-container"><div class="spark-label">26-Week Net Position</div><div class="spark">${sparkBars}</div></div><div class="wow-section"><div class="wow-grid"><div class="wow-item"><span class="label">Asset Mgr Net</span><span class="val ${c.assetMgrNet>=0?'up':'down'}">${sign(c.assetMgrNet)}${fmtFull(c.assetMgrNet)}</span></div><div class="wow-item"><span class="label">Lev Funds Net</span><span class="val ${c.levFundsNet>=0?'up':'down'}">${sign(c.levFundsNet)}${fmtFull(c.levFundsNet)}</span></div><div class="wow-item"><span class="label">4w MA</span><span class="val">${fmt(c.ma4)}</span></div><div class="wow-item"><span class="label">13w MA</span><span class="val">${fmt(c.ma13)}</span></div></div></div></div>`;
-  });
-}
-
-function renderChanges(){
-  const tbody=document.querySelector('#changes-table tbody'); tbody.innerHTML='';
-  Object.entries(CURRENCIES).forEach(([key,c])=>{
-    const prev=c.history[c.history.length-2],momLabel=getMomentumLabel(c.momentum),cotCls=getCotClass(c.cotIndex);
-    tbody.innerHTML+=`<tr><td style="font-weight:700">${c.flag} ${c.code}</td><td style="color:${c.current>=0?'var(--green)':'var(--red)'}">${fmtFull(c.current)}</td><td style="color:var(--muted)">${fmtFull(prev)}</td><td><span class="change-badge ${c.weekChange>=0?'up':'down'}">${sign(c.weekChange)}${fmtFull(c.weekChange)}</span></td><td><span class="change-badge ${c.changes.assetMgrNet>=0?'up':'down'}">${sign(c.changes.assetMgrNet)}${fmt(c.changes.assetMgrNet)}</span></td><td><span class="change-badge ${c.changes.levFundsNet>=0?'up':'down'}">${sign(c.changes.levFundsNet)}${fmt(c.changes.levFundsNet)}</span></td><td><span class="pill ${c.trendUp?'bullish':'bearish'}">${c.trendUp?'↑ UP':'↓ DOWN'}</span></td><td><span class="pill ${momLabel.cls}">${momLabel.text}</span></td><td><span class="pill ${cotCls}">${c.cotIndex}</span></td></tr>`;
-  });
-}
-
-let historyChart=null;
-function renderHistory(){
-  const btns=document.getElementById('history-currency-btns'); btns.innerHTML='';
-  const keys=Object.keys(CURRENCIES);
-  keys.forEach((k,i)=>{btns.innerHTML+=`<button class="chart-btn ${i===0?'active':''}" data-cur="${k}">${CURRENCIES[k].flag} ${k}</button>`;});
-  btns.querySelectorAll('.chart-btn').forEach(btn=>{btn.addEventListener('click',()=>{btns.querySelectorAll('.chart-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateHistoryChart(btn.dataset.cur);});});
-  updateHistoryChart(keys[0]);
-  const tbody=document.querySelector('#history-stats-table tbody'); tbody.innerHTML='';
-  Object.entries(CURRENCIES).forEach(([key,c])=>{
-    const trendCol=c.ma4>c.ma13?'var(--green)':'var(--red)';
-    tbody.innerHTML+=`<tr><td style="font-weight:700">${c.flag} ${c.code}</td><td style="color:${c.current>=0?'var(--green)':'var(--red)'}">${fmtFull(c.current)}</td><td style="color:var(--green)">${fmtFull(c.w52High)}</td><td style="color:var(--red)">${fmtFull(c.w52Low)}</td><td><span class="pill ${getCotClass(c.cotIndex)}">${c.cotIndex}</span></td><td>${fmtFull(c.ma4)}</td><td>${fmtFull(c.ma13)}</td><td style="color:${trendCol}">${c.ma4>c.ma13?'4w > 13w ↑':'4w < 13w ↓'}</td><td>${fmtFull(c.distToHigh)}</td><td>${fmtFull(c.distToLow)}</td></tr>`;
-  });
-}
-
-function updateHistoryChart(curKey){
-  const c=CURRENCIES[curKey];
-  const labels=c.history.map((_,i)=>`W${i+1}`);
-  if(historyChart) historyChart.destroy();
-  historyChart=new Chart(document.getElementById('historyChart'),{type:'line',data:{labels,datasets:[{label:`${c.code} Net Position`,data:c.history,borderColor:'#3b82f6',backgroundColor:c.history.map(v=>v>=0?'rgba(16,185,129,0.12)':'rgba(239,68,68,0.12)'),borderWidth:2,fill:true,tension:0.3,pointRadius:0,pointHoverRadius:4},{label:'52w High',data:Array(c.history.length).fill(c.w52High),borderColor:'rgba(16,185,129,0.4)',borderWidth:1,borderDash:[5,5],pointRadius:0,fill:false},{label:'52w Low',data:Array(c.history.length).fill(c.w52Low),borderColor:'rgba(239,68,68,0.4)',borderWidth:1,borderDash:[5,5],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#8892a8',font:{family:'JetBrains Mono',size:10}}},tooltip:{backgroundColor:'#1a2235',borderColor:'#2a3550',borderWidth:1,titleFont:{family:'JetBrains Mono'},bodyFont:{family:'JetBrains Mono'},callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmtFull(ctx.parsed.y)}`}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8892a8',font:{family:'JetBrains Mono',size:10},maxTicksLimit:13}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8892a8',font:{family:'JetBrains Mono',size:11},callback:v=>fmt(v)}}}}});
-}
-
-function renderMatrix(){
-  const table=document.getElementById('matrix-table');
-  const keys=Object.keys(CURRENCIES);
-  let html='<thead><tr><th></th>';
-  keys.forEach(k=>{html+=`<th>${k}</th>`;});
-  html+='</tr></thead><tbody>';
-  keys.forEach(base=>{
-    html+=`<tr><th>${base}</th>`;
-    keys.forEach(quote=>{
-      if(base===quote){html+=`<td class="self">—</td>`;}
-      else{
-        const diff=CURRENCIES[base].cotIndex-CURRENCIES[quote].cotIndex;
-        const intensity=Math.min(Math.abs(diff)/80,1);
-        const bg=diff>5?`rgba(16,185,129,${intensity*0.5+0.1})`:diff<-5?`rgba(239,68,68,${intensity*0.5+0.1})`:`rgba(255,255,255,0.05)`;
-        const tc=diff>5?'var(--green)':diff<-5?'var(--red)':'var(--muted)';
-        html+=`<td style="background:${bg};color:${tc}">${diff>0?'+':''}${diff}</td>`;
-      }
-    });
-    html+='</tr>';
-  });
-  table.innerHTML=html+'</tbody>';
-}
+function fmt(n){return Math.abs(n)>=1000?(n/1000).toFixed(1)+'K':n.toString();}
+function fmtFull(n){return n.toLocaleString();}
+function sign(n){return n>0?'+':'';}
+function getMomentumLabel(m){const map={accelerating_up:{text:'▲▲ Accelerating',cls:'bullish'},turning_up:{text:'▲ Turning Up',cls:'bullish'},up:{text:'▲ Rising',cls:'bullish'},accelerating_down:{text:'▼▼ Decelerating',cls:'bearish'},turning_down:{text:'▼ Turning Down',cls:'bearish'},down:{text:'▼ Falling',cls:'bearish'},flat:{text:'— Flat',cls:'neutral'}};return map[m]||{text:'—',cls:'neutral'};}
+function getCotClass(i){if(i>=75)return'bullish extreme';if(i>=55)return'bullish';if(i<=25)return'bearish extreme';if(i<=45)return'bearish';return'neutral';}
 
 /* ═══════════════════════════════════════════════
    COT SCENARIO ENGINE  (B-1…B-7 / S-1…S-7)
@@ -1345,37 +1019,6 @@ function renderMatrix(){
   });h+='</tr>';});h+='</tbody>';table.innerHTML=h;
 }
 
-document.querySelectorAll('.tab').forEach(tab=>{tab.addEventListener('click',()=>{
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  tab.classList.add('active');document.getElementById(tab.dataset.tab).classList.add('active');
-  if(tab.dataset.tab==='history'&&!historyChart)renderHistory();
-});});
-
-async function init(){
-  const md=document.getElementById('meta-date');
-  try{
-    const r=await fetch('cot_data.json');if(!r.ok)throw new Error();
-    const j=await r.json();if(j.error)throw new Error();
-    CURRENCIES=buildCurrencies(j);computeAnalytics(CURRENCIES);
-    if(md)md.textContent=`Data updated: ${j.updated_at||'Unknown'}`;
-  }catch(e){
-    console.warn('Using embedded fallback data.');
-    if(md)md.textContent='Data: embedded fallback';
-    CURRENCIES={
-      EUR:{name:"Euro",flag:"🇪🇺",code:"EUR",contract:125000,assetMgr:{long:549252,short:135539},levFunds:{long:126502,short:82953},dealer:{long:54606,short:579530},changes:{assetMgrNet:3175,levFundsNet:-6655},history:[175000,168000,160000,152000,158000,170000,182000,195000,205000,215000,225000,240000,250000,260000,268000,275000,285000,295000,310000,325000,335000,340000,345000,350000,355000,360000,365000,370000,375000,380000,385000,388000,392000,396000,400000,405000,410000,415000,420000,425000,430000,435000,438000,440000,443000,445000,448000,452000,455000,457262,455000,457262]},
-      GBP:{name:"British Pound",flag:"🇬🇧",code:"GBP",contract:62500,assetMgr:{long:44919,short:138462},levFunds:{long:74888,short:32522},dealer:{long:63206,short:17673},changes:{assetMgrNet:-14942,levFundsNet:-1113},history:[-35000,-32000,-28000,-22000,-18000,-15000,-20000,-25000,-30000,-28000,-22000,-15000,-10000,-5000,0,5000,10000,15000,20000,25000,18000,12000,8000,2000,-5000,-10000,-15000,-20000,-25000,-30000,-35000,-40000,-45000,-48000,-50000,-52000,-54000,-56000,-58000,-60000,-62000,-64000,-65000,-68000,-70000,-72000,-75000,-78000,-80000,-82000,-85000,-51177]},
-      JPY:{name:"Japanese Yen",flag:"🇯🇵",code:"JPY",contract:12500000,assetMgr:{long:76665,short:36119},levFunds:{long:82783,short:112104},dealer:{long:29223,short:110160},changes:{assetMgrNet:15030,levFundsNet:24546},history:[-120000,-115000,-108000,-100000,-95000,-88000,-80000,-72000,-65000,-58000,-50000,-42000,-35000,-28000,-20000,-12000,-5000,2000,8000,15000,10000,5000,-2000,-8000,-15000,-20000,-25000,-18000,-10000,-5000,0,5000,10000,15000,20000,25000,18000,12000,5000,-2000,-8000,-15000,-10000,-5000,0,5000,10000,8000,5000,2000,8000,11225]},
-      CAD:{name:"Canadian Dollar",flag:"🇨🇦",code:"CAD",contract:100000,assetMgr:{long:107608,short:39044},levFunds:{long:22004,short:64038},dealer:{long:31674,short:79347},changes:{assetMgrNet:11669,levFundsNet:8974},history:[-65000,-60000,-55000,-48000,-42000,-38000,-35000,-30000,-25000,-20000,-15000,-10000,-5000,0,2000,5000,8000,12000,15000,18000,15000,10000,5000,0,-5000,-10000,-15000,-12000,-8000,-5000,0,3000,6000,10000,15000,18000,22000,25000,28000,30000,32000,35000,30000,25000,20000,18000,22000,25000,22000,20000,24000,26530]},
-      AUD:{name:"Australian Dollar",flag:"🇦🇺",code:"AUD",contract:100000,assetMgr:{long:65100,short:63339},levFunds:{long:103196,short:32936},dealer:{long:17675,short:125763},changes:{assetMgrNet:15676,levFundsNet:6322},history:[-80000,-75000,-68000,-62000,-58000,-52000,-45000,-38000,-32000,-28000,-22000,-18000,-12000,-8000,-5000,0,5000,10000,15000,22000,18000,12000,8000,5000,0,-5000,-10000,-15000,-20000,-25000,-30000,-35000,-28000,-22000,-15000,-10000,-5000,0,5000,10000,15000,20000,25000,30000,35000,40000,45000,50000,55000,60000,65000,72021]},
-      CHF:{name:"Swiss Franc",flag:"🇨🇭",code:"CHF",contract:125000,assetMgr:{long:4803,short:58674},levFunds:{long:7841,short:5386},dealer:{long:56518,short:8658},changes:{assetMgrNet:-1301,levFundsNet:3255},history:[-58000,-55000,-52000,-48000,-45000,-42000,-40000,-38000,-35000,-32000,-30000,-28000,-25000,-22000,-20000,-18000,-15000,-12000,-10000,-8000,-12000,-15000,-18000,-22000,-25000,-28000,-30000,-32000,-35000,-38000,-40000,-42000,-44000,-46000,-48000,-50000,-48000,-45000,-42000,-40000,-42000,-44000,-46000,-48000,-50000,-52000,-50000,-48000,-50000,-52000,-50000,-51416]},
-      NZD:{name:"New Zealand Dollar",flag:"🇳🇿",code:"NZD",contract:100000,assetMgr:{long:14819,short:40971},levFunds:{long:9443,short:21908},dealer:{long:39909,short:4284},changes:{assetMgrNet:3070,levFundsNet:-1680},history:[-42000,-40000,-38000,-35000,-32000,-30000,-28000,-25000,-22000,-20000,-18000,-15000,-12000,-10000,-8000,-5000,-3000,0,2000,5000,2000,-2000,-5000,-8000,-12000,-15000,-18000,-20000,-22000,-25000,-28000,-30000,-28000,-25000,-22000,-20000,-18000,-22000,-25000,-28000,-30000,-32000,-34000,-36000,-35000,-33000,-35000,-36000,-38000,-37000,-38000,-38617]},
-      USD:{name:"US Dollar Index",flag:"🇺🇸",code:"USD",contract:1000,assetMgr:{long:0,short:0},levFunds:{long:0,short:0},dealer:{long:0,short:0},changes:{assetMgrNet:0,levFundsNet:0},history:[5000,5200,4800,4500,4200,3900,3600,3800,4000,4300,4600,4900,5100,5400,5600,5800,6000,5700,5400,5100,4800,4500,4200,3900,3600,3300,3000,3200,3500,3800,4100,4400,4700,5000,5300,5600,5900,6200,6500,6800,7000,7200,7500,7800,8000,8200,8500,8800,9000,9200,9500,9800]},
-    };
-    computeAnalytics(CURRENCIES);
-  }
-  renderOverview();renderChanges();renderHistory();renderMatrix();renderSignals();
-}
 /* ─── Guidance Tab ─── */
 function showGPanel(id, btn) {
   document.querySelectorAll('.g-panel').forEach(p=>p.classList.remove('active'));
@@ -1390,7 +1033,171 @@ function toggleG(head) {
   body.classList.toggle('open',!open);
 }
 
+// 3. INSTITUTIONAL FLOW DATA GENERATORS
 // ============================================================
+const FLOW_PAIRS=[
+  {id:"EUR",label:"EUR/USD",oandaPair:"EUR_USD",color:"#00d4ff",flag:"🇪🇺"},
+  {id:"GBP",label:"GBP/USD",oandaPair:"GBP_USD",color:"#ff6b35",flag:"🇬🇧"},
+  {id:"JPY",label:"USD/JPY",oandaPair:"USD_JPY",color:"#ffd700",flag:"🇯🇵"},
+  {id:"AUD",label:"AUD/USD",oandaPair:"AUD_USD",color:"#7fff7f",flag:"🇦🇺"},
+  {id:"CAD",label:"USD/CAD",oandaPair:"USD_CAD",color:"#ff9ff3",flag:"🇨🇦"},
+  {id:"CHF",label:"USD/CHF",oandaPair:"USD_CHF",color:"#ff4757",flag:"🇨🇭"},
+  {id:"NZD",label:"NZD/USD",oandaPair:"NZD_USD",color:"#a29bfe",flag:"🇳🇿"},
+];
+
+let flowTick=0;
+
+function genCME(pair){
+  const s=pair.id.charCodeAt(0)+Date.now()/86400000+flowTick*0.3;
+  const rng=n=>Math.abs(Math.sin(s*n)*10000)%1;
+  const bases={EUR:180000,GBP:95000,JPY:160000,AUD:72000,CAD:68000,CHF:45000,NZD:32000};
+  const base=bases[pair.id]||80000;
+  const days=20;
+  const history=Array.from({length:days},(_,i)=>({
+    volume:Math.round(base*(0.7+rng(i+1)*0.8)),
+    oi:Math.round(base*3.2*(0.85+rng(i+2)*0.3)),
+  }));
+  const vols=history.map(d=>d.volume);
+  const mean=vols.reduce((a,b)=>a+b,0)/vols.length;
+  const std=Math.sqrt(vols.reduce((a,b)=>a+Math.pow(b-mean,2),0)/vols.length);
+  const latest=history[history.length-1],prev=history[history.length-2];
+  const volZ=parseFloat(((latest.volume-mean)/std).toFixed(2));
+  const oiChg=parseFloat((((latest.oi-prev.oi)/prev.oi)*100).toFixed(2));
+  let spikeSignal="NEUTRAL",spikeStr=0;
+  if(Math.abs(volZ)>2.0){spikeSignal=volZ>0?"STRONG_BULL":"STRONG_BEAR";spikeStr=3;}
+  else if(Math.abs(volZ)>1.5){spikeSignal=volZ>0?"BULL":"BEAR";spikeStr=2;}
+  else if(Math.abs(volZ)>1.0){spikeSignal=volZ>0?"MILD_BULL":"MILD_BEAR";spikeStr=1;}
+  return{history,currentVolume:latest.volume,currentOI:latest.oi,volZ,oiChg,spikeSignal,spikeStr,mean:Math.round(mean)};
+}
+
+function genOANDA(pair){
+  const s=pair.id.charCodeAt(0)*7+Date.now()/3600000+flowTick*0.5;
+  const rng=n=>Math.abs(Math.sin(s*n+1.7)*10000)%1;
+  const longPct=parseFloat((30+rng(1)*40).toFixed(1));
+  const shortPct=parseFloat((100-longPct).toFixed(1));
+  const bias=longPct>60?"CROWDED_LONG":longPct<40?"CROWDED_SHORT":"BALANCED";
+  let contrarian="NEUTRAL",contStr=0;
+  if(longPct>65){contrarian="INST_SHORT";contStr=3;}
+  else if(longPct>60){contrarian="INST_SHORT";contStr=2;}
+  else if(longPct<35){contrarian="INST_LONG";contStr=3;}
+  else if(longPct<40){contrarian="INST_LONG";contStr=2;}
+  else contStr=1;
+  const clusters=Array.from({length:5},(_,i)=>({
+    level:(rng(i+10)*0.02-0.01).toFixed(4),
+    type:rng(i+20)>0.5?"BUY":"SELL",
+    size:Math.round(rng(i+30)*80+20),
+  })).sort((a,b)=>b.size-a.size);
+  return{longPct,shortPct,bias,contrarian,contStr,clusters,updated:new Date().toLocaleTimeString()};
+}
+
+function genFlow(pair){
+  const s=pair.id.charCodeAt(0)*13+Date.now()/1800000+flowTick*0.7;
+  const rng=n=>Math.abs(Math.sin(s*n+2.3)*10000)%1;
+  const alertTypes=["LARGE_BLOCK","SWEEP","OI_SURGE","GAMMA_FLIP","DARK_POOL"];
+  const alerts=[];
+  const count=Math.floor(rng(1)*3)+1;
+  for(let i=0;i<count;i++){
+    const premium=Math.round(rng(i+5)*8000+500);
+    alerts.push({
+      type:alertTypes[Math.floor(rng(i+6)*alertTypes.length)],
+      direction:rng(i+7)>0.5?"BULLISH":"BEARISH",
+      premium,urgency:premium>5000?"HIGH":premium>2000?"MED":"LOW",
+      time:new Date(Date.now()-Math.floor(rng(i+8)*7200000)).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),
+    });
+  }
+  const bullish=alerts.filter(a=>a.direction==="BULLISH").length;
+  const bearish=alerts.filter(a=>a.direction==="BEARISH").length;
+  const flowBias=bullish>bearish?"BULLISH":bearish>bullish?"BEARISH":"NEUTRAL";
+  return{alerts,flowBias,flowStr:Math.max(bullish,bearish)};
+}
+
+function computeSMS(cme,oanda,flow){
+  let score=5,signals=[];
+  if(cme.spikeStr>=3){score+=cme.spikeSignal.includes("BULL")?1.5:-1.5;signals.push({layer:"CME",msg:`Vol Z=${cme.volZ}σ — ${cme.spikeSignal.replace("_"," ")}`,bull:cme.spikeSignal.includes("BULL")});}
+  else if(cme.spikeStr>=2){score+=cme.spikeSignal.includes("BULL")?1.0:-1.0;signals.push({layer:"CME",msg:`Vol spike Z=${cme.volZ}σ`,bull:cme.spikeSignal.includes("BULL")});}
+  if(cme.oiChg>1.5){score+=0.5;signals.push({layer:"CME",msg:`OI +${cme.oiChg}%`,bull:true});}
+  else if(cme.oiChg<-1.5){score-=0.5;signals.push({layer:"CME",msg:`OI ${cme.oiChg}%`,bull:false});}
+  if(oanda.contStr>=3){score+=oanda.contrarian==="INST_LONG"?1.5:-1.5;signals.push({layer:"OANDA",msg:`${oanda.longPct}% retail long → ${oanda.contrarian}`,bull:oanda.contrarian==="INST_LONG"});}
+  else if(oanda.contStr>=2){score+=oanda.contrarian==="INST_LONG"?1.0:-1.0;signals.push({layer:"OANDA",msg:`Retail skew ${oanda.longPct}% long`,bull:oanda.contrarian==="INST_LONG"});}
+  if(flow.flowStr>=2){score+=flow.flowBias==="BULLISH"?1.5:-1.5;signals.push({layer:"FLOW",msg:`${flow.flowStr}× ${flow.flowBias} flow`,bull:flow.flowBias==="BULLISH"});}
+  else if(flow.flowStr>=1){score+=flow.flowBias==="BULLISH"?0.5:-0.5;signals.push({layer:"FLOW",msg:`Bias: ${flow.flowBias}`,bull:flow.flowBias==="BULLISH"});}
+  const finalScore=Math.max(0,Math.min(10,score));
+  const direction=finalScore>=6.5?"LONG":finalScore<=3.5?"SHORT":"NEUTRAL";
+  const conviction=finalScore>=8||finalScore<=2?"HIGH":finalScore>=6.5||finalScore<=3.5?"MED":"LOW";
+  return{score:parseFloat(finalScore.toFixed(1)),direction,conviction,signals};
+}
+
+// ============================================================
+
+// 4. COMBINED INTELLIGENCE ENGINE
+// ============================================================
+function computeIntelligence(cotSig, sms, pairId, baseCur, quoteCur){
+  // Map flow SMS to directional contribution
+  const flowDir = sms.direction; // LONG/SHORT/NEUTRAL
+  const cotDir  = cotSig.direction; // BUY/SELL
+  const cotConviction = cotSig.conviction; // 1-9
+
+  // Normalize COT conviction to 0-10 scale
+  const cotScore = Math.min(10, cotConviction * (10/9));
+
+  // Map SMS score to directional score (already 0-10)
+  const smsScore = sms.score;
+
+  // Agreement bonus
+  let dirAlignment = false;
+  if (cotDir === 'BUY' && flowDir === 'LONG') dirAlignment = true;
+  if (cotDir === 'SELL' && flowDir === 'SHORT') dirAlignment = true;
+  const conflict = cotSig.signalType === 'CONFLICT';
+
+  // Weighted composite (COT 40%, flow 60% split across 3 layers)
+  // SMS score already encodes flow direction. We remap to 0-10 where LONG=high, SHORT=low
+  let smsDirectional = smsScore; // already directional
+  if (cotDir === 'SELL') {
+    // Invert SMS to align with pair direction
+    // If COT says sell EUR/USD, flow score being high (bullish EUR/USD) is bad
+  }
+
+  // Final combined score
+  let combined;
+  const cotWeight = 0.40;
+  const flowWeight = 0.60;
+
+  if (conflict) {
+    combined = 5.0; // neutral on conflict
+  } else {
+    combined = (cotScore * cotWeight) + (smsScore * flowWeight);
+    // Normalize: cotScore needs to be directional
+    // COT conviction in BUY direction → push score up, SELL → push down
+    const cotDirectional = cotDir === 'BUY' ? (5 + cotScore/2) : (5 - cotScore/2);
+    combined = (cotDirectional * cotWeight) + (smsScore * flowWeight);
+  }
+
+  combined = Math.max(0, Math.min(10, combined));
+
+  const finalDir = combined >= 6.5 ? 'BUY' : combined <= 3.5 ? 'SELL' : 'NEUTRAL';
+  const finalConv = combined >= 8 || combined <= 2 ? 'HIGH' : combined >= 7 || combined <= 3 ? 'MED-HIGH' : combined >= 6 || combined <= 4 ? 'MED' : 'LOW';
+
+  // Layer breakdown percentages for bar display
+  const cotPct = conflict ? 50 : (cotDir === 'BUY' ? Math.min(100, 50 + cotConviction*5) : Math.max(0, 50 - cotConviction*5));
+
+  const cmePct = sms.score >= 5 ? Math.min(100, (sms.score/10)*100) : Math.max(0, (sms.score/10)*100);
+  const oandaContrib = sms.signals.find(s=>s.layer==='OANDA');
+  const oandaPct = oandaContrib ? (oandaContrib.bull ? 70 : 30) : 50;
+  const flowContrib = sms.signals.find(s=>s.layer==='FLOW');
+  const flowPct = flowContrib ? (flowContrib.bull ? 70 : 30) : 50;
+
+  return {
+    combined: parseFloat(combined.toFixed(1)),
+    finalDir, finalConv,
+    cotPct, cmePct, oandaPct, flowPct,
+    dirAlignment, conflict,
+    allSignals: [...cotSig.reasons, ...sms.signals.map(s=>`[${s.layer}] ${s.msg}`)],
+    warnings: cotSig.warnings,
+  };
+}
+
+// ============================================================
+
 // 6. FLOW TAB RENDERER
 // ============================================================
 let selectedFlowPair='EUR';
@@ -1531,11 +1338,12 @@ function updateTicker(allData){
   FLOW_PAIRS.forEach(pair=>{
     const{sms}=allData[pair.id];
     const dirCol=sms.direction==='LONG'?'#10b981':sms.direction==='SHORT'?'#ef4444':'#f59e0b';
-    ticker.innerHTML+=`<div class="ticker-item ${selectedFlowPair===pair.id&&document.querySelector('.tab[data-tab="flow"]').classList.contains('active')?'active-flow':''}" onclick="selectFlowPair('${pair.id}');document.querySelector('.tab[data-tab=\'flow\']').click()"><span style="font-size:11px">${pair.flag}</span><span class="ticker-label">${pair.label}</span><span class="ticker-score" style="color:${dirCol}">${sms.score.toFixed(1)}</span><span class="ticker-dir" style="color:${dirCol}">${sms.direction}</span></div>`;
+    ticker.innerHTML+=`<div class="ticker-item ${selectedFlowPair===pair.id&&document.querySelector('.tab[data-tab="flow"]').classList.contains('active')?'active-flow':''}" onclick="selectFlowPair('${pair.id}');document.querySelector('.tab[data-tab=\\'flow\\']').click()"><span style="font-size:11px">${pair.flag}</span><span class="ticker-label">${pair.label}</span><span class="ticker-score" style="color:${dirCol}">${sms.score.toFixed(1)}</span><span class="ticker-dir" style="color:${dirCol}">${sms.direction}</span></div>`;
   });
 }
 
 // ============================================================
+
 // 7. INTELLIGENCE TAB RENDERER
 // ============================================================
 let intelFilter='all';
@@ -1662,7 +1470,9 @@ function renderIntelligence(){
 }
 
 // ============================================================
+
 // 8. TAB NAVIGATION & INIT
+
 // ============================================================
 document.querySelectorAll('.tab').forEach(tab=>{
   tab.addEventListener('click',()=>{
@@ -1715,7 +1525,7 @@ async function init(){
   renderChanges();
   renderHistory();
   renderMatrix();
-  renderSignals();
+  renderCOTSignals();
 
   // Precompute flow for ticker bar
   const allFlowData=getAllFlowData();
@@ -1723,6 +1533,7 @@ async function init(){
 }
 
 init();
+
 </script>
 </body>
 </html>
