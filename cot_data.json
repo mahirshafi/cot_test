@@ -1,8 +1,29 @@
 {
-  "updated_at": "2026-10-09 22:28 UTC",
+  "updated_at": "2026-10-16 20:47 UTC",
   "data": {
     "EUR": {
       "weeks": [
+        {
+          "date": "2026-10-13",
+          "lev_long": 120021,
+          "lev_short": 188022,
+          "net_lev": -68001,
+          "asset_long": 502676,
+          "asset_short": 302758,
+          "net_asset": 199918,
+          "dealer_long": 55346,
+          "dealer_short": 220109,
+          "nonrept_long": 84566,
+          "nonrept_short": 58218,
+          "net_noncomm": 131917,
+          "noncomm_long": 120021,
+          "noncomm_short": 188022,
+          "comm_long": 502676,
+          "comm_short": 302758,
+          "net_comm": 199918,
+          "cot_index": 0.0,
+          "wow_change": -13703
+        },
         {
           "date": "2026-10-06",
           "lev_long": 135367,
@@ -21,7 +42,7 @@
           "comm_long": 499449,
           "comm_short": 309568,
           "net_comm": 189881,
-          "cot_index": 0.5,
+          "cot_index": 4.2,
           "wow_change": -35718
         },
         {
@@ -42,7 +63,7 @@
           "comm_long": 500353,
           "comm_short": 279750,
           "net_comm": 220603,
-          "cot_index": 11.8,
+          "cot_index": 15.0,
           "wow_change": -8451
         },
         {
@@ -63,7 +84,7 @@
           "comm_long": 482229,
           "comm_short": 265746,
           "net_comm": 216483,
-          "cot_index": 14.4,
+          "cot_index": 17.6,
           "wow_change": -33753
         },
         {
@@ -84,7 +105,7 @@
           "comm_long": 486435,
           "comm_short": 234737,
           "net_comm": 251698,
-          "cot_index": 25.1,
+          "cot_index": 27.9,
           "wow_change": 6149
         },
         {
@@ -105,7 +126,7 @@
           "comm_long": 484443,
           "comm_short": 233765,
           "net_comm": 250678,
-          "cot_index": 23.1,
+          "cot_index": 26.0,
           "wow_change": -7687
         },
         {
@@ -126,7 +147,7 @@
           "comm_long": 468254,
           "comm_short": 205001,
           "net_comm": 263253,
-          "cot_index": 25.6,
+          "cot_index": 28.3,
           "wow_change": 2013
         },
         {
@@ -147,7 +168,7 @@
           "comm_long": 461805,
           "comm_short": 200379,
           "net_comm": 261426,
-          "cot_index": 24.9,
+          "cot_index": 27.7,
           "wow_change": 43357
         },
         {
@@ -168,7 +189,7 @@
           "comm_long": 451575,
           "comm_short": 214149,
           "net_comm": 237426,
-          "cot_index": 11.2,
+          "cot_index": 14.5,
           "wow_change": 14921
         },
         {
@@ -189,7 +210,7 @@
           "comm_long": 450831,
           "comm_short": 225442,
           "net_comm": 225389,
-          "cot_index": 6.5,
+          "cot_index": 10.0,
           "wow_change": -2268
         },
         {
@@ -210,7 +231,7 @@
           "comm_long": 445903,
           "comm_short": 226641,
           "net_comm": 219262,
-          "cot_index": 7.2,
+          "cot_index": 10.7,
           "wow_change": 22929
         },
         {
@@ -231,7 +252,7 @@
           "comm_long": 449191,
           "comm_short": 239865,
           "net_comm": 209326,
-          "cot_index": 0.0,
+          "cot_index": 3.7,
           "wow_change": -28128
         },
         {
@@ -252,7 +273,7 @@
           "comm_long": 458394,
           "comm_short": 229467,
           "net_comm": 228927,
-          "cot_index": 8.9,
+          "cot_index": 12.3,
           "wow_change": -21369
         },
         {
@@ -273,7 +294,7 @@
           "comm_long": 466709,
           "comm_short": 219393,
           "net_comm": 247316,
-          "cot_index": 15.6,
+          "cot_index": 18.8,
           "wow_change": -14832
         },
         {
@@ -294,7 +315,7 @@
           "comm_long": 478070,
           "comm_short": 224152,
           "net_comm": 253918,
-          "cot_index": 20.3,
+          "cot_index": 23.3,
           "wow_change": -14057
         },
         {
@@ -315,7 +336,7 @@
           "comm_long": 470602,
           "comm_short": 215444,
           "net_comm": 255158,
-          "cot_index": 24.8,
+          "cot_index": 27.6,
           "wow_change": -16806
         },
         {
@@ -336,7 +357,7 @@
           "comm_long": 462293,
           "comm_short": 207563,
           "net_comm": 254730,
-          "cot_index": 30.1,
+          "cot_index": 32.7,
           "wow_change": -22098
         },
         {
@@ -357,7 +378,7 @@
           "comm_long": 460022,
           "comm_short": 189678,
           "net_comm": 270344,
-          "cot_index": 37.0,
+          "cot_index": 39.4,
           "wow_change": -2750
         },
         {
@@ -378,7 +399,7 @@
           "comm_long": 462310,
           "comm_short": 180754,
           "net_comm": 281556,
-          "cot_index": 37.9,
+          "cot_index": 40.2,
           "wow_change": -33780
         },
         {
@@ -399,7 +420,7 @@
           "comm_long": 454078,
           "comm_short": 168157,
           "net_comm": 285921,
-          "cot_index": 48.6,
+          "cot_index": 50.5,
           "wow_change": 20762
         },
         {
@@ -420,7 +441,7 @@
           "comm_long": 439116,
           "comm_short": 169226,
           "net_comm": 269890,
-          "cot_index": 42.0,
+          "cot_index": 44.2,
           "wow_change": -9898
         },
         {
@@ -441,7 +462,7 @@
           "comm_long": 439556,
           "comm_short": 168789,
           "net_comm": 270767,
-          "cot_index": 45.2,
+          "cot_index": 47.2,
           "wow_change": -21199
         },
         {
@@ -462,7 +483,7 @@
           "comm_long": 447503,
           "comm_short": 157223,
           "net_comm": 290280,
-          "cot_index": 51.8,
+          "cot_index": 53.6,
           "wow_change": 10824
         },
         {
@@ -483,7 +504,7 @@
           "comm_long": 443607,
           "comm_short": 157994,
           "net_comm": 285613,
-          "cot_index": 48.4,
+          "cot_index": 50.3,
           "wow_change": -5033
         },
         {
@@ -504,7 +525,7 @@
           "comm_long": 439565,
           "comm_short": 148667,
           "net_comm": 290898,
-          "cot_index": 50.0,
+          "cot_index": 51.9,
           "wow_change": -4216
         },
         {
@@ -525,7 +546,7 @@
           "comm_long": 438536,
           "comm_short": 152145,
           "net_comm": 286391,
-          "cot_index": 51.3,
+          "cot_index": 53.2,
           "wow_change": 10884
         },
         {
@@ -546,7 +567,7 @@
           "comm_long": 434892,
           "comm_short": 164450,
           "net_comm": 270442,
-          "cot_index": 47.9,
+          "cot_index": 49.8,
           "wow_change": 36892
         },
         {
@@ -567,7 +588,7 @@
           "comm_long": 433195,
           "comm_short": 175145,
           "net_comm": 258050,
-          "cot_index": 36.3,
+          "cot_index": 38.6,
           "wow_change": -9432
         },
         {
@@ -588,7 +609,7 @@
           "comm_long": 431246,
           "comm_short": 166829,
           "net_comm": 264417,
-          "cot_index": 39.2,
+          "cot_index": 41.5,
           "wow_change": -6038
         },
         {
@@ -609,7 +630,7 @@
           "comm_long": 446373,
           "comm_short": 158433,
           "net_comm": 287940,
-          "cot_index": 41.1,
+          "cot_index": 43.3,
           "wow_change": -13184
         },
         {
@@ -630,7 +651,7 @@
           "comm_long": 452180,
           "comm_short": 157642,
           "net_comm": 294538,
-          "cot_index": 45.3,
+          "cot_index": 47.3,
           "wow_change": -83944
         },
         {
@@ -651,7 +672,7 @@
           "comm_long": 509748,
           "comm_short": 143449,
           "net_comm": 366299,
-          "cot_index": 71.8,
+          "cot_index": 72.9,
           "wow_change": -28374
         },
         {
@@ -672,7 +693,7 @@
           "comm_long": 519444,
           "comm_short": 149172,
           "net_comm": 370272,
-          "cot_index": 80.8,
+          "cot_index": 81.5,
           "wow_change": -32194
         },
         {
@@ -693,7 +714,7 @@
           "comm_long": 533702,
           "comm_short": 138401,
           "net_comm": 395301,
-          "cot_index": 91.0,
+          "cot_index": 91.3,
           "wow_change": -25164
         },
         {
@@ -756,7 +777,7 @@
           "comm_long": 539447,
           "comm_short": 135008,
           "net_comm": 404439,
-          "cot_index": 95.5,
+          "cot_index": 95.7,
           "wow_change": 16603
         },
         {
@@ -777,7 +798,7 @@
           "comm_long": 550558,
           "comm_short": 147028,
           "net_comm": 403530,
-          "cot_index": 90.3,
+          "cot_index": 90.6,
           "wow_change": 28451
         },
         {
@@ -798,7 +819,7 @@
           "comm_long": 543954,
           "comm_short": 152750,
           "net_comm": 391204,
-          "cot_index": 81.3,
+          "cot_index": 82.0,
           "wow_change": -28068
         },
         {
@@ -819,7 +840,7 @@
           "comm_long": 555117,
           "comm_short": 151001,
           "net_comm": 404116,
-          "cot_index": 90.1,
+          "cot_index": 90.5,
           "wow_change": -19779
         },
         {
@@ -840,7 +861,7 @@
           "comm_long": 543666,
           "comm_short": 144979,
           "net_comm": 398687,
-          "cot_index": 96.4,
+          "cot_index": 96.5,
           "wow_change": 5181
         },
         {
@@ -861,7 +882,7 @@
           "comm_long": 537338,
           "comm_short": 145894,
           "net_comm": 391444,
-          "cot_index": 94.7,
+          "cot_index": 94.9,
           "wow_change": -2398
         },
         {
@@ -882,7 +903,7 @@
           "comm_long": 536849,
           "comm_short": 146452,
           "net_comm": 390397,
-          "cot_index": 95.5,
+          "cot_index": 95.7,
           "wow_change": 20409
         },
         {
@@ -903,7 +924,7 @@
           "comm_long": 517767,
           "comm_short": 142973,
           "net_comm": 374794,
-          "cot_index": 89.1,
+          "cot_index": 89.5,
           "wow_change": 10814
         },
         {
@@ -924,7 +945,7 @@
           "comm_long": 517871,
           "comm_short": 144195,
           "net_comm": 373676,
-          "cot_index": 85.6,
+          "cot_index": 86.2,
           "wow_change": 34256
         },
         {
@@ -945,7 +966,7 @@
           "comm_long": 508867,
           "comm_short": 147114,
           "net_comm": 361753,
-          "cot_index": 74.8,
+          "cot_index": 75.8,
           "wow_change": 16539
         },
         {
@@ -966,7 +987,7 @@
           "comm_long": 500319,
           "comm_short": 150557,
           "net_comm": 349762,
-          "cot_index": 69.6,
+          "cot_index": 70.7,
           "wow_change": -4886
         },
         {
@@ -987,7 +1008,7 @@
           "comm_long": 502366,
           "comm_short": 145415,
           "net_comm": 356951,
-          "cot_index": 71.1,
+          "cot_index": 72.2,
           "wow_change": 17669
         },
         {
@@ -1008,7 +1029,7 @@
           "comm_long": 507864,
           "comm_short": 150500,
           "net_comm": 357364,
-          "cot_index": 65.6,
+          "cot_index": 66.8,
           "wow_change": -4499
         },
         {
@@ -1029,7 +1050,7 @@
           "comm_long": 502569,
           "comm_short": 151549,
           "net_comm": 351020,
-          "cot_index": 67.0,
+          "cot_index": 68.2,
           "wow_change": -25712
         },
         {
@@ -1050,7 +1071,7 @@
           "comm_long": 499804,
           "comm_short": 135233,
           "net_comm": 364571,
-          "cot_index": 75.1,
+          "cot_index": 76.0,
           "wow_change": -12063
         },
         {
@@ -1071,58 +1092,58 @@
           "comm_long": 500890,
           "comm_short": 129377,
           "net_comm": 371513,
-          "cot_index": 78.9,
-          "wow_change": 578
-        },
-        {
-          "date": "2025-10-14",
-          "lev_long": 103080,
-          "lev_short": 80802,
-          "net_lev": 22278,
-          "asset_long": 499343,
-          "asset_short": 128222,
-          "net_asset": 371121,
-          "dealer_long": 73898,
-          "dealer_short": 512555,
-          "nonrept_long": 92184,
-          "nonrept_short": 51379,
-          "net_noncomm": 393399,
-          "noncomm_long": 103080,
-          "noncomm_short": 80802,
-          "comm_long": 499343,
-          "comm_short": 128222,
-          "net_comm": 371121,
-          "cot_index": 78.7,
+          "cot_index": 79.7,
           "wow_change": 0
         }
       ],
       "latest": {
-        "date": "2026-10-06",
-        "lev_long": 135367,
-        "lev_short": 179628,
-        "net_lev": -44261,
-        "asset_long": 499449,
-        "asset_short": 309568,
-        "net_asset": 189881,
-        "dealer_long": 48187,
-        "dealer_short": 224701,
-        "nonrept_long": 83737,
-        "nonrept_short": 56429,
-        "net_noncomm": 145620,
-        "noncomm_long": 135367,
-        "noncomm_short": 179628,
-        "comm_long": 499449,
-        "comm_short": 309568,
-        "net_comm": 189881,
-        "cot_index": 0.5,
-        "wow_change": -35718
+        "date": "2026-10-13",
+        "lev_long": 120021,
+        "lev_short": 188022,
+        "net_lev": -68001,
+        "asset_long": 502676,
+        "asset_short": 302758,
+        "net_asset": 199918,
+        "dealer_long": 55346,
+        "dealer_short": 220109,
+        "nonrept_long": 84566,
+        "nonrept_short": 58218,
+        "net_noncomm": 131917,
+        "noncomm_long": 120021,
+        "noncomm_short": 188022,
+        "comm_long": 502676,
+        "comm_short": 302758,
+        "net_comm": 199918,
+        "cot_index": 0.0,
+        "wow_change": -13703
       },
       "52w_high": 460742,
-      "52w_low": 144128,
-      "cot_index": 0.5
+      "52w_low": 131917,
+      "cot_index": 0.0
     },
     "GBP": {
       "weeks": [
+        {
+          "date": "2026-10-13",
+          "lev_long": 55726,
+          "lev_short": 45413,
+          "net_lev": 10313,
+          "asset_long": 18995,
+          "asset_short": 164730,
+          "net_asset": -145735,
+          "dealer_long": 160395,
+          "dealer_short": 9599,
+          "nonrept_long": 21811,
+          "nonrept_short": 36291,
+          "net_noncomm": -135422,
+          "noncomm_long": 55726,
+          "noncomm_short": 45413,
+          "comm_long": 18995,
+          "comm_short": 164730,
+          "net_comm": -145735,
+          "cot_index": 5.7,
+          "wow_change": -2412
+        },
         {
           "date": "2026-10-06",
           "lev_long": 57368,
@@ -1141,7 +1162,7 @@
           "comm_long": 17746,
           "comm_short": 163188,
           "net_comm": -145442,
-          "cot_index": 7.3,
+          "cot_index": 7.8,
           "wow_change": -9072
         },
         {
@@ -1162,7 +1183,7 @@
           "comm_long": 19403,
           "comm_short": 147947,
           "net_comm": -128544,
-          "cot_index": 14.7,
+          "cot_index": 15.8,
           "wow_change": -21372
         },
         {
@@ -1183,7 +1204,7 @@
           "comm_long": 25632,
           "comm_short": 141437,
           "net_comm": -115805,
-          "cot_index": 32.3,
+          "cot_index": 34.8,
           "wow_change": -32233
         },
         {
@@ -1204,7 +1225,7 @@
           "comm_long": 45568,
           "comm_short": 134779,
           "net_comm": -89211,
-          "cot_index": 58.9,
+          "cot_index": 63.3,
           "wow_change": 904
         },
         {
@@ -1225,7 +1246,7 @@
           "comm_long": 43849,
           "comm_short": 149713,
           "net_comm": -105864,
-          "cot_index": 58.1,
+          "cot_index": 62.5,
           "wow_change": -7071
         },
         {
@@ -1246,7 +1267,7 @@
           "comm_long": 43569,
           "comm_short": 150902,
           "net_comm": -107333,
-          "cot_index": 63.9,
+          "cot_index": 68.7,
           "wow_change": -7584
         },
         {
@@ -1267,7 +1288,7 @@
           "comm_long": 45799,
           "comm_short": 150290,
           "net_comm": -104491,
-          "cot_index": 70.2,
+          "cot_index": 75.4,
           "wow_change": 17781
         },
         {
@@ -1288,7 +1309,7 @@
           "comm_long": 33516,
           "comm_short": 150756,
           "net_comm": -117240,
-          "cot_index": 55.5,
+          "cot_index": 59.7,
           "wow_change": 4830
         },
         {
@@ -1309,7 +1330,7 @@
           "comm_long": 22690,
           "comm_short": 142553,
           "net_comm": -119863,
-          "cot_index": 51.6,
+          "cot_index": 55.4,
           "wow_change": 8447
         },
         {
@@ -1330,7 +1351,7 @@
           "comm_long": 12228,
           "comm_short": 138042,
           "net_comm": -125814,
-          "cot_index": 44.6,
+          "cot_index": 48.0,
           "wow_change": 12174
         },
         {
@@ -1351,7 +1372,7 @@
           "comm_long": 12433,
           "comm_short": 153344,
           "net_comm": -140911,
-          "cot_index": 34.6,
+          "cot_index": 37.2,
           "wow_change": -13961
         },
         {
@@ -1372,7 +1393,7 @@
           "comm_long": 18950,
           "comm_short": 138039,
           "net_comm": -119089,
-          "cot_index": 46.1,
+          "cot_index": 49.5,
           "wow_change": 17010
         },
         {
@@ -1393,7 +1414,7 @@
           "comm_long": 14195,
           "comm_short": 145599,
           "net_comm": -131404,
-          "cot_index": 32.1,
+          "cot_index": 34.5,
           "wow_change": 22415
         },
         {
@@ -1414,7 +1435,7 @@
           "comm_long": 13996,
           "comm_short": 157253,
           "net_comm": -143257,
-          "cot_index": 13.6,
+          "cot_index": 14.7,
           "wow_change": 14756
         },
         {
@@ -1435,7 +1456,7 @@
           "comm_long": 12147,
           "comm_short": 168454,
           "net_comm": -156307,
-          "cot_index": 1.5,
+          "cot_index": 1.6,
           "wow_change": 1823
         },
         {
@@ -1477,7 +1498,7 @@
           "comm_long": 16352,
           "comm_short": 129820,
           "net_comm": -113468,
-          "cot_index": 37.2,
+          "cot_index": 40.0,
           "wow_change": -9288
         },
         {
@@ -1498,7 +1519,7 @@
           "comm_long": 15818,
           "comm_short": 125474,
           "net_comm": -109656,
-          "cot_index": 44.9,
+          "cot_index": 48.2,
           "wow_change": -13131
         },
         {
@@ -1519,7 +1540,7 @@
           "comm_long": 23506,
           "comm_short": 125072,
           "net_comm": -101566,
-          "cot_index": 55.7,
+          "cot_index": 59.8,
           "wow_change": 6283
         },
         {
@@ -1540,7 +1561,7 @@
           "comm_long": 26687,
           "comm_short": 136012,
           "net_comm": -109325,
-          "cot_index": 50.5,
+          "cot_index": 54.3,
           "wow_change": 448
         },
         {
@@ -1561,7 +1582,7 @@
           "comm_long": 33906,
           "comm_short": 146219,
           "net_comm": -112313,
-          "cot_index": 50.1,
+          "cot_index": 53.9,
           "wow_change": -25096
         },
         {
@@ -1582,7 +1603,7 @@
           "comm_long": 45622,
           "comm_short": 138772,
           "net_comm": -93150,
-          "cot_index": 70.8,
+          "cot_index": 76.1,
           "wow_change": 20733
         },
         {
@@ -1603,7 +1624,7 @@
           "comm_long": 38205,
           "comm_short": 140835,
           "net_comm": -102630,
-          "cot_index": 53.7,
+          "cot_index": 57.7,
           "wow_change": -11710
         },
         {
@@ -1624,7 +1645,7 @@
           "comm_long": 39695,
           "comm_short": 133448,
           "net_comm": -93753,
-          "cot_index": 63.4,
+          "cot_index": 68.1,
           "wow_change": -10822
         },
         {
@@ -1645,7 +1666,7 @@
           "comm_long": 41553,
           "comm_short": 124739,
           "net_comm": -83186,
-          "cot_index": 72.3,
+          "cot_index": 77.7,
           "wow_change": 11535
         },
         {
@@ -1666,7 +1687,7 @@
           "comm_long": 36200,
           "comm_short": 124115,
           "net_comm": -87915,
-          "cot_index": 62.8,
+          "cot_index": 67.5,
           "wow_change": 7343
         },
         {
@@ -1687,7 +1708,7 @@
           "comm_long": 25841,
           "comm_short": 125301,
           "net_comm": -99460,
-          "cot_index": 56.7,
+          "cot_index": 61.0,
           "wow_change": -1327
         },
         {
@@ -1708,7 +1729,7 @@
           "comm_long": 23458,
           "comm_short": 124990,
           "net_comm": -101532,
-          "cot_index": 57.8,
+          "cot_index": 62.1,
           "wow_change": 7147
         },
         {
@@ -1729,7 +1750,7 @@
           "comm_long": 28499,
           "comm_short": 122962,
           "net_comm": -94463,
-          "cot_index": 51.9,
+          "cot_index": 55.8,
           "wow_change": 5443
         },
         {
@@ -1750,7 +1771,7 @@
           "comm_long": 30064,
           "comm_short": 126022,
           "net_comm": -95958,
-          "cot_index": 47.5,
+          "cot_index": 51.0,
           "wow_change": 16211
         },
         {
@@ -1771,7 +1792,7 @@
           "comm_long": 33647,
           "comm_short": 154150,
           "net_comm": -120503,
-          "cot_index": 34.1,
+          "cot_index": 36.7,
           "wow_change": -9360
         },
         {
@@ -1792,7 +1813,7 @@
           "comm_long": 28611,
           "comm_short": 154158,
           "net_comm": -125547,
-          "cot_index": 41.8,
+          "cot_index": 44.9,
           "wow_change": -21034
         },
         {
@@ -1813,7 +1834,7 @@
           "comm_long": 34767,
           "comm_short": 144925,
           "net_comm": -110158,
-          "cot_index": 59.1,
+          "cot_index": 63.6,
           "wow_change": -18830
         },
         {
@@ -1834,7 +1855,7 @@
           "comm_long": 44919,
           "comm_short": 138462,
           "net_comm": -93543,
-          "cot_index": 74.6,
+          "cot_index": 80.2,
           "wow_change": -16055
         },
         {
@@ -1855,7 +1876,7 @@
           "comm_long": 50137,
           "comm_short": 128738,
           "net_comm": -78601,
-          "cot_index": 87.8,
+          "cot_index": 94.4,
           "wow_change": -3845
         },
         {
@@ -1876,7 +1897,7 @@
           "comm_long": 54634,
           "comm_short": 121322,
           "net_comm": -66688,
-          "cot_index": 91.0,
+          "cot_index": 97.8,
           "wow_change": 7167
         },
         {
@@ -1897,7 +1918,7 @@
           "comm_long": 48904,
           "comm_short": 124491,
           "net_comm": -75587,
-          "cot_index": 85.1,
+          "cot_index": 91.5,
           "wow_change": 7271
         },
         {
@@ -1918,7 +1939,7 @@
           "comm_long": 41016,
           "comm_short": 127509,
           "net_comm": -86493,
-          "cot_index": 79.1,
+          "cot_index": 85.0,
           "wow_change": -3871
         },
         {
@@ -1939,7 +1960,7 @@
           "comm_long": 43857,
           "comm_short": 123791,
           "net_comm": -79934,
-          "cot_index": 82.3,
+          "cot_index": 88.5,
           "wow_change": 7651
         },
         {
@@ -1960,7 +1981,7 @@
           "comm_long": 46406,
           "comm_short": 124848,
           "net_comm": -78442,
-          "cot_index": 76.0,
+          "cot_index": 81.7,
           "wow_change": 1795
         },
         {
@@ -1981,7 +2002,7 @@
           "comm_long": 43246,
           "comm_short": 120227,
           "net_comm": -76981,
-          "cot_index": 74.5,
+          "cot_index": 80.1,
           "wow_change": 9669
         },
         {
@@ -2002,7 +2023,7 @@
           "comm_long": 41266,
           "comm_short": 121060,
           "net_comm": -79794,
-          "cot_index": 66.6,
+          "cot_index": 71.6,
           "wow_change": 7134
         },
         {
@@ -2023,7 +2044,7 @@
           "comm_long": 39043,
           "comm_short": 121684,
           "net_comm": -82641,
-          "cot_index": 60.7,
+          "cot_index": 65.2,
           "wow_change": 31057
         },
         {
@@ -2044,7 +2065,7 @@
           "comm_long": 33810,
           "comm_short": 139428,
           "net_comm": -105618,
-          "cot_index": 35.1,
+          "cot_index": 37.8,
           "wow_change": 10538
         },
         {
@@ -2065,7 +2086,7 @@
           "comm_long": 27982,
           "comm_short": 142535,
           "net_comm": -114553,
-          "cot_index": 26.5,
+          "cot_index": 28.5,
           "wow_change": 13078
         },
         {
@@ -2086,7 +2107,7 @@
           "comm_long": 21394,
           "comm_short": 142831,
           "net_comm": -121437,
-          "cot_index": 15.7,
+          "cot_index": 16.9,
           "wow_change": -15198
         },
         {
@@ -2107,7 +2128,7 @@
           "comm_long": 22969,
           "comm_short": 139262,
           "net_comm": -116293,
-          "cot_index": 28.2,
+          "cot_index": 30.3,
           "wow_change": -1772
         },
         {
@@ -2128,7 +2149,7 @@
           "comm_long": 20647,
           "comm_short": 138997,
           "net_comm": -118350,
-          "cot_index": 29.7,
+          "cot_index": 31.9,
           "wow_change": -16045
         },
         {
@@ -2149,7 +2170,7 @@
           "comm_long": 20332,
           "comm_short": 136006,
           "net_comm": -115674,
-          "cot_index": 42.9,
+          "cot_index": 46.1,
           "wow_change": -49031
         },
         {
@@ -2170,7 +2191,7 @@
           "comm_long": 32398,
           "comm_short": 113511,
           "net_comm": -81113,
-          "cot_index": 83.2,
+          "cot_index": 89.5,
           "wow_change": -11920
         },
         {
@@ -2191,58 +2212,58 @@
           "comm_long": 40189,
           "comm_short": 108646,
           "net_comm": -68457,
-          "cot_index": 93.0,
-          "wow_change": -8457
-        },
-        {
-          "date": "2025-10-14",
-          "lev_long": 72347,
-          "lev_short": 33253,
-          "net_lev": 39094,
-          "asset_long": 45260,
-          "asset_short": 104697,
-          "net_asset": -59437,
-          "dealer_long": 86841,
-          "dealer_short": 61020,
-          "nonrept_long": 26160,
-          "nonrept_short": 31321,
-          "net_noncomm": -20343,
-          "noncomm_long": 72347,
-          "noncomm_short": 33253,
-          "comm_long": 45260,
-          "comm_short": 104697,
-          "net_comm": -59437,
           "cot_index": 100.0,
           "wow_change": 0
         }
       ],
       "latest": {
-        "date": "2026-10-06",
-        "lev_long": 57368,
-        "lev_short": 44936,
-        "net_lev": 12432,
-        "asset_long": 17746,
-        "asset_short": 163188,
-        "net_asset": -145442,
-        "dealer_long": 157251,
-        "dealer_short": 9218,
-        "nonrept_long": 20627,
-        "nonrept_short": 34883,
-        "net_noncomm": -133010,
-        "noncomm_long": 57368,
-        "noncomm_short": 44936,
-        "comm_long": 17746,
-        "comm_short": 163188,
-        "net_comm": -145442,
-        "cot_index": 7.3,
-        "wow_change": -9072
+        "date": "2026-10-13",
+        "lev_long": 55726,
+        "lev_short": 45413,
+        "net_lev": 10313,
+        "asset_long": 18995,
+        "asset_short": 164730,
+        "net_asset": -145735,
+        "dealer_long": 160395,
+        "dealer_short": 9599,
+        "nonrept_long": 21811,
+        "nonrept_short": 36291,
+        "net_noncomm": -135422,
+        "noncomm_long": 55726,
+        "noncomm_short": 45413,
+        "comm_long": 18995,
+        "comm_short": 164730,
+        "net_comm": -145735,
+        "cot_index": 5.7,
+        "wow_change": -2412
       },
-      "52w_high": -20343,
+      "52w_high": -28800,
       "52w_low": -141857,
-      "cot_index": 7.3
+      "cot_index": 5.7
     },
     "JPY": {
       "weeks": [
+        {
+          "date": "2026-10-13",
+          "lev_long": 65309,
+          "lev_short": 98982,
+          "net_lev": -33673,
+          "asset_long": 146227,
+          "asset_short": 80408,
+          "net_asset": 65819,
+          "dealer_long": 54925,
+          "dealer_short": 128736,
+          "nonrept_long": 34567,
+          "nonrept_short": 36187,
+          "net_noncomm": 32146,
+          "noncomm_long": 65309,
+          "noncomm_short": 98982,
+          "comm_long": 146227,
+          "comm_short": 80408,
+          "net_comm": 65819,
+          "cot_index": 82.9,
+          "wow_change": -10606
+        },
         {
           "date": "2026-10-06",
           "lev_long": 66123,
@@ -3312,57 +3333,57 @@
           "comm_short": 39404,
           "net_comm": 81609,
           "cot_index": 84.0,
-          "wow_change": 20238
-        },
-        {
-          "date": "2025-10-14",
-          "lev_long": 43389,
-          "lev_short": 95490,
-          "net_lev": -52101,
-          "asset_long": 116418,
-          "asset_short": 49361,
-          "net_asset": 67057,
-          "dealer_long": 19688,
-          "dealer_short": 106832,
-          "nonrept_long": 37645,
-          "nonrept_short": 38191,
-          "net_noncomm": 14956,
-          "noncomm_long": 43389,
-          "noncomm_short": 95490,
-          "comm_long": 116418,
-          "comm_short": 49361,
-          "net_comm": 67057,
-          "cot_index": 76.3,
           "wow_change": 0
         }
       ],
       "latest": {
-        "date": "2026-10-06",
-        "lev_long": 66123,
-        "lev_short": 91166,
-        "net_lev": -25043,
-        "asset_long": 143300,
-        "asset_short": 75505,
-        "net_asset": 67795,
-        "dealer_long": 53281,
-        "dealer_short": 138186,
-        "nonrept_long": 34535,
-        "nonrept_short": 35111,
-        "net_noncomm": 42752,
-        "noncomm_long": 66123,
-        "noncomm_short": 91166,
-        "comm_long": 143300,
-        "comm_short": 75505,
-        "net_comm": 67795,
-        "cot_index": 86.9,
-        "wow_change": 5279
+        "date": "2026-10-13",
+        "lev_long": 65309,
+        "lev_short": 98982,
+        "net_lev": -33673,
+        "asset_long": 146227,
+        "asset_short": 80408,
+        "net_asset": 65819,
+        "dealer_long": 54925,
+        "dealer_short": 128736,
+        "nonrept_long": 34567,
+        "nonrept_short": 36187,
+        "net_noncomm": 32146,
+        "noncomm_long": 65309,
+        "noncomm_short": 98982,
+        "comm_long": 146227,
+        "comm_short": 80408,
+        "net_comm": 65819,
+        "cot_index": 82.9,
+        "wow_change": -10606
       },
       "52w_high": 77015,
       "52w_low": -185047,
-      "cot_index": 86.9
+      "cot_index": 82.9
     },
     "CHF": {
       "weeks": [
+        {
+          "date": "2026-10-13",
+          "lev_long": 9935,
+          "lev_short": 24876,
+          "net_lev": -14941,
+          "asset_long": 22676,
+          "asset_short": 54132,
+          "net_asset": -31456,
+          "dealer_long": 83115,
+          "dealer_short": 23601,
+          "nonrept_long": 9621,
+          "nonrept_short": 23815,
+          "net_noncomm": -46397,
+          "noncomm_long": 9935,
+          "noncomm_short": 24876,
+          "comm_long": 22676,
+          "comm_short": 54132,
+          "net_comm": -31456,
+          "cot_index": 43.2,
+          "wow_change": 2332
+        },
         {
           "date": "2026-10-06",
           "lev_long": 12900,
@@ -4432,57 +4453,57 @@
           "comm_short": 43524,
           "net_comm": -37731,
           "cot_index": 73.2,
-          "wow_change": 1822
-        },
-        {
-          "date": "2025-10-14",
-          "lev_long": 5082,
-          "lev_short": 7423,
-          "net_lev": -2341,
-          "asset_long": 5770,
-          "asset_short": 45160,
-          "net_asset": -39390,
-          "dealer_long": 45530,
-          "dealer_short": 1236,
-          "nonrept_long": 13191,
-          "nonrept_short": 17815,
-          "net_noncomm": -41731,
-          "noncomm_long": 5082,
-          "noncomm_short": 7423,
-          "comm_long": 5770,
-          "comm_short": 45160,
-          "net_comm": -39390,
-          "cot_index": 64.8,
           "wow_change": 0
         }
       ],
       "latest": {
-        "date": "2026-10-06",
-        "lev_long": 12900,
-        "lev_short": 24250,
-        "net_lev": -11350,
-        "asset_long": 19529,
-        "asset_short": 56908,
-        "net_asset": -37379,
-        "dealer_long": 82560,
-        "dealer_short": 20932,
-        "nonrept_long": 10391,
-        "nonrept_short": 23937,
-        "net_noncomm": -48729,
-        "noncomm_long": 12900,
-        "noncomm_short": 24250,
-        "comm_long": 19529,
-        "comm_short": 56908,
-        "net_comm": -37379,
-        "cot_index": 32.4,
-        "wow_change": 1677
+        "date": "2026-10-13",
+        "lev_long": 9935,
+        "lev_short": 24876,
+        "net_lev": -14941,
+        "asset_long": 22676,
+        "asset_short": 54132,
+        "net_asset": -31456,
+        "dealer_long": 83115,
+        "dealer_short": 23601,
+        "nonrept_long": 9621,
+        "nonrept_short": 23815,
+        "net_noncomm": -46397,
+        "noncomm_long": 9935,
+        "noncomm_short": 24876,
+        "comm_long": 22676,
+        "comm_short": 54132,
+        "net_comm": -31456,
+        "cot_index": 43.2,
+        "wow_change": 2332
       },
       "52w_high": -34134,
       "52w_low": -55722,
-      "cot_index": 32.4
+      "cot_index": 43.2
     },
     "CAD": {
       "weeks": [
+        {
+          "date": "2026-10-13",
+          "lev_long": 23811,
+          "lev_short": 111923,
+          "net_lev": -88112,
+          "asset_long": 102895,
+          "asset_short": 133699,
+          "net_asset": -30804,
+          "dealer_long": 196342,
+          "dealer_short": 75361,
+          "nonrept_long": 28630,
+          "nonrept_short": 39478,
+          "net_noncomm": -118916,
+          "noncomm_long": 23811,
+          "noncomm_short": 111923,
+          "comm_long": 102895,
+          "comm_short": 133699,
+          "net_comm": -30804,
+          "cot_index": 35.9,
+          "wow_change": -3485
+        },
         {
           "date": "2026-10-06",
           "lev_long": 31682,
@@ -5552,57 +5573,57 @@
           "comm_short": 135923,
           "net_comm": -97744,
           "cot_index": 21.6,
-          "wow_change": -2367
-        },
-        {
-          "date": "2025-10-14",
-          "lev_long": 27050,
-          "lev_short": 76837,
-          "net_lev": -49787,
-          "asset_long": 35706,
-          "asset_short": 136141,
-          "net_asset": -100435,
-          "dealer_long": 164113,
-          "dealer_short": 5882,
-          "nonrept_long": 21109,
-          "nonrept_short": 36096,
-          "net_noncomm": -150222,
-          "noncomm_long": 27050,
-          "noncomm_short": 76837,
-          "comm_long": 35706,
-          "comm_short": 136141,
-          "net_comm": -100435,
-          "cot_index": 22.6,
           "wow_change": 0
         }
       ],
       "latest": {
-        "date": "2026-10-06",
-        "lev_long": 31682,
-        "lev_short": 111307,
-        "net_lev": -79625,
-        "asset_long": 97612,
-        "asset_short": 133418,
-        "net_asset": -35806,
-        "dealer_long": 189180,
-        "dealer_short": 69223,
-        "nonrept_long": 27234,
-        "nonrept_short": 40573,
-        "net_noncomm": -115431,
-        "noncomm_long": 31682,
-        "noncomm_short": 111307,
-        "comm_long": 97612,
-        "comm_short": 133418,
-        "net_comm": -35806,
-        "cot_index": 37.4,
-        "wow_change": -18206
+        "date": "2026-10-13",
+        "lev_long": 23811,
+        "lev_short": 111923,
+        "net_lev": -88112,
+        "asset_long": 102895,
+        "asset_short": 133699,
+        "net_asset": -30804,
+        "dealer_long": 196342,
+        "dealer_short": 75361,
+        "nonrept_long": 28630,
+        "nonrept_short": 39478,
+        "net_noncomm": -118916,
+        "noncomm_long": 23811,
+        "noncomm_short": 111923,
+        "comm_long": 102895,
+        "comm_short": 133699,
+        "net_comm": -30804,
+        "cot_index": 35.9,
+        "wow_change": -3485
       },
       "52w_high": 32353,
       "52w_low": -203655,
-      "cot_index": 37.4
+      "cot_index": 35.9
     },
     "AUD": {
       "weeks": [
+        {
+          "date": "2026-10-13",
+          "lev_long": 87632,
+          "lev_short": 37041,
+          "net_lev": 50591,
+          "asset_long": 84332,
+          "asset_short": 200252,
+          "net_asset": -115920,
+          "dealer_long": 125312,
+          "dealer_short": 76411,
+          "nonrept_long": 31540,
+          "nonrept_short": 20611,
+          "net_noncomm": -65329,
+          "noncomm_long": 87632,
+          "noncomm_short": 37041,
+          "comm_long": 84332,
+          "comm_short": 200252,
+          "net_comm": -115920,
+          "cot_index": 11.2,
+          "wow_change": -18034
+        },
         {
           "date": "2026-10-06",
           "lev_long": 86777,
@@ -6672,57 +6693,57 @@
           "comm_short": 107035,
           "net_comm": -65252,
           "cot_index": 11.4,
-          "wow_change": -10193
-        },
-        {
-          "date": "2025-10-14",
-          "lev_long": 36497,
-          "lev_short": 31074,
-          "net_lev": 5423,
-          "asset_long": 46014,
-          "asset_short": 106150,
-          "net_asset": -60136,
-          "dealer_long": 50332,
-          "dealer_short": 9660,
-          "nonrept_long": 26631,
-          "nonrept_short": 17531,
-          "net_noncomm": -54713,
-          "noncomm_long": 36497,
-          "noncomm_short": 31074,
-          "comm_long": 46014,
-          "comm_short": 106150,
-          "net_comm": -60136,
-          "cot_index": 16.8,
           "wow_change": 0
         }
       ],
       "latest": {
-        "date": "2026-10-06",
-        "lev_long": 86777,
-        "lev_short": 32644,
-        "net_lev": 54133,
-        "asset_long": 87156,
-        "asset_short": 188584,
-        "net_asset": -101428,
-        "dealer_long": 111494,
-        "dealer_short": 82529,
-        "nonrept_long": 32396,
-        "nonrept_short": 18900,
-        "net_noncomm": -47295,
-        "noncomm_long": 86777,
-        "noncomm_short": 32644,
-        "comm_long": 87156,
-        "comm_short": 188584,
-        "net_comm": -101428,
-        "cot_index": 20.7,
-        "wow_change": -34688
+        "date": "2026-10-13",
+        "lev_long": 87632,
+        "lev_short": 37041,
+        "net_lev": 50591,
+        "asset_long": 84332,
+        "asset_short": 200252,
+        "net_asset": -115920,
+        "dealer_long": 125312,
+        "dealer_short": 76411,
+        "nonrept_long": 31540,
+        "nonrept_short": 20611,
+        "net_noncomm": -65329,
+        "noncomm_long": 87632,
+        "noncomm_short": 37041,
+        "comm_long": 84332,
+        "comm_short": 200252,
+        "net_comm": -115920,
+        "cot_index": 11.2,
+        "wow_change": -18034
       },
       "52w_high": 103402,
       "52w_low": -86612,
-      "cot_index": 20.7
+      "cot_index": 11.2
     },
     "NZD": {
       "weeks": [
+        {
+          "date": "2026-10-13",
+          "lev_long": 17668,
+          "lev_short": 29287,
+          "net_lev": -11619,
+          "asset_long": 12106,
+          "asset_short": 56245,
+          "net_asset": -44139,
+          "dealer_long": 80348,
+          "dealer_short": 26146,
+          "nonrept_long": 4767,
+          "nonrept_short": 6741,
+          "net_noncomm": -55758,
+          "noncomm_long": 17668,
+          "noncomm_short": 29287,
+          "comm_long": 12106,
+          "comm_short": 56245,
+          "net_comm": -44139,
+          "cot_index": 31.1,
+          "wow_change": -22437
+        },
         {
           "date": "2026-10-06",
           "lev_long": 27439,
@@ -7792,57 +7813,57 @@
           "comm_short": 58956,
           "net_comm": -51495,
           "cot_index": 42.7,
-          "wow_change": -7620
-        },
-        {
-          "date": "2025-10-14",
-          "lev_long": 28437,
-          "lev_short": 22723,
-          "net_lev": 5714,
-          "asset_long": 7294,
-          "asset_short": 50358,
-          "net_asset": -43064,
-          "dealer_long": 39471,
-          "dealer_short": 355,
-          "nonrept_long": 3751,
-          "nonrept_short": 6065,
-          "net_noncomm": -37350,
-          "noncomm_long": 28437,
-          "noncomm_short": 22723,
-          "comm_long": 7294,
-          "comm_short": 50358,
-          "net_comm": -43064,
-          "cot_index": 50.9,
           "wow_change": 0
         }
       ],
       "latest": {
-        "date": "2026-10-06",
-        "lev_long": 27439,
-        "lev_short": 28226,
-        "net_lev": -787,
-        "asset_long": 11223,
-        "asset_short": 43757,
-        "net_asset": -32534,
-        "dealer_long": 76194,
-        "dealer_short": 45300,
-        "nonrept_long": 4404,
-        "nonrept_short": 6438,
-        "net_noncomm": -33321,
-        "noncomm_long": 27439,
-        "noncomm_short": 28226,
-        "comm_long": 11223,
-        "comm_short": 43757,
-        "net_comm": -32534,
-        "cot_index": 55.2,
-        "wow_change": -11027
+        "date": "2026-10-13",
+        "lev_long": 17668,
+        "lev_short": 29287,
+        "net_lev": -11619,
+        "asset_long": 12106,
+        "asset_short": 56245,
+        "net_asset": -44139,
+        "dealer_long": 80348,
+        "dealer_short": 26146,
+        "nonrept_long": 4767,
+        "nonrept_short": 6741,
+        "net_noncomm": -55758,
+        "noncomm_long": 17668,
+        "noncomm_short": 29287,
+        "comm_long": 12106,
+        "comm_short": 56245,
+        "net_comm": -44139,
+        "cot_index": 31.1,
+        "wow_change": -22437
       },
       "52w_high": 8404,
       "52w_low": -84769,
-      "cot_index": 55.2
+      "cot_index": 31.1
     },
     "USD": {
       "weeks": [
+        {
+          "date": "2026-10-13",
+          "lev_long": 19008,
+          "lev_short": 16932,
+          "net_lev": 2076,
+          "asset_long": 20486,
+          "asset_short": 2322,
+          "net_asset": 18164,
+          "dealer_long": 5164,
+          "dealer_short": 24737,
+          "nonrept_long": 3812,
+          "nonrept_short": 1903,
+          "net_noncomm": 20240,
+          "noncomm_long": 19008,
+          "noncomm_short": 16932,
+          "comm_long": 20486,
+          "comm_short": 2322,
+          "net_comm": 18164,
+          "cot_index": 92.3,
+          "wow_change": 280
+        },
         {
           "date": "2026-10-06",
           "lev_long": 15283,
@@ -8912,54 +8933,33 @@
           "comm_short": 2345,
           "net_comm": 1302,
           "cot_index": 2.4,
-          "wow_change": 623
-        },
-        {
-          "date": "2025-10-14",
-          "lev_long": 4026,
-          "lev_short": 20562,
-          "net_lev": -16536,
-          "asset_long": 3973,
-          "asset_short": 4588,
-          "net_asset": -615,
-          "dealer_long": 17434,
-          "dealer_short": 0,
-          "nonrept_long": 4006,
-          "nonrept_short": 2839,
-          "net_noncomm": -17151,
-          "noncomm_long": 4026,
-          "noncomm_short": 20562,
-          "comm_long": 3973,
-          "comm_short": 4588,
-          "net_comm": -615,
-          "cot_index": 0.8,
           "wow_change": 0
         }
       ],
       "latest": {
-        "date": "2026-10-06",
-        "lev_long": 15283,
-        "lev_short": 14419,
-        "net_lev": 864,
-        "asset_long": 22843,
-        "asset_short": 3747,
-        "net_asset": 19096,
-        "dealer_long": 5268,
-        "dealer_short": 25058,
-        "nonrept_long": 4002,
-        "nonrept_short": 1742,
-        "net_noncomm": 19960,
-        "noncomm_long": 15283,
-        "noncomm_short": 14419,
-        "comm_long": 22843,
-        "comm_short": 3747,
-        "net_comm": 19096,
-        "cot_index": 91.6,
-        "wow_change": 1592
+        "date": "2026-10-13",
+        "lev_long": 19008,
+        "lev_short": 16932,
+        "net_lev": 2076,
+        "asset_long": 20486,
+        "asset_short": 2322,
+        "net_asset": 18164,
+        "dealer_long": 5164,
+        "dealer_short": 24737,
+        "nonrept_long": 3812,
+        "nonrept_short": 1903,
+        "net_noncomm": 20240,
+        "noncomm_long": 19008,
+        "noncomm_short": 16932,
+        "comm_long": 20486,
+        "comm_short": 2322,
+        "net_comm": 18164,
+        "cot_index": 92.3,
+        "wow_change": 280
       },
       "52w_high": 23374,
       "52w_low": -17498,
-      "cot_index": 91.6
+      "cot_index": 92.3
     }
   }
 }
